@@ -1,0 +1,6 @@
+﻿
+- search unassociated records
+	- append formatted last write timestamp to root keys, then update all the paths?
+- search unassociated values?
+- the ability to load in .reg files and browse them
+- for a key, get total # of subkeys, total # of values, and total value size recursively, then do weighed info type thing (ru.exe type functionality)

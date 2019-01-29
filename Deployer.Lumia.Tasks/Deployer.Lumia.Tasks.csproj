@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Refit" Version="4.6.58" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Deployer.Lumia\Deployer.Lumia.csproj" />
+  </ItemGroup>
+
+</Project>

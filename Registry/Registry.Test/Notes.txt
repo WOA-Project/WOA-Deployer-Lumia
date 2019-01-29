@@ -1,0 +1,79 @@
+﻿sam hive
+
+regbinary = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Account
+regnone = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains (fix data for this case. showing as system.byte[])
+regsz (resident?) = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Builtin\Aliases\Members\S-1-5-21-727398572-3617256236-2003601904\00000201
+regdword = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\LastSkuUpgrade
+
+NTUser1.dat
+regsz (with slack) = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\AppEvents\EventLabels\.Default
+regdword = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\AppEvents\EventLabels\Notification.Looping.Alarm10
+regexpandsz = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\AppEvents\Schemes\Apps\.Default\.Default\.Current
+regbinary = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\Control Panel\Appearance\Schemes
+regqword =CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\Software\Microsoft\Windows\CurrentVersion\Store\RefreshBannedAppList
+regnone = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\Software\Mine (fix data for this case. showing as system.byte[])
+
+
+C:\ProjectWorkingFolder\Registry2\Registry\Registry.Test\TestFiles\UsrClassDeletedBags.dat
+
+regmultisz = S-1-5-21-146151751-63468248-1215037915-1000_Classes\Local Settings\MuiCache\6\52C64B7E
+qword binary, sz = S-1-5-21-146151751-63468248-1215037915-1000_Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify
+
+SAM_hasBigEndianDWord
+
+big endian dword = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Account\Aliases
+regunknown = CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Account\Groups\Names\None
+
+
+regnone
+sam CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains
+sam CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Account\Aliases
+sam CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Builtin\Aliases\Names
+sam CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Builtin\Groups
+sam CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\RXACT
+
+regunknown
+sam CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Builtin\Aliases
+sam CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Builtin\Aliases\Names\Hyper-V Administrators
+sam CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Builtin\Aliases\Names\Remote Desktop Users
+sam CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Builtin\Aliases\Names\Users
+sambig end CsiTool-CreateHive-{00000000-0000-0000-0000-000000000000}\SAM\Domains\Account\Groups\Names\None
+
+
+
+5 each
+
+                case DataTypeEnum.RegLink:
+                    sb.AppendLine(string.Format("Value Data: {0}", ValueData));
+
+                    break;
+
+                case DataTypeEnum.RegNone:
+
+                case DataTypeEnum.RegResourceList:
+                case DataTypeEnum.RegResourceRequirementsList:
+                case DataTypeEnum.RegFullResourceDescription:
+                        sb.AppendLine(string.Format("Value Data: {0}", BitConverter.ToString((byte[]) ValueData)));
+
+                    break;
+
+                case DataTypeEnum.RegFileTime:
+
+                    if (ValueData != null)
+                    {
+                        var dto = (DateTimeOffset) ValueData;
+
+                        sb.AppendLine(string.Format("Value Data: {0}", dto));
+                    }
+
+                    break;
+
+                default:
+                        sb.AppendLine(string.Format("Value Data: {0}", BitConverter.ToString((byte[]) ValueData)));
+
+                    break;
+
+
+
+
+
