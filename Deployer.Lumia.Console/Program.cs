@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
@@ -13,13 +14,21 @@ namespace Deployment.Console
         {
             ConfigureLogger();
 
-            await Parser.Default.ParseArguments<WindowsDeploymentOptions, EnableDualBootOptions, DisableDualBootOptions, InstallGpuOptions>(args)
-                .MapResult(
-                    (WindowsDeploymentOptions opts) => new ConsoleDeployer().DeployWindows(opts),                    
-                    (EnableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(true),                    
-                    (DisableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(false),
-                    (InstallGpuOptions opts) => new ConsoleTooling().InstallGpu(),
-                    HandleErrors);
+            try
+            {
+                await Parser.Default.ParseArguments<WindowsDeploymentOptions, EnableDualBootOptions, DisableDualBootOptions, InstallGpuOptions>(args)
+                    .MapResult(
+                        (WindowsDeploymentOptions opts) => new ConsoleDeployer().DeployWindows(opts),                    
+                        (EnableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(true),                    
+                        (DisableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(false),
+                        (InstallGpuOptions opts) => new ConsoleTooling().InstallGpu(),
+                        HandleErrors);
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "Operation failed");                
+                throw;
+            }
         }
 
         private static Task HandleErrors(IEnumerable<Error> errs)
