@@ -1,4 +1,4 @@
-﻿AzureDevOpsUnpAzureDevOpsUnpack "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
+﻿AzureDevOpsUnpack "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
 AzureDevOpsUnpack "LumiaWOA;Lumia950XLPkg;1;MSM8992 UEFI (Lumia 950)"
 GitHubUnpack "https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers"
 Copy "Downloaded\MSM8992 UEFI (Lumia 950)\ELF\UEFI.elf" "EFIESP"
