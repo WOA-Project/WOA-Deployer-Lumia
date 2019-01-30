@@ -22,7 +22,7 @@ namespace Deployment.Console
             var subject = new Subject<double>();
             subject.Subscribe(x => System.Console.WriteLine("{0:P}", x));
             var container = GetContainer(windowsDeploymentOptions, subject);
-            var deployer = container.Locate<Deployer.Execution.Deployer>();
+            var deployer = container.Locate<ScriptDeployer>();
             await deployer.Deploy(windowsDeploymentOptions.Script);
             subject.Dispose();
         }
@@ -40,8 +40,8 @@ namespace Deployment.Console
                 }).As<InstallOptions>();
                 x.ExportInstance(observer).As<IObserver<double>>();
                 x.Export<BootCreator>().As<IBootCreator>();
-                x.Export<InstanceBuilderProvider>().As<IInstanceBuilderProvider>();
                 x.Export<LowLevelApi>().As<ILowLevelApi>();
+                x.Export<PhonePathBuilder>().As<IPathBuilder>();
                 x.ExportInstance(typeof(Copy).Assembly.ExportedTypes).As<IEnumerable<Type>>();
                 x.Export<Runner>().As<IRunner>();
                 x.Export<InstanceBuilder>().As<IInstanceBuilder>();

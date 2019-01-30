@@ -9,12 +9,10 @@ namespace Deployer
     public class InstanceBuilder : IInstanceBuilder
     {
         private readonly ILocatorService container;
-        private readonly IPathBuilder pathBuilder;
 
-        public InstanceBuilder(ILocatorService container, IPathBuilder pathBuilder)
+        public InstanceBuilder(ILocatorService container)
         {
             this.container = container;
-            this.pathBuilder = pathBuilder;
         }
 
         public object Create(Type type, params object[] arguments)
@@ -46,12 +44,7 @@ namespace Deployer
                     throw new InvalidOperationException("Invalid arguments provided");
                 }
 
-                return pathBuilder.Replace((string)value);
-            }
-
-            if (value == null)
-            {
-                container.Locate(paramType);
+                return value;
             }
 
             return container.Locate(paramType);

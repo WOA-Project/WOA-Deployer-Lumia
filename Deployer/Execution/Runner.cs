@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Serilog;
@@ -11,12 +11,14 @@ namespace Deployer.Execution
     public class Runner : IRunner
     {
         private readonly IEnumerable<Type> typeUniverse;
-        private readonly IInstanceBuilderProvider instanceBuilder;
+        private readonly IInstanceBuilder instanceBuilder;
+        private readonly IPathBuilder pathBuilder;
 
-        public Runner(IEnumerable<Type> typeUniverse, IInstanceBuilderProvider instanceBuilder)
+        public Runner(IEnumerable<Type> typeUniverse, IInstanceBuilder instanceBuilder, IPathBuilder pathBuilder)
         {
             this.typeUniverse = typeUniverse;
             this.instanceBuilder = instanceBuilder;
+            this.pathBuilder = pathBuilder;
         }
 
         public async Task Run(Script script)
@@ -29,13 +31,31 @@ namespace Deployer.Execution
 
         private async Task Run(Sentence sentence)
         {
-            var builder = await instanceBuilder.Create();
-            var instance = BuildInstance(builder, sentence);
-            
-            var operationStr = GetOperationStr(sentence.Command.Name, instance.GetType());
-            Log.Information($"{operationStr} {{Params}}", string.Join(",", sentence.Command.Arguments));
+            var transformedSentence = await TransformSentence(sentence);
+
+            var instance = BuildInstance(instanceBuilder, transformedSentence);
+            var operationStr = GetOperationStr(transformedSentence.Command.Name, instance.GetType());
+            Log.Information($"{operationStr} {{Params}}", string.Join(", ", transformedSentence.Command.Arguments));
 
             await instance.Execute();
+        }
+
+        private async Task<Sentence> TransformSentence(Sentence sentence)
+        {
+            var transformed = sentence.Command.Arguments.ToObservable().Select(x => Observable.FromAsync(async () =>
+                    {
+                        var val = x.Value;
+                        if (val is string str)
+                        {
+                            return new Argument(await pathBuilder.Replace(str));
+                        }
+
+                        return new Argument(val);
+                    }))
+                    .Merge(1);
+            
+            var positionalArguments = await transformed.ToList();
+            return new Sentence(new Command(sentence.Command.Name, positionalArguments));
         }
 
         private static string GetOperationStr(string commandName, Type type)
@@ -48,11 +68,6 @@ namespace Deployer.Execution
             }
 
             return "Executing " + commandName;
-        }
-
-        private static string GetTaskDescription(IDeploymentTask instance)
-        {
-            return instance.GetType().GetCustomAttribute<DescriptionAttribute>().Description ?? instance.GetType().Name;
         }
 
         private IDeploymentTask BuildInstance(IInstanceBuilder builder, Sentence sentence)

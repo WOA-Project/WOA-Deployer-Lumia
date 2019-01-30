@@ -15,24 +15,20 @@ namespace Deployer.Execution
 
         public static TokenListParser<LangToken, string> Value => String.Or(Number).Or(Identifier);
 
-        public static TokenListParser<LangToken, Argument> PositionalArgument =>
+        public static TokenListParser<LangToken, Argument> Argument =>
             from t in Value
-            select (Argument)new PositionalArgument(t);
-
-        public static TokenListParser<LangToken, Argument> Argument => PositionalArgument;
+            select new Argument(t);
 
         public static TokenListParser<LangToken, Argument[]> Arguments =>
             from _ in Token.EqualTo(LangToken.Space)
             from t in Argument.ManyDelimitedBy(Token.EqualTo(LangToken.Space))
             select t;
 
-        public static TokenListParser<LangToken, Command> RegularCommand =>
+        public static TokenListParser<LangToken, Command> Command =>
             from name in Identifier
             from args in Arguments.OptionalOrDefault()
-            select (Command)new Command(name, args ?? new Argument[0]);
-
-        public static TokenListParser<LangToken, Command> Command => RegularCommand;
-
+            select new Command(name, args ?? new Argument[0]);
+        
         public static TokenListParser<LangToken, Sentence> Sentence => CommandSentence;
         
         private static TokenListParser<LangToken, Sentence> CommandSentence => Command.Select(x => new Sentence(x));

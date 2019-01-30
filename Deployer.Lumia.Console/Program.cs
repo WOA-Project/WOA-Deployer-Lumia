@@ -13,11 +13,12 @@ namespace Deployment.Console
         {
             ConfigureLogger();
 
-            await Parser.Default.ParseArguments<WindowsDeploymentOptions, EnableDualBootOptions, DisableDualBootOptions>(args)
+            await Parser.Default.ParseArguments<WindowsDeploymentOptions, EnableDualBootOptions, DisableDualBootOptions, InstallGpuOptions>(args)
                 .MapResult(
                     (WindowsDeploymentOptions opts) => new ConsoleDeployer().DeployWindows(opts),                    
-                    (EnableDualBootOptions opts) => ConsoleTooling.ToogleDualBoot(true),                    
-                    (DisableDualBootOptions opts) => ConsoleTooling.ToogleDualBoot(false),                    
+                    (EnableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(true),                    
+                    (DisableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(false),
+                    (InstallGpuOptions opts) => new ConsoleTooling().InstallGpu(),
                     HandleErrors);
         }
 

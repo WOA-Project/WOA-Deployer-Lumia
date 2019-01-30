@@ -67,6 +67,10 @@ namespace Deployer.Lumia
                     await DisableDualBoot();
                 }
             }
+            else
+            {
+                Log.Debug("Dual Boot status will not change");
+            }
         }
 
         private async Task EnableDualBoot()

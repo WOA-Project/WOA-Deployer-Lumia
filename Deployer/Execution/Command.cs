@@ -5,9 +5,9 @@ namespace Deployer.Execution
     public class Command
     {
         public string Name { get; }
-        public ICollection<Argument> Arguments { get; }
+        public IEnumerable<Argument> Arguments { get; }
 
-        public Command(string name, ICollection<Argument> arguments)
+        public Command(string name, IEnumerable<Argument> arguments)
         {
             Name = name;
             Arguments = arguments;

@@ -53,6 +53,7 @@
     <Compile Include="ConsoleTooling.cs" />
     <Compile Include="DisableDualBootOptions.cs" />
     <Compile Include="EnableDualBootOptions.cs" />
+    <Compile Include="InstallGpuOptions.cs" />
     <Compile Include="WindowsDeploymentOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

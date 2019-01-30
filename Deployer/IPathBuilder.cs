@@ -1,7 +1,9 @@
-﻿namespace Deployer
+﻿using System.Threading.Tasks;
+
+namespace Deployer
 {
     public interface IPathBuilder
     {
-        string Replace(string str);
+        Task<string> Replace(string str);
     }
 }

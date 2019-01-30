@@ -1,6 +1,6 @@
 ﻿namespace Deployer.Execution
 {
-    public abstract class Argument
+    public class Argument
     {
         public Argument(object value)
         {
@@ -8,5 +8,10 @@
         }
 
         public object Value { get; }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }
