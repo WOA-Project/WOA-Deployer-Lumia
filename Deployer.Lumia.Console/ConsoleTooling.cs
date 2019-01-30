@@ -70,6 +70,8 @@ namespace Deployment.Console
                 var enabledStr = isEnabled ? "Enabling" : "Disabling";
                 Log.Information($"{enabledStr} Dual Boot");
                 await phone.EnableDualBoot(isEnabled);
+
+                Log.Information("Done");
             }
 
             public async Task InstallGpu()
@@ -87,17 +89,7 @@ namespace Deployment.Console
                     })),
                 };
 
-                await runner.Run(new Script(sentences));
-
-                var message =
-                    @"GPU is ready to be installed.
-However, you still have to do a manual step:
-Reboot to WoA and navigate to C:\Users\Public\OEMPanel, right click the .inf file and select 'Install'.
-When asked again (red warning), confirm that you want to install it
-The screen will turn black and will eventually recover the display automatically. If it doesn't, wait a minute and reboot. You GPU drivers will have been installed.
-Enjoy!";
-
-                System.Console.WriteLine(message);
+                await runner.Run(new Script(sentences));                
             }
         }
     }

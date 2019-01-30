@@ -16,21 +16,27 @@ namespace Deployment.Console
 
             try
             {
-                await Parser.Default.ParseArguments<WindowsDeploymentOptions, EnableDualBootOptions, DisableDualBootOptions, InstallGpuOptions>(args)
+                await Parser.Default
+                    .ParseArguments<WindowsDeploymentOptions, EnableDualBootOptions, DisableDualBootOptions,
+                        InstallGpuOptions>(args)
                     .MapResult(
-                        (WindowsDeploymentOptions opts) => new ConsoleDeployer().DeployWindows(opts),                    
-                        (EnableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(true),                    
+                        (WindowsDeploymentOptions opts) => new ConsoleDeployer().DeployWindows(opts),
+                        (EnableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(true),
                         (DisableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(false),
-                        (InstallGpuOptions opts) => new ConsoleTooling().InstallGpu(),
+                        (InstallGpuOptions opts) => InstallGpu(),
                         HandleErrors);
             }
             catch (Exception e)
             {
-                Log.Fatal(e, "Operation failed");                
+                Log.Fatal(e, "Operation failed");
                 throw;
             }
+        }
 
-            Log.Information("Deployment finished. Reboot and proceed with the Windows Setup.");
+        private static async Task InstallGpu()
+        {
+            await new ConsoleTooling().InstallGpu();
+            System.Console.WriteLine(Resources.InstallGpuManualStep);
         }
 
         private static Task HandleErrors(IEnumerable<Error> errs)

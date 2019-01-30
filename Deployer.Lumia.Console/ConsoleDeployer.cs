@@ -12,6 +12,7 @@ using Deployer.Lumia.Tasks;
 using Deployer.Lumia.Tasks.DevOpsBuildClient;
 using Deployer.Services;
 using Grace.DependencyInjection;
+using Serilog;
 
 namespace Deployment.Console
 {
@@ -25,6 +26,8 @@ namespace Deployment.Console
             var deployer = container.Locate<ScriptDeployer>();
             await deployer.Deploy(windowsDeploymentOptions.Script);
             subject.Dispose();
+
+            Log.Information("Deployment finished. Reboot and proceed with the Windows Setup.");
         }
 
         private static DependencyInjectionContainer GetContainer(WindowsDeploymentOptions windowsDeploymentOptions, IObserver<double> observer)
