@@ -29,6 +29,8 @@ namespace Deployment.Console
                 Log.Fatal(e, "Operation failed");                
                 throw;
             }
+
+            Log.Information("Deployment finished. Reboot and proceed with the Windows Setup.");
         }
 
         private static Task HandleErrors(IEnumerable<Error> errs)
