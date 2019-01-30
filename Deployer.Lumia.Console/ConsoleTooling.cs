@@ -90,7 +90,7 @@ namespace Deployment.Console
                 await runner.Run(new Script(sentences));
 
                 var message =
-                    @"GPU is ready to be is installed.
+                    @"GPU is ready to be installed.
 However, you still have to do a manual step:
 Reboot to WoA and navigate to C:\Users\Public\OEMPanel, right click the .inf file and select 'Install'.
 When asked again (red warning), confirm that you want to install it
