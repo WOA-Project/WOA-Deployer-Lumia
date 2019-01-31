@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Subjects;
-using System.Reflection;
 using System.Threading.Tasks;
-using ByteSizeLib;
 using CommandLine;
 using Deployer;
-using Deployer.DevOpsBuildClient;
-using Deployer.Execution;
-using Deployer.Filesystem.FullFx;
-using Deployer.FileSystem;
 using Deployer.Lumia;
-using Deployer.Services;
+using Deployer.Lumia.NetFx;
 using Deployment.Console.Options;
 using Grace.DependencyInjection;
 using Serilog;
@@ -26,11 +19,9 @@ namespace Deployment.Console
         {
             ConfigureLogger();
 
-            var taskTypes = AssemblyUtils.FindTypes(x => x.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IDeploymentTask)));
-
             try
             {
-                var deployer = new ConsoleDeployer(taskTypes);
+                var deployer = DeployerComposition.Configure(new DependencyInjectionContainer()).Locate<IAutoDeployer>();
 
                 await Parser.Default
                     .ParseArguments<WindowsDeploymentCmdOptions, 
@@ -69,12 +60,9 @@ namespace Deployment.Console
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console(LogEventLevel.Information)
-                .WriteTo.RollingFile(@"Logs\{Date}.txt")
+                .WriteTo.RollingFile(@"Logs\Log-{Date}.txt")
                 .MinimumLevel.Verbose()
                 .CreateLogger();
         }
-
-
-     
     }    
 }

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditionalOperations.cs" />
+    <Compile Include="DeployerComposition.cs" />
     <Compile Include="DeploymentScriptRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

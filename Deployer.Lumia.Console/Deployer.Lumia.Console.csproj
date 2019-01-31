@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleDeployer.cs" />
     <Compile Include="Options\DisableDualBootCmdOptions.cs" />
     <Compile Include="Options\EnableDualBootCmdOptions.cs" />
     <Compile Include="Options\InstallGpuCmdOptions.cs" />
@@ -130,20 +129,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Deployer.Lumia\Scripts\update-uefi-950xl.txt">
-      <Link>update-uefi-950xl.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Deployer.Lumia\Scripts\950xl.txt">
-      <Link>950xl.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\Deployer.Lumia\Scripts\950.txt">
-      <Link>950.txt</Link>
+      <Link>Scripts\950.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Deployer.Lumia\Scripts\950xl.txt">
+      <Link>Scripts\950xl.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Deployer.Lumia\Scripts\update-uefi-950xl.txt">
+      <Link>Scripts\update-uefi-950xl.txt</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

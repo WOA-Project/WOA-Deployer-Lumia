@@ -8,10 +8,10 @@ namespace Deployer.Lumia.Gui.ViewModels
 {
     public class DeploymentViewModel : ReactiveObject
     {
-        private readonly IDeploymentTasks deploymentTasks;
+        private readonly IAutoDeployer deploymentTasks;
         private readonly WimPickViewModel wimPickViewModel;
 
-        public DeploymentViewModel(IDeploymentTasks deploymentTasks, UIServices uiServices, WimPickViewModel wimPickViewModel)
+        public DeploymentViewModel(IAutoDeployer deploymentTasks, UIServices uiServices, WimPickViewModel wimPickViewModel)
         {
             this.deploymentTasks = deploymentTasks;
             this.wimPickViewModel = wimPickViewModel;
@@ -19,12 +19,19 @@ namespace Deployer.Lumia.Gui.ViewModels
             var isSelectedWim = wimPickViewModel.WhenAnyObservable(x => x.WimMetadata.SelectedImageObs)
                 .Select(metadata => metadata != null);
 
-            FullInstallWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(DeployUefiAndWindows, isSelectedWim), uiServices.DialogService);            
+            FullInstallWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.DialogService);            
         }
 
-        private async Task DeployUefiAndWindows()
+        private async Task Deploy()
         {
-            await deploymentTasks.Deploy(wimPickViewModel.WimMetadata.Path);
+            var windowsDeploymentOptions = new WindowsDeploymentOptions
+            {
+                WimImage = wimPickViewModel.WimMetadata.Path,
+                Index = 1,
+                ReservedSizeForWindowsInGb = 18,
+            };
+
+            await deploymentTasks.Deploy(windowsDeploymentOptions);
         }
 
         public CommandWrapper<Unit, Unit> FullInstallWrapper { get; set; }

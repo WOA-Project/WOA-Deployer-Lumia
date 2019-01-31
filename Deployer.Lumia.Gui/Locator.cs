@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Deployer.Execution;
-using Deployer.Filesystem.FullFx;
 using Deployer.Gui.Core;
 using Deployer.Lumia.Gui.ViewModels;
 using Deployer.Lumia.NetFx;
@@ -20,16 +14,11 @@ namespace Deployer.Lumia.Gui
 
         public Locator()
         {
-            var deploymentTaskTypes = Assemblies.AssembliesInAppFolder.SelectMany(a =>
-                a.ExportedTypes.Where(t => t.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IDeploymentTask))));
-            
             container = new DependencyInjectionContainer();
+
             container.Configure(x =>
             {
-                x.ExportInstance(deploymentTaskTypes).As<IEnumerable<Type>>();
                 x.Export<WimPickViewModel>().Lifestyle.Singleton();
-                x.Export<DeploymentScriptRunner>();
-                x.Export<DeploymentTasks>().As<IDeploymentTasks>();
                 x.Export<UIServices>();
                 x.Export<ViewService>().As<IViewService>();
                 x.Export<DialogService>().As<IDialogService>();
@@ -37,6 +26,8 @@ namespace Deployer.Lumia.Gui
                 x.Export<SettingsService>().As<ISettingsService>();
                 x.ExportFactory(() => DialogCoordinator.Instance).As<IDialogCoordinator>();
             });
+
+            DeployerComposition.Configure(container);
         }
 
         public MainViewModel MainViewModel => container.Locate<MainViewModel>();

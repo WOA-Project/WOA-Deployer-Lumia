@@ -4,7 +4,7 @@ using Installer.Wpf.Core;
 
 namespace Deployer.Lumia.Gui
 {
-    public class DeploymentTasks : IDeploymentTasks
+    public class DeploymentTasks
     {
         private readonly DeploymentScriptRunner runner;
         private readonly ISettingsService settingsService;

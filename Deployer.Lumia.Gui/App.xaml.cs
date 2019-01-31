@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using Serilog;
 
 namespace Deployer.Lumia.Gui
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.RollingFile(@"Logs\Log-{Date}.txt")
+                .MinimumLevel.Verbose()
+                .CreateLogger();
+        }
     }
 }
