@@ -2,7 +2,7 @@
 
 namespace Deployment.Console.Options
 {
-    [Verb("deploy")]
+    [Verb("deploy", HelpText = "Executes a Windows deployment script")]
     public class WindowsDeploymentCmdOptions
     {
         [Option("script", Required = true, HelpText = "Installation script")]

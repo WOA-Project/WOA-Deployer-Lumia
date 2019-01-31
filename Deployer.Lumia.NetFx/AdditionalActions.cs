@@ -5,8 +5,6 @@ using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
 using Deployer.Filesystem.FullFx;
 using Deployer.FileSystem;
-using Deployer.Lumia.Tasks;
-using Deployer.Lumia.Tasks.DevOpsBuildClient;
 using Deployer.Services;
 using Deployer.Tasks;
 using Grace.DependencyInjection;

@@ -6,10 +6,7 @@ using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
 using Deployer.Filesystem.FullFx;
 using Deployer.FileSystem;
-using Deployer.Lumia.Tasks;
-using Deployer.Lumia.Tasks.DevOpsBuildClient;
 using Deployer.Services;
-using Deployer.Tasks;
 using Grace.DependencyInjection;
 using Serilog;
 
@@ -17,6 +14,13 @@ namespace Deployer.Lumia.NetFx
 {
     public class DeploymentScriptRunner
     {
+        private readonly IEnumerable<Type> deploymentTaskTypes;
+
+        public DeploymentScriptRunner(IEnumerable<Type> deploymentTaskTypes)
+        {
+            this.deploymentTaskTypes = deploymentTaskTypes;
+        }
+
         public async Task ExecuteWindowsScript(string script, WindowsDeploymentOptions windowsDeploymentCmdOptions, IObserver<double> progressObserver)
         {
             await Deploy(script, () => GetContainer(windowsDeploymentCmdOptions, progressObserver));
@@ -36,7 +40,7 @@ namespace Deployer.Lumia.NetFx
             Log.Information("Deployment finished.");
         }
 
-        private static DependencyInjectionContainer GetContainer(WindowsDeploymentOptions windowsDeploymentCmdOptions, IObserver<double> observer)
+        private DependencyInjectionContainer GetContainer(WindowsDeploymentOptions windowsDeploymentCmdOptions, IObserver<double> observer)
         {
             var container = new DependencyInjectionContainer();
             container.Configure(x =>
@@ -54,12 +58,12 @@ namespace Deployer.Lumia.NetFx
             return container;
         }
 
-        private static void ConfigureShared(IExportRegistrationBlock x)
+        private void ConfigureShared(IExportRegistrationBlock x)
         {
             x.Export<BootCreator>().As<IBootCreator>();
             x.Export<LowLevelApi>().As<ILowLevelApi>();
             x.Export<PhonePathBuilder>().As<IPathBuilder>();
-            x.ExportInstance(typeof(Copy).Assembly.ExportedTypes).As<IEnumerable<Type>>();
+            x.ExportInstance(deploymentTaskTypes).As<IEnumerable<Type>>();
             x.Export<Runner>().As<IRunner>();
             x.Export<InstanceBuilder>().As<IInstanceBuilder>();
             x.Export<Phone>();
@@ -71,7 +75,7 @@ namespace Deployer.Lumia.NetFx
             x.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>();
         }
 
-        private static DependencyInjectionContainer GetContainer()
+        private DependencyInjectionContainer GetContainer()
         {
             var container = new DependencyInjectionContainer();
             container.Configure(ConfigureShared);

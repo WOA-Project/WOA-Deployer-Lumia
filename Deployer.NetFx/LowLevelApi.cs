@@ -144,10 +144,10 @@ namespace Deployer.Filesystem.FullFx
                 Size = size,
                 AllocatedSize = allocatedSize,
                 FriendlyName = (string)disk.GetPropertyValue("FriendlyName"),
-                IsSystem = (bool) disk.GetPropertyValue("IsSystem"),
-                IsBoot =  (bool) disk.GetPropertyValue("IsBoot"),
-                IsOffline =  (bool) disk.GetPropertyValue("IsOffline"),
-                IsReadOnly =  (bool) disk.GetPropertyValue("IsReadOnly"),
+                IsSystem = (bool)disk.GetPropertyValue("IsSystem"),
+                IsBoot = (bool)disk.GetPropertyValue("IsBoot"),
+                IsOffline = (bool)disk.GetPropertyValue("IsOffline"),
+                IsReadOnly = (bool)disk.GetPropertyValue("IsReadOnly"),
             };
 
             return new Disk(lowLevelApi, diskProps);

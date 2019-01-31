@@ -4,7 +4,6 @@ using System.IO.Compression;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Deployer.Execution;
-using Deployer.Lumia.Tasks;
 using Serilog;
 
 namespace Deployer.Tasks

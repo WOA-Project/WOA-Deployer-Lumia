@@ -2,7 +2,7 @@
 
 namespace Deployment.Console.Options
 {
-    [Verb("disable-dualboot")]
+    [Verb("disable-dualboot", HelpText = "Disables Dual Boot")]
     public class DisableDualBootCmdOptions
     {
     }

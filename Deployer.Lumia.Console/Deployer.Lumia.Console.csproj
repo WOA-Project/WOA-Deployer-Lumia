@@ -52,6 +52,7 @@
     <Compile Include="Options\DisableDualBootCmdOptions.cs" />
     <Compile Include="Options\EnableDualBootCmdOptions.cs" />
     <Compile Include="Options\InstallGpuCmdOptions.cs" />
+    <Compile Include="Options\NonWindowsDeploymentCmdOptions.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

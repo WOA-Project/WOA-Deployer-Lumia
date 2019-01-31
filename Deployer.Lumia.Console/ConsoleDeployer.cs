@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Deployer;
@@ -9,7 +10,14 @@ namespace Deployment.Console
 {
     internal class ConsoleDeployer
     {
-        public static async Task ExecuteWindowsScript(WindowsDeploymentCmdOptions opts)
+        private readonly IEnumerable<Type> taskTypes;
+
+        public ConsoleDeployer(IEnumerable<Type> taskTypes)
+        {
+            this.taskTypes = taskTypes;
+        }
+
+        public async Task ExecuteWindowsScript(WindowsDeploymentCmdOptions opts)
         {
             var progressObserver = new Subject<double>();
             progressObserver.Subscribe(x => System.Console.WriteLine("{0:P0}"));
@@ -19,13 +27,24 @@ namespace Deployment.Console
                 ReservedSizeForWindowsInGb = opts.ReservedSizeForWindowsInGb,
                 WimImage = opts.WimImage,
             };
-            await new DeploymentScriptRunner().ExecuteWindowsScript(opts.Script, winDeploymentOpts, progressObserver);
+            await new DeploymentScriptRunner(taskTypes).ExecuteWindowsScript(opts.Script, winDeploymentOpts, progressObserver);
             progressObserver.Dispose();
         }
 
-        public static async Task ExecuteNonWindowsScript(string path)
+        public async Task ExecuteNonWindowsScript(string path)
         {
-            await new DeploymentScriptRunner().ExecuteNonWindowsScript(path);
+            await new DeploymentScriptRunner(taskTypes).ExecuteNonWindowsScript(path);
+        }
+
+        public Task ToogleDualBoot(bool isEnabled)
+        {
+            return new AdditionalActions().ToogleDualBoot(isEnabled);
+        }
+
+        public async Task InstallGpu()
+        {
+            await new AdditionalActions().InstallGpu();
+            System.Console.WriteLine(Resources.InstallGpuManualStep);
         }
     }
 }

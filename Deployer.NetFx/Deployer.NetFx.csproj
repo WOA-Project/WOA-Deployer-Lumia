@@ -38,7 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultServiceFactory.cs" />
+    <Compile Include="AssemblyUtils.cs" />
     <Compile Include="DismImageService.cs" />
     <Compile Include="ImageFlasher.cs" />
     <Compile Include="ImageServiceBase.cs" />
