@@ -63,6 +63,26 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Deployer.Lumia\Core\Boot\bootaa64.efi">
+      <Link>Core\Boot\bootaa64.efi</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Deployer.Lumia\Core\Developer Menu\developermenu.efi">
+      <Link>Core\Developer Menu\developermenu.efi</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Deployer.Lumia\Core\Developer Menu\ui\boot.ums.connected.bmpx">
+      <Link>Core\Developer Menu\ui\boot.ums.connected.bmpx</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Deployer.Lumia\Core\Developer Menu\ui\boot.ums.disconnected.bmpx">
+      <Link>Core\Developer Menu\ui\boot.ums.disconnected.bmpx</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Deployer.Lumia\Core\Developer Menu\ui\boot.ums.waiting.bmpx">
+      <Link>Core\Developer Menu\ui\boot.ums.waiting.bmpx</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
@@ -84,24 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />
-    <None Include="Core\Developer Menu\developermenu.efi">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Core\Developer Menu\ui\boot.ums.connected.bmpx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Core\Developer Menu\ui\boot.ums.disconnected.bmpx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Core\Developer Menu\ui\boot.ums.waiting.bmpx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Core\Boot\bootaa64.efi">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="950xl.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deployer.Lumia.NetFx\Deployer.Lumia.NetFx.csproj">
@@ -122,18 +124,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="950.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="update-uefi-950xl.txt">
+    <None Include="..\Deployer.Lumia\Scripts\update-uefi-950xl.txt">
+      <Link>update-uefi-950xl.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Deployer.Lumia\Scripts\950xl.txt">
+      <Link>950xl.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Deployer.Lumia\Scripts\950.txt">
+      <Link>950.txt</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

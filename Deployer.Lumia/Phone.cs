@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ByteSizeLib;
@@ -17,6 +19,7 @@ namespace Deployer.Lumia
 
         private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
         private Volume efiEspVolume;
+        private Volume mainOs;
 
         public Phone(ILowLevelApi lowLevelApi) : base(lowLevelApi)
         {
@@ -25,6 +28,31 @@ namespace Deployer.Lumia
         public async Task<Volume> GetEfiespVolume()
         {
             return efiEspVolume ?? (efiEspVolume = await GetVolume("EFIESP"));
+        }
+
+        public async Task<Volume> GetMainOsVolume()
+        {
+            return mainOs ?? (mainOs = await GetVolume(MainOsLabel));
+        }
+
+        public async Task<PhoneModel> GetModel()
+        {
+            var dict = new Dictionary<string, PhoneModel>()
+            {
+                {"RM-1104", PhoneModel.Lumia950 },
+                {"RM-1105", PhoneModel.Lumia950 },
+                {"RM-1118", PhoneModel.Lumia950 },
+                {"RM-1085", PhoneModel.Lumia950XL },
+                {"RM-1116", PhoneModel.Lumia950XL },
+            };
+
+            var mainOs = await GetMainOsVolume();
+            var dir = Path.Combine(mainOs.RootDir.Name, "DDP", "MMO", "product.dat");
+            var rmLine = File.ReadLines(dir).First();
+            var parts = rmLine.Split(':');
+            var rm = parts[1].ToUpper();
+
+            return dict[rm];
         }
 
         public async Task<DualBootStatus> GetDualBootStatus()

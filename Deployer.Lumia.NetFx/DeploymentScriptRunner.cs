@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using ByteSizeLib;
 using Deployer.DevOpsBuildClient;
@@ -12,7 +13,7 @@ using Serilog;
 
 namespace Deployer.Lumia.NetFx
 {
-    public class DeploymentScriptRunner
+    public class DeploymentScriptRunner : IDeploymentScriptRunner
     {
         private readonly IEnumerable<Type> deploymentTaskTypes;
 
@@ -21,7 +22,7 @@ namespace Deployer.Lumia.NetFx
             this.deploymentTaskTypes = deploymentTaskTypes;
         }
 
-        public async Task ExecuteWindowsScript(string script, WindowsDeploymentOptions windowsDeploymentCmdOptions, IObserver<double> progressObserver)
+        public async Task ExecuteWindowsScript(string script, WindowsDeploymentOptions windowsDeploymentCmdOptions, IObserver<double> progressObserver = null)
         {
             await Deploy(script, () => GetContainer(windowsDeploymentCmdOptions, progressObserver));
         }
@@ -51,7 +52,9 @@ namespace Deployer.Lumia.NetFx
                     ImageIndex = windowsDeploymentCmdOptions.Index,                    
                     SizeReservedForWindows = ByteSize.FromGigaBytes(windowsDeploymentCmdOptions.ReservedSizeForWindowsInGb)
                 }).As<InstallOptions>();
-                x.ExportInstance(observer).As<IObserver<double>>();
+
+                x.ExportInstance(observer ?? new Subject<double>()).As<IObserver<double>>();
+
                 ConfigureShared(x);
             });
 

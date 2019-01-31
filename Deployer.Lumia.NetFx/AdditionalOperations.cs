@@ -12,7 +12,7 @@ using Serilog;
 
 namespace Deployer.Lumia.NetFx
 {
-    public class AdditionalActions
+    public class AdditionalOperations : IAdditionalOperations
     {
         private DependencyInjectionContainer GetContainer()
         {
@@ -50,6 +50,7 @@ namespace Deployer.Lumia.NetFx
             var tooling = container.Locate<Tooling>();
             await tooling.InstallGpu();
         }
+
 
         // ReSharper disable once ClassNeverInstantiated.Local
         private class Tooling

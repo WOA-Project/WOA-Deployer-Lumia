@@ -1,12 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Reflection;
 using System.Threading.Tasks;
+using ByteSizeLib;
 using CommandLine;
+using Deployer;
+using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
 using Deployer.Filesystem.FullFx;
+using Deployer.FileSystem;
+using Deployer.Lumia;
+using Deployer.Services;
 using Deployment.Console.Options;
+using Grace.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 
@@ -22,7 +30,7 @@ namespace Deployment.Console
 
             try
             {
-                var consoleDeployer = new ConsoleDeployer(taskTypes);
+                var deployer = new ConsoleDeployer(taskTypes);
 
                 await Parser.Default
                     .ParseArguments<WindowsDeploymentCmdOptions, 
@@ -32,11 +40,16 @@ namespace Deployment.Console
                         NonWindowsDeploymentCmdOptions>
                         (args)
                     .MapResult(
-                        (WindowsDeploymentCmdOptions opts) => consoleDeployer.ExecuteWindowsScript(opts),
-                        (EnableDualBootCmdOptions opts) => consoleDeployer.ToogleDualBoot(true),
-                        (DisableDualBootCmdOptions opts) => consoleDeployer.ToogleDualBoot(false),
-                        (InstallGpuCmdOptions opts) => consoleDeployer.InstallGpu(),
-                        (NonWindowsDeploymentCmdOptions opts) => consoleDeployer.ExecuteNonWindowsScript(opts.Script),
+                        (WindowsDeploymentCmdOptions opts) => deployer.Deploy(new WindowsDeploymentOptions()
+                        {
+                            ReservedSizeForWindowsInGb = opts.ReservedSizeForWindowsInGb,
+                            WimImage = opts.WimImage,
+                            Index = opts.Index,
+                        }),
+                        (EnableDualBootCmdOptions opts) => deployer.ToogleDualBoot(true),
+                        (DisableDualBootCmdOptions opts) => deployer.ToogleDualBoot(false),
+                        (InstallGpuCmdOptions opts) => deployer.InstallGpu(),
+                        (NonWindowsDeploymentCmdOptions opts) => deployer.ExecuteNonWindowsScript(opts.Script),
                         HandleErrors);
             }
             catch (Exception e)
@@ -60,5 +73,8 @@ namespace Deployment.Console
                 .MinimumLevel.Verbose()
                 .CreateLogger();
         }
+
+
+     
     }    
 }
