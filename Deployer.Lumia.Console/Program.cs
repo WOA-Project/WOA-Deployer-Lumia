@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
+using Deployer.Lumia.NetFx;
+using Deployment.Console.Options;
 using Serilog;
 using Serilog.Events;
 
@@ -17,13 +19,13 @@ namespace Deployment.Console
             try
             {
                 await Parser.Default
-                    .ParseArguments<WindowsDeploymentOptions, EnableDualBootOptions, DisableDualBootOptions,
-                        InstallGpuOptions>(args)
+                    .ParseArguments<WindowsDeploymentCmdOptions, EnableDualBootCmdOptions, DisableDualBootCmdOptions,
+                        InstallGpuCmdOptions>(args)
                     .MapResult(
-                        (WindowsDeploymentOptions opts) => new ConsoleDeployer().DeployWindows(opts),
-                        (EnableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(true),
-                        (DisableDualBootOptions opts) => new ConsoleTooling().ToogleDualBoot(false),
-                        (InstallGpuOptions opts) => InstallGpu(),
+                        (WindowsDeploymentCmdOptions opts) => ConsoleDeployer.ExecuteWindowsScript(opts),
+                        (EnableDualBootCmdOptions opts) => new AdditionalActions().ToogleDualBoot(true),
+                        (DisableDualBootCmdOptions opts) => new AdditionalActions().ToogleDualBoot(false),
+                        (InstallGpuCmdOptions opts) => InstallGpu(),
                         HandleErrors);
             }
             catch (Exception e)
@@ -35,7 +37,7 @@ namespace Deployment.Console
 
         private static async Task InstallGpu()
         {
-            await new ConsoleTooling().InstallGpu();
+            await new AdditionalActions().InstallGpu();
             System.Console.WriteLine(Resources.InstallGpuManualStep);
         }
 

@@ -48,18 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BcdInvokerFactory.cs" />
     <Compile Include="ConsoleDeployer.cs" />
-    <Compile Include="ConsoleTooling.cs" />
-    <Compile Include="DisableDualBootOptions.cs" />
-    <Compile Include="EnableDualBootOptions.cs" />
-    <Compile Include="InstallGpuOptions.cs" />
+    <Compile Include="Options\DisableDualBootCmdOptions.cs" />
+    <Compile Include="Options\EnableDualBootCmdOptions.cs" />
+    <Compile Include="Options\InstallGpuCmdOptions.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="WindowsDeploymentOptions.cs" />
+    <Compile Include="Options\WindowsDeploymentCmdOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -105,9 +103,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Deployer.Lumia.Tasks\Deployer.Lumia.Tasks.csproj">
-      <Project>{2FA99665-B42A-46FF-9317-FF9352AE2626}</Project>
-      <Name>Deployer.Lumia.Tasks</Name>
+    <ProjectReference Include="..\Deployer.Lumia.NetFx\Deployer.Lumia.NetFx.csproj">
+      <Project>{2ABBF26A-2C87-4657-861E-08EC55DEAD77}</Project>
+      <Name>Deployer.Lumia.NetFx</Name>
     </ProjectReference>
     <ProjectReference Include="..\Deployer.Lumia\Deployer.Lumia.csproj">
       <Project>{20501832-13f5-4673-9d86-9e7e0c562027}</Project>
@@ -132,6 +130,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="update-uefi-950xl.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
