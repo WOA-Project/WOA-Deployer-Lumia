@@ -78,6 +78,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\RenderedLogEvent.cs" />
     <Compile Include="ViewModels\WimPickViewModel.cs" />
     <Compile Include="Locator.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -97,6 +98,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Parts\LogPart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Parts\StatusPart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -115,6 +120,9 @@
     </Compile>
     <Compile Include="Views\Parts\DualBootPart.xaml.cs">
       <DependentUpon>DualBootPart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Parts\LogPart.xaml.cs">
+      <DependentUpon>LogPart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Parts\StatusPart.xaml.cs">
       <DependentUpon>StatusPart.xaml</DependentUpon>
@@ -173,6 +181,9 @@
     <PackageReference Include="ReactiveUI.WPF">
       <Version>9.9.1</Version>
     </PackageReference>
+    <PackageReference Include="Serilog.Sinks.Observable">
+      <Version>2.0.2</Version>
+    </PackageReference>
     <PackageReference Include="Serilog.Sinks.RollingFile">
       <Version>3.3.0</Version>
     </PackageReference>
@@ -222,16 +233,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Deployer.Lumia\Scripts\950.txt">
-      <Link>950.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>Scripts\950.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Deployer.Lumia\Scripts\950xl.txt">
-      <Link>950xl.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>Scripts\950xl.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Deployer.Lumia\Scripts\update-uefi-950xl.txt">
-      <Link>update-uefi-950xl.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>Scripts\update-uefi-950xl.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

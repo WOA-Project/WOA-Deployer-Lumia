@@ -1,12 +1,13 @@
-﻿<Window x:Class="Deployer.Lumia.Gui.Views.MainWindow"
+﻿<mah:MetroWindow x:Class="Deployer.Lumia.Gui.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:parts1="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
-        Title="MainWindow" Width="920" Height="720"
+        Title="{Binding Title}" Width="920" Height="720"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
@@ -51,8 +52,8 @@
             </TabItem>
         </TabControl>
         <Expander Grid.Row="2" Header="Log" IsExpanded="False" MaxHeight="400">
-            <parts1:StatusPart />
+            <parts1:LogPart />
         </Expander>
         <parts1:StatusPart Grid.Row="3" />
     </Grid>
-</Window>
+</mah:MetroWindow>

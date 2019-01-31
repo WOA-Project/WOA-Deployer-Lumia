@@ -1,3 +1,4 @@
+using System;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -10,11 +11,13 @@ namespace Deployer.Lumia.Gui.ViewModels
     {
         private readonly IAutoDeployer deploymentTasks;
         private readonly WimPickViewModel wimPickViewModel;
+        private readonly IObserver<double> progressObserver;
 
-        public DeploymentViewModel(IAutoDeployer deploymentTasks, UIServices uiServices, WimPickViewModel wimPickViewModel)
+        public DeploymentViewModel(IAutoDeployer deploymentTasks, UIServices uiServices, WimPickViewModel wimPickViewModel, IObserver<double> progressObserver)
         {
             this.deploymentTasks = deploymentTasks;
             this.wimPickViewModel = wimPickViewModel;
+            this.progressObserver = progressObserver;
 
             var isSelectedWim = wimPickViewModel.WhenAnyObservable(x => x.WimMetadata.SelectedImageObs)
                 .Select(metadata => metadata != null);
@@ -31,7 +34,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 ReservedSizeForWindowsInGb = 18,
             };
 
-            await deploymentTasks.Deploy(windowsDeploymentOptions);
+            await deploymentTasks.Deploy(windowsDeploymentOptions, progressObserver);
         }
 
         public CommandWrapper<Unit, Unit> FullInstallWrapper { get; set; }

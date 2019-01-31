@@ -5,9 +5,9 @@ namespace Deployer.Lumia.Gui.Views.Parts
     /// <summary>
     /// Interaction logic for LogPart.xaml
     /// </summary>
-    public partial class StatusPart
+    public partial class LogPart : UserControl
     {
-        public StatusPart()
+        public LogPart()
         {
             InitializeComponent();
         }
