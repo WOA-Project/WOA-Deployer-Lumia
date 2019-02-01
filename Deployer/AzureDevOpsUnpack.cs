@@ -50,18 +50,23 @@ namespace Deployer
             var artifact = await buildClient.LatestBuildArtifact(org, project, definitionId, artifactName);
 
             using (var httpClient = new HttpClient())
-            using (var zip = new ZipArchive(await httpClient.GetStreamAsync(artifact.Resource.DownloadUrl)))
             {
-                var temp = Path.Combine(SubFolder, Guid.NewGuid().ToString());
-                zip.ExtractToDirectory(temp);
+                var byteArray = httpClient.GetByteArrayAsync(artifact.Resource.DownloadUrl);
+                var stream = new MemoryStream(await byteArray);
 
-                if (Directory.Exists(folderPath))
+                using (var zip = new ZipArchive(stream))
                 {
-                    Directory.Delete(folderPath, true);
-                }
+                    var temp = Path.Combine(SubFolder, Guid.NewGuid().ToString());
+                    zip.ExtractToDirectory(temp);
 
-                Directory.Move(Path.Combine(temp, artifactName), folderPath);
-                Directory.Delete(temp);
+                    if (Directory.Exists(folderPath))
+                    {
+                        Directory.Delete(folderPath, true);
+                    }
+
+                    Directory.Move(Path.Combine(temp, artifactName), folderPath);
+                    Directory.Delete(temp);
+                };
             }
         }
     }
