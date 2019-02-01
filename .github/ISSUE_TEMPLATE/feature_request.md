@@ -9,7 +9,7 @@ assignees: ''
 
 Please use the "Preview" tab above to view this message if you are seeing this in the new issue text box.
 
-Please note that this is a **WoA Installer** issue tracker, use this issue tracker only for the WoA Installer related enhancements.
+Please note that this is a **WoA Deployer** issue tracker, use this issue tracker only for the WoA Deployer related enhancements.
 
 Please use the [LumiaWoA](https://t.me/joinchat/Ey6mehEPg0Fe4utQNZ9yjA) or [RaspberryPiWOA](https://t.me/raspberrypiwoa) Telegram groups for anything else, such as:
 
