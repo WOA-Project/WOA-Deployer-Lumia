@@ -2,7 +2,8 @@
 {
     public enum PhoneModel
     {
-        Lumia950XL,
-        Lumia950
+        Cityman,
+        Talkman,
+        Hapanero,
     }
 }

@@ -31,7 +31,7 @@ namespace Deployer.Lumia.NetFx
 
         public async Task InstallGpu()
         {
-            if (await phone.GetModel() != PhoneModel.Lumia950XL)
+            if (await phone.GetModel() != PhoneModel.Cityman)
             {
                 var ex = new InvalidOperationException("This phone is not a Lumia 950 XL");
                 Log.Error(ex, "Phone isn't a Lumia 950 XL");
@@ -53,8 +53,6 @@ namespace Deployer.Lumia.NetFx
             };
 
             await runner.Run(new Script(sentences));                
-        }
-
-        
+        }        
     }
 }

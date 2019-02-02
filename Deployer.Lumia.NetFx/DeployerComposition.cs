@@ -6,6 +6,7 @@ using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
 using Deployer.Filesystem.FullFx;
 using Deployer.FileSystem;
+using Deployer.Lumia.NetFx.PhoneInfo;
 using Deployer.Services;
 using Grace.DependencyInjection;
 
@@ -19,6 +20,8 @@ namespace Deployer.Lumia.NetFx
 
             container.Configure(x =>
             {
+                x.Export<PhoneInfoReader>().As<IPhoneInfoReader>();
+                x.Export<PhoneModelReader>().As<IPhoneModelReader>();
                 x.Export<AutoDeployer>().As<IAutoDeployer>();
                 x.Export<DeploymentScriptRunner>().As<IDeploymentScriptRunner>();
                 x.Export<Tooling>().As<ITooling>();

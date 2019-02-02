@@ -11,14 +11,16 @@ namespace Deployer.Lumia
 {
     public class Phone : Device
     {
+        private readonly IPhoneModelReader phoneModelReader;
         private const string MainOsLabel = "MainOS";
 
         private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
         private Volume efiEspVolume;
         private Volume mainOs;
 
-        public Phone(ILowLevelApi lowLevelApi) : base(lowLevelApi)
+        public Phone(ILowLevelApi lowLevelApi, IPhoneModelReader phoneModelReader) : base(lowLevelApi)
         {
+            this.phoneModelReader = phoneModelReader;
         }
 
         public async Task<Volume> GetEfiespVolume()
@@ -33,22 +35,7 @@ namespace Deployer.Lumia
 
         public async Task<PhoneModel> GetModel()
         {
-            var dict = new Dictionary<string, PhoneModel>()
-            {
-                {"RM-1104", PhoneModel.Lumia950 },
-                {"RM-1105", PhoneModel.Lumia950 },
-                {"RM-1118", PhoneModel.Lumia950 },
-                {"RM-1085", PhoneModel.Lumia950XL },
-                {"RM-1116", PhoneModel.Lumia950XL },
-            };
-
-            var mainOs = await GetMainOsVolume();
-            var dir = Path.Combine(mainOs.RootDir.Name, "DDP", "MMO", "product.dat");
-            var rmLine = File.ReadLines(dir).First();
-            var parts = rmLine.Split(':');
-            var rm = parts[1].ToUpper();
-
-            return dict[rm];
+            return phoneModelReader.GetPhoneModel((await GetDisk()).Number);
         }
 
         public async Task<DualBootStatus> GetDualBootStatus()

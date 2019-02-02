@@ -23,8 +23,8 @@ namespace Deployer.Lumia
         {
             var dict = new Dictionary<PhoneModel, string>
             {
-                {PhoneModel.Lumia950, Path.Combine("Scripts", "950.txt")},
-                {PhoneModel.Lumia950XL, Path.Combine("Scripts", "950xl.txt")},
+                {PhoneModel.Talkman, Path.Combine("Scripts", "950.txt")},
+                {PhoneModel.Cityman, Path.Combine("Scripts", "950xl.txt")},
             };
 
             var phoneModel = await phone.GetModel();
