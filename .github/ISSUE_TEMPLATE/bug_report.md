@@ -11,7 +11,7 @@ Please use the "Preview" tab above to view this message if you are seeing this i
 
 Please note that this is a **WoA Deployer** issue tracker, use this issue tracker only for the WoA Deployer related bugs.
 
-Please use the [LumiaWoA](https://t.me/joinchat/Ey6mehEPg0Fe4utQNZ9yjA) or [RaspberryPiWOA](https://t.me/raspberrypiwoa) Telegram groups for anything else, such as:
+Please open ticket for Lumia in [WOAProject forum](https://www.woaproject.net/viewforum.php?f=17), or use the [RaspberryPiWOA](https://t.me/raspberrypiwoa) Telegram group for anything else, such as:
 
  - Reporting bugs of other tools, drivers, etc.
  - Asking for help
