@@ -1,11 +1,11 @@
 using System;
 using System.Reactive.Subjects;
+using Deployer.Gui.Common;
+using Deployer.Gui.Common.Services;
 using Deployer.Gui.Core;
 using Deployer.Lumia.Gui.ViewModels;
 using Deployer.Lumia.NetFx;
 using Grace.DependencyInjection;
-using Installer.Wpf.Core;
-using Installer.Wpf.Core.Services;
 using MahApps.Metro.Controls.Dialogs;
 using Serilog;
 using Serilog.Events;
@@ -36,6 +36,7 @@ namespace Deployer.Lumia.Gui
                     .Lifestyle.Singleton();
                 x.ExportFactory(() => logEvents).As<IObservable<LogEvent>>();
                 x.Export<WimPickViewModel>().Lifestyle.Singleton();
+                x.Export<DeploymentViewModel>().Lifestyle.Singleton();
                 x.Export<UIServices>();
                 x.Export<ViewService>().As<IViewService>();
                 x.Export<DialogService>().As<IDialogService>();
@@ -52,5 +53,7 @@ namespace Deployer.Lumia.Gui
         public WimPickViewModel WimPickViewModel => container.Locate<WimPickViewModel>();
 
         public DeploymentViewModel DeploymentViewModel => container.Locate<DeploymentViewModel>();
+
+        public AdvancedViewModel AdvancedViewModel => container.Locate<AdvancedViewModel>();
     }
 }

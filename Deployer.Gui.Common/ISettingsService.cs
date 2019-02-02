@@ -1,4 +1,4 @@
-namespace Installer.Wpf.Core
+namespace Deployer.Gui.Common
 {
     public interface ISettingsService
     {

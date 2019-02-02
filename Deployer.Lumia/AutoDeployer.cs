@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Deployer.Lumia
 {
@@ -37,9 +38,17 @@ namespace Deployer.Lumia
             await runner.ExecuteNonWindowsScript(path);
         }
 
-        public Task InstallGpu()
+        public async Task InstallGpu()
         {
-            return additionalOperations.InstallGpu();
+            if (await phone.GetModel() != PhoneModel.Lumia950XL)
+            {
+                var ex = new InvalidOperationException("This phone is not a Lumia 950 XL");
+                Log.Error(ex, "Phone isn't a Lumia 950 XL");
+                
+                throw ex;
+            }
+
+            await additionalOperations.InstallGpu();
         }
 
         public Task ToogleDualBoot(bool isEnabled)

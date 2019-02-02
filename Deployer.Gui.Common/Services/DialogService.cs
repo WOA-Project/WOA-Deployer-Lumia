@@ -2,7 +2,7 @@
 using Deployer.Gui.Core;
 using MahApps.Metro.Controls.Dialogs;
 
-namespace Installer.Wpf.Core.Services
+namespace Deployer.Gui.Common.Services
 {
     public class DialogService : IDialogService
     {

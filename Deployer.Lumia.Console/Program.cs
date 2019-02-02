@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ByteSizeLib;
 using CommandLine;
 using Deployer;
 using Deployer.Lumia;
@@ -33,7 +34,7 @@ namespace Deployment.Console
                     .MapResult(
                         (WindowsDeploymentCmdOptions opts) => deployer.Deploy(new WindowsDeploymentOptions()
                         {
-                            ReservedSizeForWindowsInGb = opts.ReservedSizeForWindowsInGb,
+                            ReservedSizeForWindowsInGb = ByteSize.FromGigaBytes(opts.ReservedSizeForWindowsInGb),
                             WimImage = opts.WimImage,
                             Index = opts.Index,
                         }),

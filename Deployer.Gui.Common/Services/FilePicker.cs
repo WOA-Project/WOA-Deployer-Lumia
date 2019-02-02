@@ -5,7 +5,7 @@ using Deployer.Gui.Core;
 using Deployer.Utils;
 using Microsoft.Win32;
 
-namespace Installer.Wpf.Core.Services
+namespace Deployer.Gui.Common.Services
 {
     public class FilePicker : IFilePicker
     {

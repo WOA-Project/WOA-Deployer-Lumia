@@ -1,10 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Reflection;
 using System.Threading;
-using Deployer.Gui.Core;
 using DynamicData;
 using ReactiveUI;
 using Serilog.Events;
@@ -15,28 +13,36 @@ namespace Deployer.Lumia.Gui.ViewModels
     {
         private readonly ObservableAsPropertyHelper<bool> isProgressVisibleHelper;
         private readonly ObservableAsPropertyHelper<double> progressHelper;
-        private readonly UIServices uiService;
         private ReadOnlyObservableCollection<RenderedLogEvent> logEvents;
         private IDisposable logLoader;
 
         private ObservableAsPropertyHelper<RenderedLogEvent> statusHelper;
+        private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
 
-        public MainViewModel(UIServices uiService, IObservable<LogEvent> events, IObservable<double> progressSubject)
+        public MainViewModel(DeploymentViewModel deploymentViewModel, 
+            AdvancedViewModel advancedViewModelViewModel, 
+            IObservable<LogEvent> events, 
+            IObservable<double> progressSubject)
         {
-            this.uiService = uiService;
-
             progressHelper = progressSubject
                 .Where(d => !double.IsNaN(d))
                 .ObserveOn(SynchronizationContext.Current)
                 .ToProperty(this, model => model.Progress);
-
 
             isProgressVisibleHelper = progressSubject
                 .Select(d => !double.IsNaN(d))
                 .ToProperty(this, x => x.IsProgressVisible);
 
             SetupLogging(events);
+
+            var isBusyObs = Observable.Merge(deploymentViewModel.FullInstallWrapper.Command.IsExecuting,
+                advancedViewModelViewModel.InstallGpuWrapper.Command.IsExecuting);
+
+            isBusyHelper = Observable.Merge(isBusyObs)
+                .ToProperty(this, model => model.IsBusy);
         }
+
+        public bool IsBusy => isBusyHelper.Value;
 
         public bool IsProgressVisible => isProgressVisibleHelper.Value;
 
@@ -45,8 +51,6 @@ namespace Deployer.Lumia.Gui.ViewModels
         public double Progress => progressHelper.Value;
 
         public RenderedLogEvent Status => statusHelper.Value;
-
-        public bool IsBusy { get; }
 
         public void Dispose()
         {

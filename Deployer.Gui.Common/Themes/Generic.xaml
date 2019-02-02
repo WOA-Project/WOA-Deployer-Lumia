@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:valueConverters="clr-namespace:ValueConverters;assembly=ValueConverters"
-    xmlns:local="clr-namespace:Installer.Wpf.Core">
+    xmlns:local="clr-namespace:Deployer.Gui.Common">
 
     <valueConverters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverterInverted" IsInverted="True" />
 

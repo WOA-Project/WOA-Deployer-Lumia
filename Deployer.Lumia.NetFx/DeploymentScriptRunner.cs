@@ -46,11 +46,11 @@ namespace Deployer.Lumia.NetFx
             var container = new DependencyInjectionContainer();
             container.Configure(x =>
             {
-                x.ExportFactory(() => new InstallOptions()
+                x.ExportFactory(() => new InstallOptions
                 {
                     ImagePath = windowsDeploymentCmdOptions.WimImage,
                     ImageIndex = windowsDeploymentCmdOptions.Index,                    
-                    SizeReservedForWindows = ByteSize.FromGigaBytes(windowsDeploymentCmdOptions.ReservedSizeForWindowsInGb)
+                    SizeReservedForWindows = windowsDeploymentCmdOptions.ReservedSizeForWindowsInGb,
                 }).As<InstallOptions>();
 
                 x.ExportInstance(observer ?? new Subject<double>()).As<IObserver<double>>();

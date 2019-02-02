@@ -88,12 +88,49 @@ namespace Deployer.Lumia.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to # Final steps
+        ///
+        ///In order to finish the installation, you need to perform these steps manually.
+        ///
+        ///* Reboot into Windows 10.
+        ///* Go to the **Device Manager**
+        ///* Under **Unknown Devices**, look for for one described as **&apos;ACPI\MSHW1004\0
+        ///&apos;** 
+        ///  * **[Tip]** open each one by double clicking on them and look into the **Details** tab for this identifier. It should be one of the first 10 elements of the list.
+        ///  * Once you find it choose to *Update* it. 
+        ///  * In the driver update wizard, select &quot;Choose driver fr [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string InstallGpuManualSteps {
+            get {
+                return ResourceManager.GetString("InstallGpuManualSteps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual steps.
+        /// </summary>
+        public static string ManualStepsTitle {
+            get {
+                return ResourceManager.GetString("ManualStepsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, there are no post-OOBE drivers available to inject.
         ///The Core Package that is currently installed doesn&apos;t have an additional post-OOBE driver set..
         /// </summary>
         public static string NoPostOobeDrivers {
             get {
                 return ResourceManager.GetString("NoPostOobeDrivers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The phone is not a Lumia 950 XL.
+        /// </summary>
+        public static string PhoneIsNotLumia950XL {
+            get {
+                return ResourceManager.GetString("PhoneIsNotLumia950XL", resourceCulture);
             }
         }
         

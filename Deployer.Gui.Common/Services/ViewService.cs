@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using Deployer.Gui.Core;
 
-namespace Installer.Wpf.Core.Services
+namespace Deployer.Gui.Common.Services
 {
     public class ViewService : IViewService
     {

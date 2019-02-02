@@ -1,5 +1,5 @@
-﻿using Deployer.Lumia.Gui.Properties;
-using Installer.Wpf.Core;
+﻿using Deployer.Gui.Common;
+using Deployer.Lumia.Gui.Properties;
 
 namespace Deployer.Lumia.Gui
 {

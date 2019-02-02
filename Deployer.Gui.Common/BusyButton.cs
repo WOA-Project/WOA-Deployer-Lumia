@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Installer.Wpf.Core
+namespace Deployer.Gui.Common
 {
     public class BusyButton : ContentControl
     {
