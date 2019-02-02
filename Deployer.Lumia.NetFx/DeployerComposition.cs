@@ -21,7 +21,7 @@ namespace Deployer.Lumia.NetFx
             {
                 x.Export<AutoDeployer>().As<IAutoDeployer>();
                 x.Export<DeploymentScriptRunner>().As<IDeploymentScriptRunner>();
-                x.Export<AdditionalOperations>().As<IAdditionalOperations>();
+                x.Export<Tooling>().As<ITooling>();
                 x.Export<BootCreator>().As<IBootCreator>();
                 x.Export<LowLevelApi>().As<ILowLevelApi>();
                 x.Export<PhonePathBuilder>().As<IPathBuilder>();

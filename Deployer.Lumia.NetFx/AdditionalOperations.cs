@@ -1,95 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
-using Deployer.Filesystem.FullFx;
 using Deployer.FileSystem;
-using Deployer.Services;
 using Deployer.Tasks;
-using Grace.DependencyInjection;
 using Serilog;
 
 namespace Deployer.Lumia.NetFx
 {
-    public class AdditionalOperations : IAdditionalOperations
+    // ReSharper disable once ClassNeverInstantiated.Local
+    public class Tooling : ITooling
     {
-        private DependencyInjectionContainer GetContainer()
-        {
-            var container = new DependencyInjectionContainer();
-            container.Configure(x =>
-            {
-                x.Export<BootCreator>().As<IBootCreator>();
-                x.Export<LowLevelApi>().As<ILowLevelApi>();
-                x.ExportInstance(typeof(Copy).Assembly.ExportedTypes).As<IEnumerable<Type>>();
-                x.Export<Runner>().As<IRunner>();
-                x.Export<InstanceBuilder>().As<IInstanceBuilder>();
-                x.Export<Phone>();
-                x.Export<FileSystemOperations>().As<IFileSystemOperations>();
-                x.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>();
-                x.Export<WindowsDeployer>().As<IWindowsDeployer>();
-                x.Export<DismImageService>().As<IWindowsImageService>();
-                x.Export<GitHubDownloader>().As<IGitHubDownloader>();
-                x.Export<PhonePathBuilder>().As<IPathBuilder>();
-                x.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>();
-            });
+        private readonly Phone phone;
+        private readonly IRunner runner;
 
-            return container;
+        public Tooling(Phone phone, IRunner runner)
+        {
+            this.phone = phone;
+            this.runner = runner;
         }
 
         public async Task ToogleDualBoot(bool isEnabled)
         {
-            var container = GetContainer();
-            var tooling = container.Locate<Tooling>();
-            await tooling.ToogleDualBoot(isEnabled);
+            var enabledStr = isEnabled ? "Enabling" : "Disabling";
+            Log.Information($"{enabledStr} Dual Boot");
+            await phone.EnableDualBoot(isEnabled);
+
+            Log.Information("Done");
         }
 
         public async Task InstallGpu()
         {
-            var container = GetContainer();
-            var tooling = container.Locate<Tooling>();
-            await tooling.InstallGpu();
-        }
-
-
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class Tooling
-        {
-            private readonly Phone phone;
-            private readonly IRunner runner;
-
-            public Tooling(Phone phone, IRunner runner)
+            if (await phone.GetModel() != PhoneModel.Lumia950XL)
             {
-                this.phone = phone;
-                this.runner = runner;
+                var ex = new InvalidOperationException("This phone is not a Lumia 950 XL");
+                Log.Error(ex, "Phone isn't a Lumia 950 XL");
+                
+                throw ex;
             }
 
-            public async Task ToogleDualBoot(bool isEnabled)
+            Log.Information("Installing GPU");
+            await phone.EnsureBootPartitionIs(PartitionType.Basic);
+
+            IList<Sentence> sentences = new List<Sentence>()
             {
-                var enabledStr = isEnabled ? "Enabling" : "Disabling";
-                Log.Information($"{enabledStr} Dual Boot");
-                await phone.EnableDualBoot(isEnabled);
-
-                Log.Information("Done");
-            }
-
-            public async Task InstallGpu()
-            {
-                Log.Information("Installing GPU");
-                await ToogleDualBoot(true);
-
-                IList<Sentence> sentences = new List<Sentence>()
+                new Sentence(new Command(nameof(GitHubUnpack), new[] {new Argument("https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers"),})),
+                new Sentence(new Command(nameof(CopyDirectory), new[]
                 {
-                    new Sentence(new Command(nameof(GitHubUnpack), new[] {new Argument("https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers"),})),
-                    new Sentence(new Command(nameof(CopyDirectory), new[]
-                    {
-                        new Argument(@"Downloaded\MSM8994-8992-NT-ARM64-Drivers-master\Supplemental\GPU\Cityman"),
-                        new Argument(@"WindowsARM\Users\Public\OEMPanel"),
-                    })),
-                };
+                    new Argument(@"Downloaded\MSM8994-8992-NT-ARM64-Drivers-master\Supplemental\GPU\Cityman"),
+                    new Argument(@"WindowsARM\Users\Public\OEMPanel"),
+                })),
+            };
 
-                await runner.Run(new Script(sentences));                
-            }
+            await runner.Run(new Script(sentences));                
         }
+
+        
     }
 }

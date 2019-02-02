@@ -2,7 +2,7 @@
 
 namespace Deployer.Lumia
 {
-    public interface IAdditionalOperations
+    public interface ITooling
     {
         Task InstallGpu();
         Task ToogleDualBoot(bool isEnabled);

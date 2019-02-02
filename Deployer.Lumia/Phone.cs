@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ByteSizeLib;
 using Deployer.FileSystem;
 using Deployer.Services;
 using Serilog;
@@ -106,8 +105,8 @@ namespace Deployer.Lumia
         {
             Log.Verbose("Enabling Dual Boot...");
 
-            var bootPartition = await GetBootPartition();
-            await bootPartition.SetGptType(PartitionType.Basic);
+            await this.EnsureBootPartitionIs(PartitionType.Basic);
+
             var volume = await GetEfiespVolume();
             var bcdInvoker = new BcdInvoker(volume.GetBcdFullFilename());
             bcdInvoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} description ""Windows 10 Phone""");
@@ -120,8 +119,8 @@ namespace Deployer.Lumia
         {
             Log.Verbose("Disabling Dual Boot...");
 
-            var bootVolume = await GetBootVolume();
-            await bootVolume.Partition.SetGptType(PartitionType.Esp);
+            await this.EnsureBootPartitionIs(PartitionType.Esp);
+
             var bcdInvoker = new BcdInvoker((await GetEfiespVolume()).GetBcdFullFilename());
             bcdInvoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /remove");
 

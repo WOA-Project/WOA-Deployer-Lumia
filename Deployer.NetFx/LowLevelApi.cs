@@ -60,7 +60,7 @@ namespace Deployer.Filesystem.FullFx
             {
                 var hasCorrectSize = HasCorrectSize(disk);
 
-                if (hasCorrectSize)
+                if (true)
                 {
                     var volumes = await disk.GetVolumes();
                     var mainOs = volumes.FirstOrDefault(x => x.Label == MainOsLabel);

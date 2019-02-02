@@ -9,13 +9,13 @@ namespace Deployer.Lumia
     public class AutoDeployer : IAutoDeployer
     {
         private readonly IDeploymentScriptRunner runner;
-        private readonly IAdditionalOperations additionalOperations;
+        private readonly ITooling tooling;
         private readonly Phone phone;
 
-        public AutoDeployer(IDeploymentScriptRunner runner, IAdditionalOperations additionalOperations, Phone phone)
+        public AutoDeployer(IDeploymentScriptRunner runner, ITooling tooling, Phone phone)
         {
             this.runner = runner;
-            this.additionalOperations = additionalOperations;
+            this.tooling = tooling;
             this.phone = phone;
         }
 
@@ -40,20 +40,12 @@ namespace Deployer.Lumia
 
         public async Task InstallGpu()
         {
-            if (await phone.GetModel() != PhoneModel.Lumia950XL)
-            {
-                var ex = new InvalidOperationException("This phone is not a Lumia 950 XL");
-                Log.Error(ex, "Phone isn't a Lumia 950 XL");
-                
-                throw ex;
-            }
-
-            await additionalOperations.InstallGpu();
+            await tooling.InstallGpu();
         }
 
         public Task ToogleDualBoot(bool isEnabled)
         {
-            return additionalOperations.ToogleDualBoot(isEnabled);
+            return tooling.ToogleDualBoot(isEnabled);
         }
     }
 }
