@@ -7,6 +7,7 @@ using CommandLine;
 using Deployer;
 using Deployer.Lumia;
 using Deployer.Lumia.NetFx;
+using Deployer.Tasks;
 using Deployment.Console.Options;
 using Grace.DependencyInjection;
 using Serilog;
@@ -22,7 +23,16 @@ namespace Deployment.Console
 
             try
             {
-                var deployer = DeployerComposition.Configure(new DependencyInjectionContainer()).Locate<IAutoDeployer>();
+                var container = new DependencyInjectionContainer();
+
+                var installOptionsProvider = new WindowsDeploymentOptionsProvider();
+                container.Configure(x =>
+                {
+                    DeployerComposition.Configure(x);
+                    x.Export<ConsoleMarkdownDisplayer>().As<IMarkdownDisplayer>();
+                    x.ExportFactory(() => installOptionsProvider).As<IWindowsOptionsProvider>();
+                });
+                var deployer = container.Locate<IAutoDeployer>();
 
                 await Parser.Default
                     .ParseArguments<WindowsDeploymentCmdOptions, 
@@ -32,16 +42,20 @@ namespace Deployment.Console
                         NonWindowsDeploymentCmdOptions>
                         (args)
                     .MapResult(
-                        (WindowsDeploymentCmdOptions opts) => deployer.Deploy(new WindowsDeploymentOptions()
+                        (WindowsDeploymentCmdOptions opts) =>
                         {
-                            ReservedSizeForWindowsInGb = ByteSize.FromGigaBytes(opts.ReservedSizeForWindowsInGb),
-                            WimImage = opts.WimImage,
-                            Index = opts.Index,
-                        }),
+                            installOptionsProvider.Options = new InstallOptions()
+                            {
+                                ImageIndex = opts.Index,
+                                ImagePath = opts.WimImage,
+                                SizeReservedForWindows = ByteSize.FromGigaBytes(opts.ReservedSizeForWindowsInGb),
+                            };
+                            return deployer.Deploy();
+                        },
                         (EnableDualBootCmdOptions opts) => deployer.ToogleDualBoot(true),
                         (DisableDualBootCmdOptions opts) => deployer.ToogleDualBoot(false),
                         (InstallGpuCmdOptions opts) => deployer.InstallGpu(),
-                        (NonWindowsDeploymentCmdOptions opts) => deployer.ExecuteNonWindowsScript(opts.Script),
+                        (NonWindowsDeploymentCmdOptions opts) => deployer.Deploy(),
                         HandleErrors);
             }
             catch (Exception e)
@@ -65,5 +79,5 @@ namespace Deployment.Console
                 .MinimumLevel.Verbose()
                 .CreateLogger();
         }
-    }    
+    }
 }

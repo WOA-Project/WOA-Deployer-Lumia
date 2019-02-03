@@ -1,25 +1,29 @@
 ﻿<mah:MetroWindow x:Class="Deployer.Lumia.Gui.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:parts1="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        mc:Ignorable="d"
-        DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
-        Title="{Binding Title}" Width="920" Height="720"
-        WindowStartupLocation="CenterScreen">
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:parts1="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:parts="clr-namespace:Installer.Lumia.Application.Views.Parts"
+                 mc:Ignorable="d"
+                 DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
+                 mah:DialogParticipation.Register="{Binding}"
+                 Title="{Binding Title}" Width="920" Height="720"
+                 WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Margin="0,10,0,0" TextAlignment="Center">
-            <Bold>NOTICE: </Bold> All the following operations require the Phone to be in <Bold>Mass Storage Mode</Bold>
+            <Bold>NOTICE: </Bold> All the following operations require the Phone to be in
+            <Bold>Mass Storage Mode</Bold>
         </TextBlock>
-        <TabControl Margin="20,0,20,20" Grid.Row="1" IsEnabled="{Binding IsBusy, Converter={StaticResource BoolNegationConverter}}">
+        <TabControl Margin="20,0,20,20" Grid.Row="1"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource BoolNegationConverter}}">
             <TabItem Header="Deployment">
                 <TabItem.HeaderTemplate>
                     <DataTemplate>
@@ -37,7 +41,7 @@
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <parts1:DualBootPart />
+                    <parts:DualBootPart />
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Advanced">

@@ -5,9 +5,9 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
 {
     public class PhoneModelReader : IPhoneModelReader
     {
-        private readonly PhoneInfoReader reader;
+        private readonly IPhoneInfoReader reader;
 
-        public PhoneModelReader(PhoneInfoReader reader)
+        public PhoneModelReader(IPhoneInfoReader reader)
         {
             this.reader = reader;
         }

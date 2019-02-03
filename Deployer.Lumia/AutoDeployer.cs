@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Serilog;
+using Deployer.Execution;
 
 namespace Deployer.Lumia
 {
     public class AutoDeployer : IAutoDeployer
     {
-        private readonly IDeploymentScriptRunner runner;
         private readonly ITooling tooling;
         private readonly Phone phone;
+        private readonly IScriptRunner runner;
 
-        public AutoDeployer(IDeploymentScriptRunner runner, ITooling tooling, Phone phone)
+        public AutoDeployer(IScriptRunner runner, ITooling tooling, Phone phone)
         {
             this.runner = runner;
             this.tooling = tooling;
             this.phone = phone;
         }
 
-        public async Task Deploy(WindowsDeploymentOptions opts, IObserver<double> progressObserver = null)
+        public async Task Deploy()
         {
             var dict = new Dictionary<PhoneModel, string>
             {
@@ -28,14 +27,9 @@ namespace Deployer.Lumia
             };
 
             var phoneModel = await phone.GetModel();
-            var script = dict[phoneModel];
+            var path = dict[phoneModel];
 
-            await runner.ExecuteWindowsScript(script, opts, progressObserver);
-        }
-
-        public async Task ExecuteNonWindowsScript(string path)
-        {
-            await runner.ExecuteNonWindowsScript(path);
+            await runner.RunScriptFrom(path);
         }
 
         public async Task InstallGpu()

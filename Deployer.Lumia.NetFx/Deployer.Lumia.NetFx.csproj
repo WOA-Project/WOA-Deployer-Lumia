@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="AdditionalOperations.cs" />
     <Compile Include="DeployerComposition.cs" />
-    <Compile Include="DeploymentScriptRunner.cs" />
     <Compile Include="PhoneInfo\ByteOperations.cs" />
     <Compile Include="PhoneInfo\Converter.cs" />
     <Compile Include="PhoneInfo\PhoneModelReader.cs" />

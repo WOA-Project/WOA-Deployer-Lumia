@@ -5,7 +5,9 @@ using Deployer.Gui.Common.Services;
 using Deployer.Gui.Core;
 using Deployer.Lumia.Gui.ViewModels;
 using Deployer.Lumia.NetFx;
+using Deployer.Tasks;
 using Grace.DependencyInjection;
+using Installer.Lumia.Application.Views;
 using MahApps.Metro.Controls.Dialogs;
 using Serilog;
 using Serilog.Events;
@@ -15,12 +17,15 @@ namespace Deployer.Lumia.Gui
     public class Locator
     {
         private readonly DependencyInjectionContainer container;
-
+        
         public Locator()
         {
             container = new DependencyInjectionContainer();
 
             IObservable<LogEvent> logEvents = null;
+
+            IViewService viewService = new ViewService();
+            viewService.Register("MarkdownViewer", typeof(MarkdownViewerWindow));
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.RollingFile(@"Logs\Log-{Date}.txt")
@@ -28,8 +33,13 @@ namespace Deployer.Lumia.Gui
                 .MinimumLevel.Verbose()
                 .CreateLogger();
 
+            var optionsProvider = new WindowsDeploymentOptionsProvider();
+
             container.Configure(x =>
             {
+                DeployerComposition.Configure(x);
+                x.ExportFactory(() => optionsProvider).As<IWindowsOptionsProvider>();
+                x.Export<WpfMarkdownDisplayer>().As<IMarkdownDisplayer>();
                 x.ExportFactory(() => new BehaviorSubject<double>(double.NaN))
                     .As<IObserver<double>>()
                     .As<IObservable<double>>()
@@ -38,14 +48,12 @@ namespace Deployer.Lumia.Gui
                 x.Export<WimPickViewModel>().Lifestyle.Singleton();
                 x.Export<DeploymentViewModel>().Lifestyle.Singleton();
                 x.Export<UIServices>();
-                x.Export<ViewService>().As<IViewService>();
+                x.ExportFactory(() => viewService).As<IViewService>();
                 x.Export<DialogService>().As<IDialogService>();
                 x.Export<FilePicker>().As<IFilePicker>();
                 x.Export<SettingsService>().As<ISettingsService>();
                 x.ExportFactory(() => DialogCoordinator.Instance).As<IDialogCoordinator>();
             });
-
-            DeployerComposition.Configure(container);
         }
 
         public MainViewModel MainViewModel => container.Locate<MainViewModel>();
@@ -55,5 +63,7 @@ namespace Deployer.Lumia.Gui
         public DeploymentViewModel DeploymentViewModel => container.Locate<DeploymentViewModel>();
 
         public AdvancedViewModel AdvancedViewModel => container.Locate<AdvancedViewModel>();
+
+        public DualBootViewModel DualBootViewModel => container.Locate<DualBootViewModel>();
     }
 }

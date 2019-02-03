@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Deployer.Lumia.Gui.Views.Parts
+namespace Installer.Lumia.Application.Views.Parts
 {
     /// <summary>
     /// Interaction logic for DualBootPart.xaml

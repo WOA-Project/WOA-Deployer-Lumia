@@ -9,23 +9,27 @@ namespace Deployer.Lumia.Gui.ViewModels
 {
     public class DeploymentViewModel : ReactiveObject
     {
+        private readonly IWindowsOptionsProvider optionsProvider;
         private readonly IAutoDeployer deploymentTasks;
         private readonly AdvancedViewModel advancedViewModel;
         private readonly WimPickViewModel wimPickViewModel;
-        private readonly IObserver<double> progressObserver;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
 
-        public DeploymentViewModel(IAutoDeployer deploymentTasks, UIServices uiServices, AdvancedViewModel advancedViewModel, WimPickViewModel wimPickViewModel, IObserver<double> progressObserver)
+        public DeploymentViewModel(
+            IWindowsOptionsProvider optionsProvider,
+            IAutoDeployer deploymentTasks, UIServices uiServices, AdvancedViewModel advancedViewModel,
+            WimPickViewModel wimPickViewModel, IObserver<double> progressObserver)
         {
+            this.optionsProvider = optionsProvider;
             this.deploymentTasks = deploymentTasks;
             this.advancedViewModel = advancedViewModel;
             this.wimPickViewModel = wimPickViewModel;
-            this.progressObserver = progressObserver;
 
             var isSelectedWim = wimPickViewModel.WhenAnyObservable(x => x.WimMetadata.SelectedImageObs)
                 .Select(metadata => metadata != null);
 
-            FullInstallWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.DialogService);            
+            FullInstallWrapper = new CommandWrapper<Unit, Unit>(this,
+                ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.DialogService);
             var isBusyObs = FullInstallWrapper.Command.IsExecuting;
             isBusyHelper = isBusyObs.ToProperty(this, model => model.IsBusy);
         }
@@ -34,14 +38,16 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private async Task Deploy()
         {
-            var windowsDeploymentOptions = new WindowsDeploymentOptions
+            var windowsDeploymentOptions = new InstallOptions()
             {
-                WimImage = wimPickViewModel.WimMetadata.Path,
-                Index = 1,
-                ReservedSizeForWindowsInGb = advancedViewModel.SizeReservedForWindows,
+                ImagePath = wimPickViewModel.WimMetadata.Path,
+                ImageIndex = 1,
+                SizeReservedForWindows = advancedViewModel.SizeReservedForWindows,
             };
 
-            await deploymentTasks.Deploy(windowsDeploymentOptions, progressObserver);
+            optionsProvider.Options = windowsDeploymentOptions;
+
+            await deploymentTasks.Deploy();
         }
 
         public CommandWrapper<Unit, Unit> FullInstallWrapper { get; set; }

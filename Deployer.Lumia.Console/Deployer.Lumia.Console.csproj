@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleMarkdownDisplayer.cs" />
     <Compile Include="Options\DisableDualBootCmdOptions.cs" />
     <Compile Include="Options\EnableDualBootCmdOptions.cs" />
     <Compile Include="Options\InstallGpuCmdOptions.cs" />

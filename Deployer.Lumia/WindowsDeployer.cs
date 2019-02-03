@@ -9,7 +9,7 @@ namespace Deployer.Lumia
 {
     public class WindowsDeployer : IWindowsDeployer
     {
-        private readonly InstallOptions options;
+        private readonly IWindowsOptionsProvider optionsProvider;
         private readonly Phone phone;
         private readonly IWindowsImageService imageService;
         private readonly IBootCreator bootCreator;
@@ -20,9 +20,9 @@ namespace Deployer.Lumia
         private const string BootPartitionLabel = "BOOT";
         private const string WindowsPartitonLabel = "WindowsARM";
 
-        public WindowsDeployer(InstallOptions options, Phone phone, IWindowsImageService imageService, IBootCreator bootCreator, IObserver<double> progressObserver)
+        public WindowsDeployer(IWindowsOptionsProvider optionsProvider, Phone phone, IWindowsImageService imageService, IBootCreator bootCreator, IObserver<double> progressObserver)
         {
-            this.options = options;
+            this.optionsProvider = optionsProvider;
             this.phone = phone;
             this.imageService = imageService;
             this.bootCreator = bootCreator;
@@ -32,6 +32,7 @@ namespace Deployer.Lumia
         public async Task Deploy()
         {
             await phone.RemoveExistingWindowsPartitions();
+            var options = optionsProvider.Options;
             await AllocateSpace(options.SizeReservedForWindows);
             var partitions = await CreatePartitions();
             await imageService.ApplyImage(await phone.GetWindowsVolume(), options.ImagePath, options.ImageIndex, progressObserver);
