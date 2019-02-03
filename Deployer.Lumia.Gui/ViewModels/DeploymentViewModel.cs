@@ -1,4 +1,3 @@
-using System;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -18,7 +17,7 @@ namespace Deployer.Lumia.Gui.ViewModels
         public DeploymentViewModel(
             IWindowsOptionsProvider optionsProvider,
             IAutoDeployer deploymentTasks, UIServices uiServices, AdvancedViewModel advancedViewModel,
-            WimPickViewModel wimPickViewModel, IObserver<double> progressObserver)
+            WimPickViewModel wimPickViewModel)
         {
             this.optionsProvider = optionsProvider;
             this.deploymentTasks = deploymentTasks;
@@ -38,10 +37,10 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private async Task Deploy()
         {
-            var windowsDeploymentOptions = new InstallOptions()
+            var windowsDeploymentOptions = new WindowsDeploymentOptions
             {
                 ImagePath = wimPickViewModel.WimMetadata.Path,
-                ImageIndex = 1,
+                ImageIndex = wimPickViewModel.WimMetadata.SelectedDiskImage.Index,
                 SizeReservedForWindows = advancedViewModel.SizeReservedForWindows,
             };
 

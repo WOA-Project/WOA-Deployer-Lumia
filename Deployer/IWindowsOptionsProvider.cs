@@ -2,6 +2,6 @@
 {
     public interface IWindowsOptionsProvider
     {
-        InstallOptions Options { get; set; }
+        WindowsDeploymentOptions Options { get; set; }
     }
 }

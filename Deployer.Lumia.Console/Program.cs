@@ -32,6 +32,7 @@ namespace Deployment.Console
                     x.Export<ConsoleMarkdownDisplayer>().As<IMarkdownDisplayer>();
                     x.ExportFactory(() => installOptionsProvider).As<IWindowsOptionsProvider>();
                 });
+
                 var deployer = container.Locate<IAutoDeployer>();
 
                 await Parser.Default
@@ -44,7 +45,7 @@ namespace Deployment.Console
                     .MapResult(
                         (WindowsDeploymentCmdOptions opts) =>
                         {
-                            installOptionsProvider.Options = new InstallOptions()
+                            installOptionsProvider.Options = new WindowsDeploymentOptions()
                             {
                                 ImageIndex = opts.Index,
                                 ImagePath = opts.WimImage,
@@ -67,7 +68,9 @@ namespace Deployment.Console
 
         private static Task HandleErrors(IEnumerable<Error> errs)
         {
-            System.Console.WriteLine($"Invalid command line: {string.Join("\n", errs.Select(x => x.Tag))}");
+            var errors = string.Join("\n", errs.Select(x => x.Tag));
+
+            System.Console.WriteLine($@"Invalid command line: {errors}");
             return Task.CompletedTask;
         }
 

@@ -4,8 +4,8 @@ namespace Deployer
 {
     public class WindowsDeploymentOptions
     {
-        public string WimImage { get; set; }
-        public int Index { get; set; }
-        public ByteSize ReservedSizeForWindowsInGb { get; set; }
+        public string ImagePath { get; set; }
+        public int ImageIndex { get; set; }
+        public ByteSize SizeReservedForWindows { get; set; }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class WindowsDeploymentOptionsProvider : IWindowsOptionsProvider
     {
-        public InstallOptions Options { get; set; }
+        public WindowsDeploymentOptions Options { get; set; }
     }
 }
