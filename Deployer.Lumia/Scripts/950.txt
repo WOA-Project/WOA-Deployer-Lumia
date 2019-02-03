@@ -9,4 +9,4 @@ DeployWindows
 CopyToBoot "Core\Boot\bootaa64.efi" "EFI\Boot\"
 InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers-master\Device Specifics\Talkman"
 InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers-master\msm8992\Pre-OOBE"
-DisplayMarkdown "Readme.md"
+DisplayMarkdown "Downloaded\MSM8994-8992-NT-ARM64-Drivers-master\README.md"

@@ -7,7 +7,7 @@
                  xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
                  xmlns:viewModels="clr-namespace:Deployer.Lumia.Gui.ViewModels"
                  mc:Ignorable="d"
-        Title="{Binding Title}" Width="900" SizeToContent="Height" WindowStartupLocation="CenterOwner"
+        Title="{Binding Title}" Width="900" MaxHeight="700" SizeToContent="Height" WindowStartupLocation="CenterOwner"
         d:DataContext="{d:DesignInstance viewModels:MessageViewModel}">
     <mah:MetroWindow.Resources>
         <xaml:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter" />
