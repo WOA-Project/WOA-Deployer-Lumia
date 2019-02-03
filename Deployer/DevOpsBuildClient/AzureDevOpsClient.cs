@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Deployer.DevOpsBuildClient.ArtifactModel;
 using Deployer.DevOpsBuildClient.BuildsModel;
@@ -50,12 +49,4 @@ namespace Deployer.DevOpsBuildClient
             return artifact;
         }
     }
-
-    public class CustomHttpClientHandler : HttpClientHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            return base.SendAsync(request, cancellationToken);
-        }
-    }    
 }

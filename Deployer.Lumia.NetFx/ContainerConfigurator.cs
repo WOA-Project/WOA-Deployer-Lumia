@@ -9,25 +9,30 @@ using Deployer.FileSystem;
 using Deployer.Lumia.NetFx.PhoneInfo;
 using Deployer.Services;
 using Grace.DependencyInjection;
+using Superpower;
 
 namespace Deployer.Lumia.NetFx
 {
-    public static class DeployerComposition
+    public static class ContainerConfigurator
     {
-        public static IExportRegistrationBlock Configure(IExportRegistrationBlock block)
+        public static IExportRegistrationBlock Configure(IExportRegistrationBlock block,
+            WindowsDeploymentOptionsProvider installOptionsProvider)
         {
             var taskTypes = AssemblyUtils.FindTypes(x =>
                 x.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IDeploymentTask)));
-            block.Export<ScriptRunner>().As<IScriptRunner>();
+
+            block.ExportFactory(Tokenizer.Create).As<Tokenizer<LangToken>>();
+            block.Export<ScriptParser>().As<IScriptParser>();
+            block.ExportFactory(() => installOptionsProvider).As<IWindowsOptionsProvider>();
             block.Export<PhoneModelReader>().As<IPhoneModelReader>();
             block.Export<PhoneInfoReader>().As<IPhoneInfoReader>();
-            block.Export<AutoDeployer>().As<IAutoDeployer>();
+            block.Export<WoaDeployer>().As<IWoaDeployer>();
             block.Export<Tooling>().As<ITooling>();
             block.Export<BootCreator>().As<IBootCreator>();
             block.Export<LowLevelApi>().As<ILowLevelApi>();
             block.Export<PhonePathBuilder>().As<IPathBuilder>();
             block.ExportInstance(taskTypes).As<IEnumerable<Type>>();
-            block.Export<Runner>().As<IRunner>();
+            block.Export<ScriptRunner>().As<IScriptRunner>();
             block.Export<InstanceBuilder>().As<IInstanceBuilder>();
             block.Export<Phone>();
             block.Export<FileSystemOperations>().As<IFileSystemOperations>();

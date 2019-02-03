@@ -25,15 +25,14 @@ namespace Deployment.Console
             {
                 var container = new DependencyInjectionContainer();
 
-                var installOptionsProvider = new WindowsDeploymentOptionsProvider();
+                var op = new WindowsDeploymentOptionsProvider();
                 container.Configure(x =>
                 {
-                    DeployerComposition.Configure(x);
-                    x.Export<ConsoleMarkdownDisplayer>().As<IMarkdownDisplayer>();
-                    x.ExportFactory(() => installOptionsProvider).As<IWindowsOptionsProvider>();
+                    ContainerConfigurator.Configure(x, op);
+                    x.Export<ConsoleMarkdownDisplayer>().As<IMarkdownDisplayer>();                    
                 });
 
-                var deployer = container.Locate<IAutoDeployer>();
+                var deployer = container.Locate<IWoaDeployer>();
 
                 await Parser.Default
                     .ParseArguments<WindowsDeploymentCmdOptions, 
@@ -45,7 +44,7 @@ namespace Deployment.Console
                     .MapResult(
                         (WindowsDeploymentCmdOptions opts) =>
                         {
-                            installOptionsProvider.Options = new WindowsDeploymentOptions()
+                            op.Options = new WindowsDeploymentOptions()
                             {
                                 ImageIndex = opts.Index,
                                 ImagePath = opts.WimImage,

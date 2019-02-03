@@ -5,15 +5,17 @@ using Deployer.Execution;
 
 namespace Deployer.Lumia
 {
-    public class AutoDeployer : IAutoDeployer
+    public class WoaDeployer : IWoaDeployer
     {
         private readonly ITooling tooling;
         private readonly Phone phone;
-        private readonly IScriptRunner runner;
+        private readonly IScriptRunner scriptRunner;
+        private readonly IScriptParser parser;
 
-        public AutoDeployer(IScriptRunner runner, ITooling tooling, Phone phone)
+        public WoaDeployer(IScriptRunner scriptRunner, IScriptParser parser, ITooling tooling, Phone phone)
         {
-            this.runner = runner;
+            this.scriptRunner = scriptRunner;
+            this.parser = parser;
             this.tooling = tooling;
             this.phone = phone;
         }
@@ -29,7 +31,7 @@ namespace Deployer.Lumia
             var phoneModel = await phone.GetModel();
             var path = dict[phoneModel];
 
-            await runner.RunScriptFrom(path);
+            await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));
         }
 
         public async Task InstallGpu()

@@ -4,6 +4,6 @@ namespace Deployer.Execution
 {
     public interface IScriptRunner
     {
-        Task RunScriptFrom(string path);
+        Task Run(Script script);
     }
 }

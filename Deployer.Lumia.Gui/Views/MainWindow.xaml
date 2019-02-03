@@ -5,7 +5,6 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:parts1="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                 xmlns:parts="clr-namespace:Installer.Lumia.Application.Views.Parts"
                  mc:Ignorable="d"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
                  mah:DialogParticipation.Register="{Binding}"
@@ -41,7 +40,7 @@
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <parts:DualBootPart />
+                    <parts1:DualBootPart />
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Advanced">

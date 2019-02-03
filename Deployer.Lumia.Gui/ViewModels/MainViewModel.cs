@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading;
@@ -19,10 +21,8 @@ namespace Deployer.Lumia.Gui.ViewModels
         private ObservableAsPropertyHelper<RenderedLogEvent> statusHelper;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
 
-        public MainViewModel(DeploymentViewModel deploymentViewModel, 
-            AdvancedViewModel advancedViewModelViewModel, 
-            IObservable<LogEvent> events, 
-            IObservable<double> progressSubject)
+        public MainViewModel(IObservable<LogEvent> events, 
+            IObservable<double> progressSubject, IEnumerable<IBusy> busies)
         {
             progressHelper = progressSubject
                 .Where(d => !double.IsNaN(d))
@@ -35,11 +35,9 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             SetupLogging(events);
 
-            var isBusyObs = Observable.Merge(deploymentViewModel.FullInstallWrapper.Command.IsExecuting,
-                advancedViewModelViewModel.InstallGpuWrapper.Command.IsExecuting);
+            var isBusyObs = busies.Select(x => x.IsBusyObservable).Merge();
 
-            isBusyHelper = Observable.Merge(isBusyObs)
-                .ToProperty(this, model => model.IsBusy);
+            isBusyHelper = isBusyObs.ToProperty(this, model => model.IsBusy);
         }
 
         public bool IsBusy => isBusyHelper.Value;
@@ -91,6 +89,6 @@ namespace Deployer.Lumia.Gui.ViewModels
                 Message = x.RenderMessage(),
                 Level = x.Level
             };
-        }
+        }        
     }
 }

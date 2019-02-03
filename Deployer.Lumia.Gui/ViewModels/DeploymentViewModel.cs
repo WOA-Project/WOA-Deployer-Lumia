@@ -1,3 +1,4 @@
+using System;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -6,17 +7,17 @@ using ReactiveUI;
 
 namespace Deployer.Lumia.Gui.ViewModels
 {
-    public class DeploymentViewModel : ReactiveObject
+    public class DeploymentViewModel : ReactiveObject, IBusy
     {
         private readonly IWindowsOptionsProvider optionsProvider;
-        private readonly IAutoDeployer deploymentTasks;
+        private readonly IWoaDeployer deploymentTasks;
         private readonly AdvancedViewModel advancedViewModel;
         private readonly WimPickViewModel wimPickViewModel;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
 
         public DeploymentViewModel(
             IWindowsOptionsProvider optionsProvider,
-            IAutoDeployer deploymentTasks, UIServices uiServices, AdvancedViewModel advancedViewModel,
+            IWoaDeployer deploymentTasks, UIServices uiServices, AdvancedViewModel advancedViewModel,
             WimPickViewModel wimPickViewModel)
         {
             this.optionsProvider = optionsProvider;
@@ -29,8 +30,8 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             FullInstallWrapper = new CommandWrapper<Unit, Unit>(this,
                 ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.DialogService);
-            var isBusyObs = FullInstallWrapper.Command.IsExecuting;
-            isBusyHelper = isBusyObs.ToProperty(this, model => model.IsBusy);
+            IsBusyObservable = FullInstallWrapper.Command.IsExecuting;
+            isBusyHelper = IsBusyObservable.ToProperty(this, model => model.IsBusy);
         }
 
         public bool IsBusy => isBusyHelper.Value;
@@ -50,5 +51,6 @@ namespace Deployer.Lumia.Gui.ViewModels
         }
 
         public CommandWrapper<Unit, Unit> FullInstallWrapper { get; set; }
+        public IObservable<bool> IsBusyObservable { get; }
     }
 }

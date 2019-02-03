@@ -8,7 +8,7 @@ using ReactiveUI;
 
 namespace Deployer.Lumia.Gui.ViewModels
 {
-    public class DualBootViewModel : ReactiveObject
+    public class DualBootViewModel : ReactiveObject, IBusy
     {
         private readonly Phone phone;
         private bool isCapable;
@@ -60,7 +60,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             DisableDualBootWrapper.Command.IsExecuting.Select(x => !x).Subscribe(isChangingDualBoot);
             EnableDualBootWrapper.Command.IsExecuting.Select(x => !x).Subscribe(isChangingDualBoot);
 
-            IsBusyObs = Observable.Merge(DisableDualBootWrapper.Command.IsExecuting,
+            IsBusyObservable = Observable.Merge(DisableDualBootWrapper.Command.IsExecuting,
                 EnableDualBootWrapper.Command.IsExecuting, UpdateStatusWrapper.Command.IsExecuting);
         }
 
@@ -88,8 +88,6 @@ namespace Deployer.Lumia.Gui.ViewModels
             set => this.RaiseAndSetIfChanged(ref isUpdated, value);
         }
 
-        public IObservable<bool> IsBusyObs { get; set; }
-
         private async Task EnableDualBoot()
         {
             await phone.EnableDualBoot(true);
@@ -106,5 +104,7 @@ namespace Deployer.Lumia.Gui.ViewModels
          
             return status;
         }
+
+        public IObservable<bool> IsBusyObservable { get; }
     }
 }

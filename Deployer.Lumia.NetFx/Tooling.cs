@@ -12,12 +12,12 @@ namespace Deployer.Lumia.NetFx
     public class Tooling : ITooling
     {
         private readonly Phone phone;
-        private readonly IRunner runner;
+        private readonly IScriptRunner scriptRunner;
 
-        public Tooling(Phone phone, IRunner runner)
+        public Tooling(Phone phone, IScriptRunner scriptRunner)
         {
             this.phone = phone;
-            this.runner = runner;
+            this.scriptRunner = scriptRunner;
         }
 
         public async Task ToogleDualBoot(bool isEnabled)
@@ -52,7 +52,7 @@ namespace Deployer.Lumia.NetFx
                 })),
             };
 
-            await runner.Run(new Script(sentences));                
+            await scriptRunner.Run(new Script(sentences));                
         }        
     }
 }

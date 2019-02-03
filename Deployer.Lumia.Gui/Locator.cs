@@ -4,10 +4,10 @@ using Deployer.Gui.Common;
 using Deployer.Gui.Common.Services;
 using Deployer.Gui.Core;
 using Deployer.Lumia.Gui.ViewModels;
+using Deployer.Lumia.Gui.Views;
 using Deployer.Lumia.NetFx;
 using Deployer.Tasks;
 using Grace.DependencyInjection;
-using Installer.Lumia.Application.Views;
 using MahApps.Metro.Controls.Dialogs;
 using Serilog;
 using Serilog.Events;
@@ -37,16 +37,16 @@ namespace Deployer.Lumia.Gui
 
             container.Configure(x =>
             {
-                DeployerComposition.Configure(x);
-                x.ExportFactory(() => optionsProvider).As<IWindowsOptionsProvider>();
+                ContainerConfigurator.Configure(x, optionsProvider);
                 x.Export<WpfMarkdownDisplayer>().As<IMarkdownDisplayer>();
                 x.ExportFactory(() => new BehaviorSubject<double>(double.NaN))
                     .As<IObserver<double>>()
                     .As<IObservable<double>>()
                     .Lifestyle.Singleton();
                 x.ExportFactory(() => logEvents).As<IObservable<LogEvent>>();
-                x.Export<WimPickViewModel>().Lifestyle.Singleton();
-                x.Export<DeploymentViewModel>().Lifestyle.Singleton();
+                x.Export<WimPickViewModel>().ByInterfaces().As<WimPickViewModel>().Lifestyle.Singleton();
+                x.Export<AdvancedViewModel>().ByInterfaces().As<AdvancedViewModel>().Lifestyle.Singleton();
+                x.Export<DeploymentViewModel>().ByInterfaces().As<DeploymentViewModel>().Lifestyle.Singleton();
                 x.Export<UIServices>();
                 x.ExportFactory(() => viewService).As<IViewService>();
                 x.Export<DialogService>().As<IDialogService>();

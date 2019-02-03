@@ -62,6 +62,7 @@
     <Compile Include="ViewModels\AdvancedViewModel.cs" />
     <Compile Include="Assemblies.cs" />
     <Compile Include="ViewModels\DualBootViewModel.cs" />
+    <Compile Include="ViewModels\IBusy.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\DeploymentViewModel.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

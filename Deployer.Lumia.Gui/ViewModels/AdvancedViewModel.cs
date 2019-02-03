@@ -8,16 +8,16 @@ using ReactiveUI;
 
 namespace Deployer.Lumia.Gui.ViewModels
 {
-    public class AdvancedViewModel : ReactiveObject
+    public class AdvancedViewModel : ReactiveObject, IBusy
     {
         private readonly UIServices uiServices;
         private readonly ISettingsService settingsService;
-        private readonly IAutoDeployer autoDeployer;
+        private readonly IWoaDeployer autoDeployer;
         public CommandWrapper<Unit, Unit> InstallGpuWrapper { get; set; }
 
         private readonly ObservableAsPropertyHelper<ByteSize> sizeReservedForWindows;
 
-        public AdvancedViewModel(UIServices uiServices, ISettingsService settingsService, IAutoDeployer autoDeployer)
+        public AdvancedViewModel(UIServices uiServices, ISettingsService settingsService, IWoaDeployer autoDeployer)
         {
             this.uiServices = uiServices;
             this.settingsService = settingsService;
@@ -28,6 +28,8 @@ namespace Deployer.Lumia.Gui.ViewModels
             sizeReservedForWindows =
                 this.WhenAnyValue(x => x.GbsReservedForWindows, ByteSize.FromGigaBytes)
                     .ToProperty(this, x => x.SizeReservedForWindows);
+
+            IsBusyObservable = InstallGpuWrapper.Command.IsExecuting;
         }
 
         public ByteSize SizeReservedForWindows => sizeReservedForWindows.Value;
@@ -56,5 +58,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 throw new ApplicationException(Resources.PhoneIsNotLumia950XL);
             }           
         }
+
+        public IObservable<bool> IsBusyObservable { get; }
     }
 }

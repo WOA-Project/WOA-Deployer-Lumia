@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Installer.Lumia.Application.Views
+namespace Deployer.Lumia.Gui.Views
 {
     
     public partial class MarkdownViewerWindow
