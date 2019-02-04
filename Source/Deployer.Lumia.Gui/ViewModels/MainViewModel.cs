@@ -24,7 +24,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private ObservableAsPropertyHelper<RenderedLogEvent> statusHelper;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
-        private string DonationLink = "";
+        private string DonationLink = "https://github.com/WoA-project/WOA-Deployer/blob/master/Docs/Donations.md";
 
         public MainViewModel(IObservable<LogEvent> events, 
             IObservable<double> progressSubject, IEnumerable<IBusy> busies, UIServices uiServices)
