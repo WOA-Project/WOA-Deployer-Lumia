@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Deployer.Lumia.Gui
+namespace Deployer.Filesystem.FullFx
 {
     public static class Assemblies
     {

@@ -1,7 +1,7 @@
 ﻿using Deployer.Gui.Common;
 using Deployer.Lumia.Gui.Properties;
 
-namespace Deployer.Lumia.Gui
+namespace Deployer.Lumia.Gui.Specifics
 {
     public class SettingsService : ISettingsService
     {

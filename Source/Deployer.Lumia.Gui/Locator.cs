@@ -3,6 +3,7 @@ using System.Reactive.Subjects;
 using Deployer.Gui.Common;
 using Deployer.Gui.Common.Services;
 using Deployer.Gui.Core;
+using Deployer.Lumia.Gui.Specifics;
 using Deployer.Lumia.Gui.ViewModels;
 using Deployer.Lumia.Gui.Views;
 using Deployer.Lumia.NetFx;

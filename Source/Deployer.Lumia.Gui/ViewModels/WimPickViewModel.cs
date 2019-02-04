@@ -32,7 +32,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             PickWimFileCommand.ThrownExceptions.Subscribe(e =>
             {
                 Log.Error(e, "WIM file error");
-                this.uiServices.DialogService.ShowAlert(this, "Invalid WIM file", e.Message);
+                this.uiServices.DialogService.ShowAlert(this, Resources.InvalidWimFile, e.Message);
             });
 
             hasWimHelper = this.WhenAnyValue(model => model.WimMetadata, (WimMetadataViewModel x) => x != null)
@@ -48,7 +48,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             get
             {
                 var value = uiServices.FilePicker.Pick(
-                    new List<(string, IEnumerable<string>)> {("WIM files", new[] {"install.wim"})},
+                    new List<(string, IEnumerable<string>)> {(Resources.WimFilesFilter, new[] {"install.wim"})},
                     () => settingsService.WimFolder, x => settingsService.WimFolder = x);
 
                 return Observable.Return(value).Where(x => x != null)

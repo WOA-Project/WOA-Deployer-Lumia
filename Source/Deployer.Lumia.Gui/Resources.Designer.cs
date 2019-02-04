@@ -61,6 +61,15 @@ namespace Deployer.Lumia.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WOA Deployer for Lumia v{0}.
+        /// </summary>
+        public static string AppTitle {
+            get {
+                return ResourceManager.GetString("AppTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot inject the Post-OOBE drivers.
         /// </summary>
         public static string CannotInjectPostOobe {
@@ -70,11 +79,38 @@ namespace Deployer.Lumia.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        public static string Done {
+            get {
+                return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The drivers have been injected correctly.
         /// </summary>
         public static string DriversInjectedSucessfully {
             get {
                 return ResourceManager.GetString("DriversInjectedSucessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dual Boot Disabled!.
+        /// </summary>
+        public static string DualBootDisabled {
+            get {
+                return ResourceManager.GetString("DualBootDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dual Boot Enabled!.
+        /// </summary>
+        public static string DualBootEnabled {
+            get {
+                return ResourceManager.GetString("DualBootEnabled", resourceCulture);
             }
         }
         
@@ -103,6 +139,15 @@ namespace Deployer.Lumia.Gui {
         public static string InstallGpuManualSteps {
             get {
                 return ResourceManager.GetString("InstallGpuManualSteps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid WIM file.
+        /// </summary>
+        public static string InvalidWimFile {
+            get {
+                return ResourceManager.GetString("InvalidWimFile", resourceCulture);
             }
         }
         
@@ -162,6 +207,15 @@ namespace Deployer.Lumia.Gui {
         public static string WimFileNoValidArchitecture {
             get {
                 return ResourceManager.GetString("WimFileNoValidArchitecture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WIM files.
+        /// </summary>
+        public static string WimFilesFilter {
+            get {
+                return ResourceManager.GetString("WimFilesFilter", resourceCulture);
             }
         }
         

@@ -3,7 +3,7 @@ using Deployer.Gui.Core;
 using Deployer.Lumia.Gui.ViewModels;
 using Deployer.Tasks;
 
-namespace Deployer.Lumia.Gui
+namespace Deployer.Lumia.Gui.Specifics
 {
     public class WpfMarkdownDisplayer : IMarkdownDisplayer
     {

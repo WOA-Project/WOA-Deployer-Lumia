@@ -8,7 +8,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading;
-using Deployer.Gui.Core;
 using DynamicData;
 using ReactiveUI;
 using Serilog.Events;
@@ -24,10 +23,10 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private ObservableAsPropertyHelper<RenderedLogEvent> statusHelper;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
-        private string DonationLink = "https://github.com/WoA-project/WOA-Deployer/blob/master/Docs/Donations.md";
+        private const string DonationLink = "https://github.com/WoA-project/WOA-Deployer/blob/master/Docs/Donations.md";
 
         public MainViewModel(IObservable<LogEvent> events, 
-            IObservable<double> progressSubject, IEnumerable<IBusy> busies, UIServices uiServices)
+            IObservable<double> progressSubject, IEnumerable<IBusy> busies)
         {
             progressHelper = progressSubject
                 .Where(d => !double.IsNaN(d))
@@ -67,9 +66,8 @@ namespace Deployer.Lumia.Gui.ViewModels
             isProgressVisibleHelper?.Dispose();
         }
 
-        public string Title => $"WOA Deployer for Lumia v{Assembly.GetEntryAssembly().GetName().Version}"; 
-
-
+        public string Title => string.Format(Resources.AppTitle, Assembly.GetEntryAssembly().GetName().Version); 
+        
         private void SetupLogging(IObservable<LogEvent> events)
         {
             var conn = events

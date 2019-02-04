@@ -6,7 +6,6 @@ using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
 using Deployer.Filesystem.FullFx;
 using Deployer.FileSystem;
-using Deployer.Lumia.Gui;
 using Deployer.Lumia.NetFx.PhoneInfo;
 using Deployer.Services;
 using Grace.DependencyInjection;

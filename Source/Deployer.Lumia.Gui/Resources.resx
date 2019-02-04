@@ -180,4 +180,22 @@ Don't disable Dual Boot after installing the GPU drivers or the phone **will NOT
   <data name="PhoneIsNotLumia950XL" xml:space="preserve">
     <value>The phone is not a Lumia 950 XL</value>
   </data>
+  <data name="DualBootEnabled" xml:space="preserve">
+    <value>Dual Boot Enabled!</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="DualBootDisabled" xml:space="preserve">
+    <value>Dual Boot Disabled!</value>
+  </data>
+  <data name="AppTitle" xml:space="preserve">
+    <value>WOA Deployer for Lumia v{0}</value>
+  </data>
+  <data name="InvalidWimFile" xml:space="preserve">
+    <value>Invalid WIM file</value>
+  </data>
+  <data name="WimFilesFilter" xml:space="preserve">
+    <value>WIM files</value>
+  </data>
 </root>

@@ -40,7 +40,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                         .Merge(canChangeDualBoot)), dialogService);
             EnableDualBootWrapper.Command.Subscribe(async _ =>
             {
-                await dialogService.ShowAlert(this, "Done", "Dual Boot Enabled!");
+                await dialogService.ShowAlert(this, Resources.Done, Resources.DualBootEnabled);
                 IsEnabled = !IsEnabled;
             });
 
@@ -52,7 +52,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             DisableDualBootWrapper.Command.Subscribe(async _ =>
             {
-                await dialogService.ShowAlert(this, "Done", "Dual Boot Disabled!");
+                await dialogService.ShowAlert(this, Resources.Done, Resources.DualBootDisabled);
                 IsEnabled = !IsEnabled;
             });
 
