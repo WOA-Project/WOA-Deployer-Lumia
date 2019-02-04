@@ -11,6 +11,7 @@ namespace Deployer.Lumia.Gui.ViewModels
     {
         private readonly IWindowsOptionsProvider optionsProvider;
         private readonly IWoaDeployer deploymentTasks;
+        private readonly UIServices uiServices;
         private readonly AdvancedViewModel advancedViewModel;
         private readonly WimPickViewModel wimPickViewModel;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
@@ -22,6 +23,7 @@ namespace Deployer.Lumia.Gui.ViewModels
         {
             this.optionsProvider = optionsProvider;
             this.deploymentTasks = deploymentTasks;
+            this.uiServices = uiServices;
             this.advancedViewModel = advancedViewModel;
             this.wimPickViewModel = wimPickViewModel;
 
@@ -48,6 +50,9 @@ namespace Deployer.Lumia.Gui.ViewModels
             optionsProvider.Options = windowsDeploymentOptions;
 
             await deploymentTasks.Deploy();
+
+            await uiServices.DialogService.ShowAlert(this, Resources.Finished,
+                Resources.WindowsDeployedSuccessfully);
         }
 
         public CommandWrapper<Unit, Unit> FullInstallWrapper { get; set; }

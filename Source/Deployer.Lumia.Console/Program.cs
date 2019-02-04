@@ -23,47 +23,62 @@ namespace Deployment.Console
 
             try
             {
-                var container = new DependencyInjectionContainer();
+                await Execute(args);
+                Log.Information("Execution finished");
 
-                var op = new WindowsDeploymentOptionsProvider();
-                container.Configure(x =>
-                {
-                    ContainerConfigurator.Configure(x, op);
-                    x.Export<ConsoleMarkdownDisplayer>().As<IMarkdownDisplayer>();                    
-                });
-
-                var deployer = container.Locate<IWoaDeployer>();
-
-                await Parser.Default
-                    .ParseArguments<WindowsDeploymentCmdOptions, 
-                        EnableDualBootCmdOptions, 
-                        DisableDualBootCmdOptions,
-                        InstallGpuCmdOptions,
-                        NonWindowsDeploymentCmdOptions>
-                        (args)
-                    .MapResult(
-                        (WindowsDeploymentCmdOptions opts) =>
-                        {
-                            op.Options = new WindowsDeploymentOptions()
-                            {
-                                ImageIndex = opts.Index,
-                                ImagePath = opts.WimImage,
-                                SizeReservedForWindows = ByteSize.FromGigaBytes(opts.ReservedSizeForWindowsInGb),
-                            };
-                            return deployer.Deploy();
-                        },
-                        (EnableDualBootCmdOptions opts) => deployer.ToogleDualBoot(true),
-                        (DisableDualBootCmdOptions opts) => deployer.ToogleDualBoot(false),
-                        (InstallGpuCmdOptions opts) => deployer.InstallGpu(),
-                        (NonWindowsDeploymentCmdOptions opts) => deployer.Deploy(),
-                        HandleErrors);
             }
             catch (Exception e)
             {
                 Log.Fatal(e, "Operation failed");
                 throw;
             }
-        }       
+        }
+
+        private static async Task Execute(string[] args)
+        {
+            var op = new WindowsDeploymentOptionsProvider();
+
+            var deployer = GetDeployer(op);
+
+            var parserResult = Parser.Default
+                .ParseArguments<WindowsDeploymentCmdOptions,
+                        EnableDualBootCmdOptions,
+                        DisableDualBootCmdOptions,
+                        InstallGpuCmdOptions,
+                        NonWindowsDeploymentCmdOptions>(args);
+
+            await parserResult
+                .MapResult(
+                    (WindowsDeploymentCmdOptions opts) =>
+                    {
+                        op.Options = new WindowsDeploymentOptions()
+                        {
+                            ImageIndex = opts.Index,
+                            ImagePath = opts.WimImage,
+                            SizeReservedForWindows = ByteSize.FromGigaBytes(opts.ReservedSizeForWindowsInGb),
+                        };
+                        return deployer.Deploy();
+                    },
+                    (EnableDualBootCmdOptions opts) => deployer.ToogleDualBoot(true),
+                    (DisableDualBootCmdOptions opts) => deployer.ToogleDualBoot(false),
+                    (InstallGpuCmdOptions opts) => deployer.InstallGpu(),
+                    (NonWindowsDeploymentCmdOptions opts) => deployer.Deploy(),
+                    HandleErrors);
+        }
+
+        private static IWoaDeployer GetDeployer(WindowsDeploymentOptionsProvider op)
+        {
+            var container = new DependencyInjectionContainer();
+
+            container.Configure(x =>
+            {
+                ContainerConfigurator.Configure(x, op);
+                x.Export<ConsoleMarkdownDisplayer>().As<IMarkdownDisplayer>();
+            });
+
+            var deployer = container.Locate<IWoaDeployer>();
+            return deployer;
+        }
 
         private static Task HandleErrors(IEnumerable<Error> errs)
         {
