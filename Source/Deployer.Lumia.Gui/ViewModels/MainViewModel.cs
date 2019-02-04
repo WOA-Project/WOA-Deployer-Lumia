@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading;
+using Deployer.Gui.Core;
 using DynamicData;
 using ReactiveUI;
 using Serilog.Events;
@@ -20,9 +24,10 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private ObservableAsPropertyHelper<RenderedLogEvent> statusHelper;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
+        private string DonationLink = "";
 
         public MainViewModel(IObservable<LogEvent> events, 
-            IObservable<double> progressSubject, IEnumerable<IBusy> busies)
+            IObservable<double> progressSubject, IEnumerable<IBusy> busies, UIServices uiServices)
         {
             progressHelper = progressSubject
                 .Where(d => !double.IsNaN(d))
@@ -37,8 +42,12 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             var isBusyObs = busies.Select(x => x.IsBusyObservable).Merge();
 
+            DonateCommand = ReactiveCommand.Create(() => { Process.Start(DonationLink); });
+
             isBusyHelper = isBusyObs.ToProperty(this, model => model.IsBusy);
         }
+
+        public ReactiveCommand<Unit, Unit> DonateCommand { get; }
 
         public bool IsBusy => isBusyHelper.Value;
 

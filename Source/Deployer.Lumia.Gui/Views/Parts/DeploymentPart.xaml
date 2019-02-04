@@ -19,12 +19,14 @@
             <TextBlock Margin="12,6,12,18" FontSize="16" TextWrapping="Wrap">Use this section to deploy or redeploy <Bold>Windows 10 ARM64</Bold> into your Phone.</TextBlock>
         </StackPanel>
 
-        <UniformGrid Columns="1" Grid.Row="1">
+        <Grid Grid.Row="1">
 
-            <UniformGrid Rows="1">
-                <parts:WimOptionsPart Margin="8,0,0,0" />
-            </UniformGrid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
+            <parts:WimOptionsPart Margin="8,10,0,10" />
 
             <UniformGrid Rows="1" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Height="50"
                          Margin="15">
@@ -34,6 +36,6 @@
                                  ToolTip="Use this option to install Windows into a Phone that has just been unlocked." />               
             </UniformGrid>
             
-        </UniformGrid>
+        </Grid>
     </Grid>
 </UserControl>

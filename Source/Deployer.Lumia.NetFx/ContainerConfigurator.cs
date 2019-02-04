@@ -6,6 +6,7 @@ using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
 using Deployer.Filesystem.FullFx;
 using Deployer.FileSystem;
+using Deployer.Lumia.Gui;
 using Deployer.Lumia.NetFx.PhoneInfo;
 using Deployer.Services;
 using Grace.DependencyInjection;
@@ -18,8 +19,10 @@ namespace Deployer.Lumia.NetFx
         public static IExportRegistrationBlock Configure(IExportRegistrationBlock block,
             WindowsDeploymentOptionsProvider installOptionsProvider)
         {
-            var taskTypes = AssemblyUtils.FindTypes(x =>
-                x.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IDeploymentTask)));
+            var taskTypes = from a in Assemblies.AppDomainAssemblies
+                from type in a.ExportedTypes
+                where type.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IDeploymentTask))
+                select type;
 
             block.ExportFactory(Tokenizer.Create).As<Tokenizer<LangToken>>();
             block.Export<ScriptParser>().As<IScriptParser>();
@@ -34,7 +37,7 @@ namespace Deployer.Lumia.NetFx
             block.ExportInstance(taskTypes).As<IEnumerable<Type>>();
             block.Export<ScriptRunner>().As<IScriptRunner>();
             block.Export<InstanceBuilder>().As<IInstanceBuilder>();
-            block.Export<Phone>();
+            block.Export<Phone>().As<Phone>().As<Device>();
             block.Export<FileSystemOperations>().As<IFileSystemOperations>();
             block.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>();
             block.Export<WindowsDeployer>().As<IWindowsDeployer>();

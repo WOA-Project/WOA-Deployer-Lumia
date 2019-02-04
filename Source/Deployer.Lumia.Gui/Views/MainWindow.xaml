@@ -3,14 +3,38 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:parts1="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
+                 xmlns:parts="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  mc:Ignorable="d"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
                  mah:DialogParticipation.Register="{Binding}"
-                 Title="{Binding Title}" Width="920" Height="720"
+                 Title="{Binding Title}" Width="800" Height="640"
+                 Icon="/Assets/appicon.png"
                  WindowStartupLocation="CenterScreen">
     <Grid>
+        <Grid.Resources>
+            <Style x:Key="DonateButtonStyle" TargetType="Button">
+                <Setter Property="Foreground" Value="#FF002EFF" />
+                <Setter Property="RenderTransformOrigin" Value="0.785,0.737" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <RadialGradientBrush GradientOrigin="1,1" Center="1,1" RadiusX="2" RadiusY="1">
+                            <RadialGradientBrush.RelativeTransform>
+                                <TransformGroup>
+                                    <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                    <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                    <RotateTransform Angle="26" CenterY="0.5" CenterX="0.5"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </RadialGradientBrush.RelativeTransform>
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#FFB6EEFF" Offset="1"/>
+                            <GradientStop Color="White" Offset="0.528"/>
+                        </RadialGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -21,6 +45,7 @@
             <Bold>NOTICE: </Bold> All the following operations require the Phone to be in
             <Bold>Mass Storage Mode</Bold>
         </TextBlock>
+
         <TabControl Margin="20,0,20,20" Grid.Row="1"
                     IsEnabled="{Binding IsBusy, Converter={StaticResource BoolNegationConverter}}">
             <TabItem Header="Deployment">
@@ -30,7 +55,7 @@
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <parts1:DeploymentPart />
+                    <parts:DeploymentPart />
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Dual Boot">
@@ -40,7 +65,7 @@
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <parts1:DualBootPart />
+                    <parts:DualBootPart />
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Advanced">
@@ -49,14 +74,17 @@
                         <TextBlock Text="{Binding}" ToolTip="Advanced tasks" />
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
-                <ScrollViewer>
-                    <parts1:AdvancedPart />
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <parts:AdvancedPart />
                 </ScrollViewer>
             </TabItem>
         </TabControl>
+
+        <Button Command="{Binding DonateCommand}" ToolTip="Please, support this tool. Thanks in advance :)" Grid.Row="1" Margin="0,0,20,20" Padding="10,5,10,5" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="Donate" Style="{StaticResource DonateButtonStyle}" />
+
         <Expander Grid.Row="2" Header="Log" IsExpanded="False" MaxHeight="400">
-            <parts1:LogPart />
+            <parts:LogPart />
         </Expander>
-        <parts1:StatusPart Grid.Row="3" />
+        <parts:StatusPart Grid.Row="3" />
     </Grid>
 </mah:MetroWindow>
