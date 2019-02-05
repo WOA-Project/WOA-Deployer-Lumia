@@ -66,7 +66,7 @@ namespace Deployer.Filesystem.FullFx
         {
             var outputSubject = new Subject<string>();
             var subscription = outputSubject.Subscribe(Log.Verbose);
-            var resultCode = await ProcessUtils.RunProcessAsync(SystemPaths.Dism, $@"/Add-Driver /Image:{volume.RootDir.Name} /Driver:""{path}"" /Recurse /ForceUnsigned", outputSubject, outputSubject);
+            var resultCode = await ProcessUtils.RunProcessAsync(WindowsCommandLineUtils.Dism, $@"/Add-Driver /Image:{volume.RootDir.Name} /Driver:""{path}"" /Recurse /ForceUnsigned", outputSubject, outputSubject);
             subscription.Dispose();
             
             if (resultCode != 0)
@@ -80,7 +80,7 @@ namespace Deployer.Filesystem.FullFx
         {
             var outputSubject = new Subject<string>();
             var subscription = outputSubject.Subscribe(Log.Verbose);
-            var resultCode = await ProcessUtils.RunProcessAsync(SystemPaths.Dism, $@"/Remove-Driver /Image:{volume.RootDir.Name} /Driver:""{path}""", outputSubject, outputSubject);
+            var resultCode = await ProcessUtils.RunProcessAsync(WindowsCommandLineUtils.Dism, $@"/Remove-Driver /Image:{volume.RootDir.Name} /Driver:""{path}""", outputSubject, outputSubject);
             subscription.Dispose();
             
             if (resultCode != 0)

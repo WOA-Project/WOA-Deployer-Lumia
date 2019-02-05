@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Deployer.Services
 {
-    public static class SystemPaths
+    public static class WindowsCommandLineUtils
     {
         public static string BcdEdit { get; } = Path.Combine(GetSystemFolder, "bcdedit.exe");
         public static string BcdBoot { get; } = Path.Combine(GetSystemFolder, "bcdboot.exe");
@@ -13,15 +13,25 @@ namespace Deployer.Services
         {
             get
             {
-                var shouldUseSysNative = Environment.Is64BitOperatingSystem && !Environment.Is64BitProcess;
+                var sysNativeFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SysNative");
 
-                if (shouldUseSysNative)
+                if (Is64OsRunning32Proc())
                 {
-                    return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SysNative");
+                    return sysNativeFolder;
+                }
+
+                if (ArchitectureInfo.IsArm64())
+                {
+                    return sysNativeFolder;
                 }
 
                 return Path.Combine(Environment.SystemDirectory);
             }
+        }
+
+        private static bool Is64OsRunning32Proc()
+        {
+            return Environment.Is64BitOperatingSystem && !Environment.Is64BitProcess;
         }
     }
 }

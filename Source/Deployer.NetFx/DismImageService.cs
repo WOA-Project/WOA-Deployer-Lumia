@@ -30,7 +30,7 @@ namespace Deployer.Filesystem.FullFx
                     .Subscribe(progressObserver);
             }
             
-            var dismName = SystemPaths.Dism;
+            var dismName = WindowsCommandLineUtils.Dism;
             var args = $@"/Apply-Image /compact /ImageFile:""{imagePath}"" /Index:{imageIndex} /ApplyDir:{volume.RootDir.Name}";
             
             Log.Verbose("We are about to run DISM: {ExecName} {Parameters}", dismName, args);

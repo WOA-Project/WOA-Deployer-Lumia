@@ -9,7 +9,7 @@ namespace Deployer.Services
 
         public BcdInvoker(string store)
         {
-            bcdEdit = SystemPaths.BcdEdit;
+            bcdEdit = WindowsCommandLineUtils.BcdEdit;
             commonArgs = $@"/STORE ""{store}""";
         }
 

@@ -25,7 +25,7 @@ namespace Deployer
             var windowsPath = Path.Combine(windows.RootDir.Name, "Windows");
             var bootDriveLetter = boot.Letter;
 
-            await ProcessUtils.RunProcessAsync(SystemPaths.BcdBoot, $@"{windowsPath} /f UEFI /s {bootDriveLetter}:");
+            await ProcessUtils.RunProcessAsync(WindowsCommandLineUtils.BcdBoot, $@"{windowsPath} /f UEFI /s {bootDriveLetter}:");
             bcdInvoker.Invoke("/set {default} testsigning on");
             bcdInvoker.Invoke("/set {default} recoveryenabled no");
             bcdInvoker.Invoke("/set {default} nointegritychecks on");
