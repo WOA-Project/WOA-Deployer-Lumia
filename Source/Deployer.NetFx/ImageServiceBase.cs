@@ -15,7 +15,7 @@ namespace Deployer.Filesystem.FullFx
 {
     public abstract class ImageServiceBase : IWindowsImageService
     {
-        public abstract Task ApplyImage(Volume volume, string imagePath, int imageIndex = 1,
+        public abstract Task ApplyImage(Volume volume, string imagePath, int imageIndex = 1, bool useCompact = false, 
             IObserver<double> progressObserver = null);
 
         protected static void EnsureValidParameters(Volume volume, string imagePath, int imageIndex)

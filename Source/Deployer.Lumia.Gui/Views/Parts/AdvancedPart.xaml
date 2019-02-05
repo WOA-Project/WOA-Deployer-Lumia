@@ -27,18 +27,20 @@
 
         </GroupBox>
 
-        <GroupBox Header="Misc" Grid.Row="1" Padding="20" Margin="0,20,0,0">
-            <HeaderedContentControl Header="Size to reserve for Windows (taken from the Data partition as needed)"
-                                    HorizontalContentAlignment="Stretch">
-                <DockPanel>
-                    <TextBlock Padding="10" MinWidth="80" Text="{Binding SizeReservedForWindows}"
-                               DockPanel.Dock="Right" />
-                    <Slider Minimum="10" Maximum="24" SmallChange="0.5" LargeChange="1" TickFrequency="1"
-                            Value="{Binding GbsReservedForWindows, Mode=TwoWay}"
-                            Height="30" />
-                </DockPanel>
-            </HeaderedContentControl>
-
+        <GroupBox Header="Misc" Padding="20" Margin="0,20,0,0">
+            <UniformGrid Rows="1">
+                <HeaderedContentControl Header="Size to reserve for Windows (taken from the Data partition as needed)"
+                                        HorizontalContentAlignment="Stretch">
+                    <DockPanel Margin="10">
+                        <TextBlock Padding="10" MinWidth="80" Text="{Binding SizeReservedForWindows}"
+                                   DockPanel.Dock="Right" />
+                        <Slider Minimum="10" Maximum="24" SmallChange="0.5" LargeChange="1" TickFrequency="1"
+                                Value="{Binding GbsReservedForWindows, Mode=TwoWay}"
+                                Height="30" />
+                    </DockPanel>
+                </HeaderedContentControl>
+                <CheckBox IsChecked="{Binding UseCompactDeployment, Mode=TwoWay}" HorizontalAlignment="Center" Margin="10" Content="Use Compact Deployment" ToolTip="Checking this will reduce the size of the Windows installation. However, the deployment process will take longer. It will help you save space on your device"></CheckBox>
+            </UniformGrid>
         </GroupBox>
     </StackPanel>
 </UserControl>

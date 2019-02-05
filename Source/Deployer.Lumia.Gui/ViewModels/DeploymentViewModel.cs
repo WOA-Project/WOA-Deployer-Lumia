@@ -10,7 +10,7 @@ namespace Deployer.Lumia.Gui.ViewModels
     public class DeploymentViewModel : ReactiveObject, IBusy
     {
         private readonly IWindowsOptionsProvider optionsProvider;
-        private readonly IWoaDeployer deploymentTasks;
+        private readonly IWoaDeployer deployer;
         private readonly UIServices uiServices;
         private readonly AdvancedViewModel advancedViewModel;
         private readonly WimPickViewModel wimPickViewModel;
@@ -18,11 +18,11 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         public DeploymentViewModel(
             IWindowsOptionsProvider optionsProvider,
-            IWoaDeployer deploymentTasks, UIServices uiServices, AdvancedViewModel advancedViewModel,
+            IWoaDeployer deployer, UIServices uiServices, AdvancedViewModel advancedViewModel,
             WimPickViewModel wimPickViewModel)
         {
             this.optionsProvider = optionsProvider;
-            this.deploymentTasks = deploymentTasks;
+            this.deployer = deployer;
             this.uiServices = uiServices;
             this.advancedViewModel = advancedViewModel;
             this.wimPickViewModel = wimPickViewModel;
@@ -45,11 +45,12 @@ namespace Deployer.Lumia.Gui.ViewModels
                 ImagePath = wimPickViewModel.WimMetadata.Path,
                 ImageIndex = wimPickViewModel.WimMetadata.SelectedDiskImage.Index,
                 SizeReservedForWindows = advancedViewModel.SizeReservedForWindows,
+                UseCompact = advancedViewModel.UseCompactDeployment,
             };
 
             optionsProvider.Options = windowsDeploymentOptions;
 
-            await deploymentTasks.Deploy();
+            await deployer.Deploy();
 
             await uiServices.DialogService.ShowAlert(this, Resources.Finished,
                 Resources.WindowsDeployedSuccessfully);

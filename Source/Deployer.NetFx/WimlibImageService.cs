@@ -7,7 +7,7 @@ namespace Deployer.Filesystem.FullFx
 {
     public class WimlibImageService : ImageServiceBase
     {
-        public override async Task ApplyImage(Volume volume, string imagePath, int imageIndex = 1, IObserver<double> progressObserver = null)
+        public override async Task ApplyImage(Volume volume, string imagePath, int imageIndex = 1, bool useCompact = false, IObserver<double> progressObserver = null)
         {
             EnsureValidParameters(volume, imagePath, imageIndex);
 

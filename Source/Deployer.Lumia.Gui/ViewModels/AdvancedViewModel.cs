@@ -40,6 +40,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             set
             {
                 settingsService.SizeReservedForWindows = value;
+                settingsService.Save();
                 this.RaisePropertyChanged(nameof(GbsReservedForWindows));
             }
         }
@@ -56,9 +57,20 @@ namespace Deployer.Lumia.Gui.ViewModels
             catch (InvalidOperationException)
             {
                 throw new ApplicationException(Resources.PhoneIsNotLumia950XL);
-            }           
+            }
         }
 
         public IObservable<bool> IsBusyObservable { get; }
+
+        public bool UseCompactDeployment
+        {
+            get => settingsService.UseCompactDeployment;
+            set
+            {
+                settingsService.UseCompactDeployment = value;
+                settingsService.Save();
+                this.RaisePropertyChanged(nameof(UseCompactDeployment));
+            }
+        }
     }
 }

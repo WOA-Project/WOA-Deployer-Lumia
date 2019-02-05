@@ -37,18 +37,6 @@ namespace Deployer.Lumia.Gui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DriverPackFolder {
-            get {
-                return ((string)(this["DriverPackFolder"]));
-            }
-            set {
-                this["DriverPackFolder"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("18")]
         public double SizeReservedForWindows {
             get {
@@ -56,6 +44,18 @@ namespace Deployer.Lumia.Gui.Properties {
             }
             set {
                 this["SizeReservedForWindows"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseCompactDeployment {
+            get {
+                return ((bool)(this["UseCompactDeployment"]));
+            }
+            set {
+                this["UseCompactDeployment"] = value;
             }
         }
     }

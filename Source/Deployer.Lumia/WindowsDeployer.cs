@@ -35,7 +35,7 @@ namespace Deployer.Lumia
             var options = optionsProvider.Options;
             await AllocateSpace(options.SizeReservedForWindows);
             var partitions = await CreatePartitions();
-            await imageService.ApplyImage(await phone.GetWindowsVolume(), options.ImagePath, options.ImageIndex, progressObserver);
+            await imageService.ApplyImage(await phone.GetWindowsVolume(), options.ImagePath, options.ImageIndex, options.UseCompact, progressObserver);
             await MakeBootable(partitions);
         }
 

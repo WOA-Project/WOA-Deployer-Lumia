@@ -49,7 +49,11 @@ namespace Deployer.Lumia.Gui.ViewModels
             {
                 var value = uiServices.FilePicker.Pick(
                     new List<(string, IEnumerable<string>)> {(Resources.WimFilesFilter, new[] {"install.wim"})},
-                    () => settingsService.WimFolder, x => settingsService.WimFolder = x);
+                    () => settingsService.WimFolder, x =>
+                    {
+                        settingsService.WimFolder = x;
+                        settingsService.Save();
+                    });
 
                 return Observable.Return(value).Where(x => x != null)
                     .Select(LoadWimMetadata);

@@ -16,7 +16,7 @@ namespace Deployer.Filesystem.FullFx
     {
         private readonly Regex percentRegex = new Regex(@"(\d*.\d*)%");
 
-        public override async Task ApplyImage(Volume volume, string imagePath, int imageIndex = 1, IObserver<double> progressObserver = null)
+        public override async Task ApplyImage(Volume volume, string imagePath, int imageIndex = 1, bool useCompact = false, IObserver<double> progressObserver = null)
         {
             EnsureValidParameters(volume, imagePath, imageIndex);
 
@@ -31,7 +31,10 @@ namespace Deployer.Filesystem.FullFx
             }
             
             var dismName = WindowsCommandLineUtils.Dism;
-            var args = $@"/Apply-Image /compact /ImageFile:""{imagePath}"" /Index:{imageIndex} /ApplyDir:{volume.RootDir.Name}";
+
+            var compact = useCompact ? "/compact" : "";
+
+            var args = $@"/Apply-Image {compact} /ImageFile:""{imagePath}"" /Index:{imageIndex} /ApplyDir:{volume.RootDir.Name}";
             
             Log.Verbose("We are about to run DISM: {ExecName} {Parameters}", dismName, args);
             var resultCode = await ProcessUtils.RunProcessAsync(dismName, args, outputObserver: outputSubject);

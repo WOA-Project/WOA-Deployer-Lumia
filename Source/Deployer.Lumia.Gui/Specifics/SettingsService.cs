@@ -5,12 +5,6 @@ namespace Deployer.Lumia.Gui.Specifics
 {
     public class SettingsService : ISettingsService
     {
-        public string DriverPackFolder
-        {
-            get => Settings.Default.DriverPackFolder;
-            set => Settings.Default.DriverPackFolder = value;
-        }
-
         public string WimFolder
         {
             get => Settings.Default.WimFolder;
@@ -21,6 +15,12 @@ namespace Deployer.Lumia.Gui.Specifics
         {
             get => Settings.Default.SizeReservedForWindows;
             set => Settings.Default.SizeReservedForWindows = value;
+        }
+
+        public bool UseCompactDeployment
+        {
+            get => Settings.Default.UseCompactDeployment;
+            set => Settings.Default.UseCompactDeployment = value;
         }
 
         public void Save()
