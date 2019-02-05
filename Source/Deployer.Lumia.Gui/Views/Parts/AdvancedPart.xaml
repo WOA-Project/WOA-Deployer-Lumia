@@ -29,8 +29,11 @@
 
         <GroupBox Header="Misc" Padding="20" Margin="0,20,0,0">
             <UniformGrid Rows="1">
-                <HeaderedContentControl Header="Size to reserve for Windows (taken from the Data partition as needed)"
-                                        HorizontalContentAlignment="Stretch">
+                <HeaderedContentControl
+                    HorizontalContentAlignment="Stretch">
+                    <HeaderedContentControl.Header>
+                        <TextBlock TextWrapping="Wrap">Size to reserve for Windows (taken from the Data partition as needed)</TextBlock>
+                    </HeaderedContentControl.Header>
                     <DockPanel Margin="10">
                         <TextBlock Padding="10" MinWidth="80" Text="{Binding SizeReservedForWindows}"
                                    DockPanel.Dock="Right" />
