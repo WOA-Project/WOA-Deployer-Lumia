@@ -6,7 +6,6 @@ using System.Management.Automation;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ByteSizeLib;
-using Deployer.Exceptions;
 using Deployer.FileSystem;
 using Registry;
 using Serilog;
@@ -15,9 +14,6 @@ namespace Deployer.Filesystem.FullFx
 {
     public class LowLevelApi : ILowLevelApi
     {
-        private static readonly ByteSize MinimumPhoneDiskSize = ByteSize.FromGigaBytes(28);
-        private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
-        private const string MainOsLabel = "MainOS";
         private readonly PowerShell ps;
 
         public LowLevelApi()
@@ -52,35 +48,7 @@ namespace Deployer.Filesystem.FullFx
 
             return disks.ToList();
         }
-
-        public async Task<Disk> GetPhoneDisk()
-        {
-            var disks = await GetDisks();
-            foreach (var disk in disks)
-            {
-                var hasCorrectSize = HasCorrectSize(disk);
-
-                if (hasCorrectSize)
-                {
-                    var volumes = await disk.GetVolumes();
-                    var mainOs = volumes.FirstOrDefault(x => x.Label == MainOsLabel);
-                    if (mainOs != null)
-                    {
-                        return disk;
-                    }
-                }
-            }
-
-            throw new PhoneDiskNotFoundException("Cannot get the Phone Disk. Please, verify that the Phone is in Mass Storage Mode.");
-        }
-
-        private static bool HasCorrectSize(Disk disk)
-        {
-            var moreThanMinimum = disk.Size > MinimumPhoneDiskSize;
-            var lessThanMaximum = disk.Size < MaximumPhoneDiskSize;
-            return moreThanMinimum && lessThanMaximum;
-        }
-
+        
         public async Task<IList<Volume>> GetVolumes(Disk disk)
         {
             var partitions = await GetPartitions(disk);

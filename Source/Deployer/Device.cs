@@ -18,7 +18,12 @@ namespace Deployer
             this.lowLevelApi = lowLevelApi;
         }
 
-        public Task<Disk> GetDisk() => lowLevelApi.GetPhoneDisk();
+        public abstract Task<Disk> GetDisk();
+
+        public Task<ICollection<Disk>> GetDisks()
+        {
+            return lowLevelApi.GetDisks();
+        }
 
         protected async Task<Volume> GetVolume(string label)
         {

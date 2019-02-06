@@ -6,7 +6,6 @@ namespace Deployer.FileSystem
 {
     public interface ILowLevelApi
     {
-        Task<Disk> GetPhoneDisk();
         Task ResizePartition(Partition partition, ByteSize sizeInBytes);
         Task<List<Partition>> GetPartitions(Disk disk);
         Task<Volume> GetVolume(Partition partition);

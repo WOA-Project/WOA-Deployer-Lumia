@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ByteSizeLib;
+using Deployer.Exceptions;
 using Deployer.FileSystem;
 using Deployer.Services;
 using Serilog;
@@ -13,7 +13,9 @@ namespace Deployer.Lumia
     {
         private readonly IPhoneModelReader phoneModelReader;
         private const string MainOsLabel = "MainOS";
-
+        private static readonly ByteSize MinimumPhoneDiskSize = ByteSize.FromGigaBytes(28);
+        private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
+        
         private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
         private Volume efiEspVolume;
         private Volume mainOs;
@@ -127,6 +129,34 @@ namespace Deployer.Lumia
             await RemovePartition("WoA ESP", await GetBootPartition());
             var winVol = await GetWindowsVolume();
             await RemovePartition("WoA", winVol?.Partition);
+        }
+
+        public override async Task<Disk> GetDisk()
+        {
+            var disks = await GetDisks();
+            foreach (var disk in disks.Where(x => x.Number != 0))
+            {
+                var hasCorrectSize = HasCorrectSize(disk);
+
+                if (hasCorrectSize)
+                {
+                    var volumes = await disk.GetVolumes();
+                    var mainOsVol = volumes.FirstOrDefault(x => x.Label == MainOsLabel);
+                    if (mainOsVol != null)
+                    {
+                        return disk;
+                    }
+                }
+            }
+
+            throw new PhoneDiskNotFoundException("Cannot get the Phone Disk. Please, verify that the Phone is in Mass Storage Mode.");
+        }
+
+        private static bool HasCorrectSize(Disk disk)
+        {
+            var moreThanMinimum = disk.Size > MinimumPhoneDiskSize;
+            var lessThanMaximum = disk.Size < MaximumPhoneDiskSize;
+            return moreThanMinimum && lessThanMaximum;
         }
 
         public override async Task<Volume> GetBootVolume()
