@@ -1,5 +1,8 @@
 ﻿# Donations are welcome!
+ 
 I'm SuperJMN, the creator of the tool. If you find this useful, feel free to [donate](http://paypal.me/superjmn) to support my work. You can donate any amount. Maybe enough for a coffee? 😊 It encourages me to keep it up-to-date and improve it. Thanks in advance!!
+
+[Donate me via Paypay](http://paypal.me/superjmn)
 
 ## But hey! I'm not alone
 They are the real heros: The (core) Dev-Team.
