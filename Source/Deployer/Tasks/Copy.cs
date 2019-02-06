@@ -3,7 +3,7 @@ using Deployer.Execution;
 
 namespace Deployer.Tasks
 {
-    [TaskDescription("Copying file")]
+    [TaskDescription("Copying file {0} to {1}")]
     public class Copy : IDeploymentTask
     {
         private readonly string origin;

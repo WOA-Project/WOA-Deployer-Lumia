@@ -1,14 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Deployer.Execution;
+using Deployer.Utils;
 using Serilog;
 
 namespace Deployer.Tasks
 {
-    [TaskDescription("Unpacking from GitHub")]
+    [TaskDescription("Unpacking from GitHub: {0}")]
     public class GitHubUnpack : IDeploymentTask
     {
         private readonly string downloadUrl;
@@ -45,7 +45,7 @@ namespace Deployer.Tasks
 
             using (var zip = await downloader.DownloadAsZipArchive(downloadUrl))
             {
-                var temp = Path.Combine(SubFolder, Guid.NewGuid().ToString());
+                var temp = FileUtils.GetTempDirectoryName();
                 zip.ExtractToDirectory(temp);
                 
                 if (Directory.Exists(folderPath))

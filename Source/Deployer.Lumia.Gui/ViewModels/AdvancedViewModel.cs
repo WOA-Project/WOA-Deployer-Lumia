@@ -50,13 +50,18 @@ namespace Deployer.Lumia.Gui.ViewModels
             try
             {
                 await autoDeployer.InstallGpu();
-                var messageViewModel = new MessageViewModel(Resources.ManualStepsTitle, Resources.InstallGpuManualSteps);
+                var messageViewModel =
+                    new MessageViewModel(Resources.ManualStepsTitle, Resources.InstallGpuManualSteps);
 
                 uiServices.ViewService.Show("MarkdownViewer", messageViewModel);
             }
             catch (InvalidOperationException)
             {
                 throw new ApplicationException(Resources.PhoneIsNotLumia950XL);
+            }
+            catch (Exception)
+            {
+                throw new ApplicationException(Resources.CannotInstallGpu);
             }
         }
 

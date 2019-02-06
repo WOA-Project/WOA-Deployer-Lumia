@@ -2,6 +2,6 @@
 {
     public interface IBcdInvoker
     {
-        string Invoke(string command);
+        string Invoke(string command = "");
     }
 }

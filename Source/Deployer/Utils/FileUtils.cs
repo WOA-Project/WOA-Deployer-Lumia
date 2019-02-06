@@ -114,5 +114,11 @@ namespace Deployer.Utils
                 Directory.CreateDirectory(destPath);
             }
         }
+
+        public static string GetTempDirectoryName() 
+        {
+            var randomFilename = Path.GetRandomFileName();
+            return Path.Combine(Path.GetTempPath(), randomFilename);
+        }
     }
 }

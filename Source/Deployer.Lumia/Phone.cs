@@ -12,6 +12,7 @@ namespace Deployer.Lumia
     public class Phone : Device
     {
         private readonly IPhoneModelReader phoneModelReader;
+        private readonly BcdInvokerFactory bcdInvokerFactory;
         private const string MainOsLabel = "MainOS";
         private static readonly ByteSize MinimumPhoneDiskSize = ByteSize.FromGigaBytes(28);
         private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
@@ -19,15 +20,22 @@ namespace Deployer.Lumia
         private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
         private Volume efiEspVolume;
         private Volume mainOs;
+        private IBcdInvoker bcdInvoker;
 
-        public Phone(ILowLevelApi lowLevelApi, IPhoneModelReader phoneModelReader) : base(lowLevelApi)
+        public Phone(ILowLevelApi lowLevelApi, IPhoneModelReader phoneModelReader, BcdInvokerFactory bcdInvokerFactory) : base(lowLevelApi)
         {
             this.phoneModelReader = phoneModelReader;
+            this.bcdInvokerFactory = bcdInvokerFactory;
         }
 
         public async Task<Volume> GetEfiespVolume()
         {
             return efiEspVolume ?? (efiEspVolume = await GetVolume("EFIESP"));
+        }
+
+        public async Task<IBcdInvoker> GetBcdInvoker()
+        {
+            return bcdInvoker ?? (bcdInvoker = bcdInvokerFactory.Create((await GetEfiespVolume()).GetBcdFullFilename()));
         }
 
         public async Task<Volume> GetMainOsVolume()
@@ -47,10 +55,11 @@ namespace Deployer.Lumia
             var isWoaPresent = await IsWoAPresent();
             var isWPhonePresent = await IsWindowsPhonePresent();
             var isOobeFinished = await IsOobeFinished();
+            var isBcdEntryPresent = await GetIsEntryPresent(WinPhoneBcdGuid);
 
-            var bootPartition = await GetBootPartition();
+            var bootPartition = await DeviceMixin.GetBootPartition(this);
             
-            var isEnabled = bootPartition != null && Equals(bootPartition.PartitionType, PartitionType.Basic);
+            var isEnabled = bootPartition != null && Equals(bootPartition.PartitionType, PartitionType.Basic) && isBcdEntryPresent;
 
             var isCapable = isWoaPresent && isWPhonePresent && isOobeFinished;
             var status = new DualBootStatus(isCapable, isEnabled);
@@ -63,6 +72,13 @@ namespace Deployer.Lumia
             Log.Verbose("Dual Boot Status is {@Status}", status);
 
             return status;
+        }
+
+        private async Task<bool> GetIsEntryPresent(Guid guid)
+        {
+            var invoker = await GetBcdInvoker();
+            var result = invoker.Invoke();
+            return result.Contains(guid.ToString());
         }
 
         public async Task EnableDualBoot(bool enable)
@@ -100,7 +116,8 @@ namespace Deployer.Lumia
             var bcdInvoker = new BcdInvoker(volume.GetBcdFullFilename());
             bcdInvoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} description ""Windows 10 Phone""");
             bcdInvoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /addfirst");
-
+            bcdInvoker.Invoke($@"/default {{{WinPhoneBcdGuid}}}");
+            
             Log.Verbose("Dual Boot enabled");
         }
 
@@ -126,7 +143,7 @@ namespace Deployer.Lumia
             Log.Verbose("Cleanup of possible previous Windows 10 ARM64 installation...");
 
             await RemovePartition("Reserved", await (await GetDisk()).GetReservedPartition());
-            await RemovePartition("WoA ESP", await GetBootPartition());
+            await RemovePartition("WoA ESP", await DeviceMixin.GetBootPartition(this));
             var winVol = await GetWindowsVolume();
             await RemovePartition("WoA", winVol?.Partition);
         }

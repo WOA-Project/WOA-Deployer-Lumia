@@ -5,11 +5,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
+using Deployer.Utils;
 using Serilog;
 
-namespace Deployer
+namespace Deployer.Tasks
 {
-    [TaskDescription("Unpacking from Azure DevOps")]
+    [TaskDescription("Unpacking from Azure DevOps: {0}")]
     public class AzureDevOpsUnpack : IDeploymentTask
     {
         private string org;
@@ -56,7 +57,7 @@ namespace Deployer
 
                 using (var zip = new ZipArchive(stream))
                 {
-                    var temp = Path.Combine(SubFolder, Guid.NewGuid().ToString());
+                    var temp = FileUtils.GetTempDirectoryName();
                     zip.ExtractToDirectory(temp);
 
                     if (Directory.Exists(folderPath))

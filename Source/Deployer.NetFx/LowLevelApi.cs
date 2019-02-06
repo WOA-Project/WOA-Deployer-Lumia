@@ -7,7 +7,6 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ByteSizeLib;
 using Deployer.FileSystem;
-using Registry;
 using Serilog;
 
 namespace Deployer.Filesystem.FullFx
@@ -298,17 +297,5 @@ namespace Deployer.Filesystem.FullFx
 
             return available.First();
         }
-
-        public bool GetIsOobeCompleted(Volume windowsVolume)
-        {
-            var path = Path.Combine(windowsVolume.RootDir.Name, "Windows", "System32", "Config", "System");
-            var hive = new RegistryHive(path) { RecoverDeleted = true };
-            hive.ParseHive();
-
-            var key = hive.GetKey("Setup");
-            var val = key.Values.Single(x => x.ValueName == "OOBEInProgress");
-
-            return int.Parse(val.ValueData) == 0;
-        }        
     }
 }

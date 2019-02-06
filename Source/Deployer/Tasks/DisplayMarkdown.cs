@@ -5,7 +5,7 @@ using Serilog;
 
 namespace Deployer.Tasks
 {
-    [TaskDescription("Displaying Markdown document")]
+    [TaskDescription("Displaying Markdown document from {0}")]
     public class DisplayMarkdown : IDeploymentTask
     {
         private readonly string path;

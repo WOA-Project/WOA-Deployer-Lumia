@@ -5,7 +5,7 @@ using Deployer.FileSystem;
 
 namespace Deployer.Lumia.Tasks
 {
-    [TaskDescription("Copying file to BOOT")]
+    [TaskDescription("Copying file to BOOT: {0} to {1}")]
     public class CopyToBoot : IDeploymentTask
     {
         private readonly string origin;

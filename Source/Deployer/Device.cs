@@ -72,7 +72,7 @@ namespace Deployer
 
         private async Task<bool> IsBootVolumePresent()
         {
-            var bootPartition = await GetBootPartition();
+            var bootPartition = await DeviceMixin.GetBootPartition(this);
 
             if (bootPartition != null)
             {
@@ -99,19 +99,6 @@ namespace Deployer
             }
 
             return true;
-        }
-
-        protected async Task<Partition> GetBootPartition()
-        {
-            var partitions = await (await GetDisk()).GetPartitions();
-            var bootPartition = partitions.FirstOrDefault(x => Equals(x.PartitionType, PartitionType.Esp));
-            if (bootPartition != null)
-            {
-                return bootPartition;
-            }
-
-            var bootVolume = await GetBootVolume();
-            return bootVolume?.Partition;
         }
 
         protected static async Task RemovePartition(string partitionName, Partition partition)

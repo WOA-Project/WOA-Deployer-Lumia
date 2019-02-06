@@ -70,11 +70,11 @@ namespace Deployer.Lumia.Gui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot inject the Post-OOBE drivers.
+        ///   Looks up a localized string similar to Unable to install the GPU. Please, ensure that WOA is installed..
         /// </summary>
-        public static string CannotInjectPostOobe {
+        public static string CannotInstallGpu {
             get {
-                return ResourceManager.GetString("CannotInjectPostOobe", resourceCulture);
+                return ResourceManager.GetString("CannotInstallGpu", resourceCulture);
             }
         }
         

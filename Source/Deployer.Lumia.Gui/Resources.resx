@@ -140,8 +140,8 @@ By clicking "OK" you accept the aforementioned risks.</value>
     <value>Sorry, there are no post-OOBE drivers available to inject.
 The Core Package that is currently installed doesn't have an additional post-OOBE driver set.</value>
   </data>
-  <data name="CannotInjectPostOobe" xml:space="preserve">
-    <value>Cannot inject the Post-OOBE drivers</value>
+  <data name="CannotInstallGpu" xml:space="preserve">
+    <value>Unable to install the GPU. Please, ensure that WOA is installed.</value>
   </data>
   <data name="Finished" xml:space="preserve">
     <value>Finished</value>

@@ -35,7 +35,8 @@ namespace Deployer.Execution
 
             var instance = BuildInstance(instanceBuilder, transformedSentence);
             var operationStr = GetOperationStr(transformedSentence.Command.Name, instance.GetType());
-            Log.Information($"{operationStr} {{Params}}", string.Join(", ", transformedSentence.Command.Arguments));
+            var commandArguments = transformedSentence.Command.Arguments;
+            Log.Information(string.Format(operationStr, commandArguments.Cast<object>().ToArray()));
 
             await instance.Execute();
         }
