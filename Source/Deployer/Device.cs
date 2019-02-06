@@ -23,7 +23,7 @@ namespace Deployer
         public Task<ICollection<Disk>> GetDisks()
         {
             return lowLevelApi.GetDisks();
-        }
+        }       
 
         protected async Task<Volume> GetVolume(string label)
         {

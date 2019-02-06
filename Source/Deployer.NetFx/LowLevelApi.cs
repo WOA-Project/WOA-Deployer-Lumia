@@ -309,13 +309,6 @@ namespace Deployer.Filesystem.FullFx
             var val = key.Values.Single(x => x.ValueName == "OOBEInProgress");
 
             return int.Parse(val.ValueData) == 0;
-        }
-
-        public async Task<Volume> GetWindowsVolume()
-        {
-            var disk = await GetPhoneDisk();
-            var volumes = await GetVolumes(disk);
-            return volumes.Single(x => x.Label == "WindowsARM");
-        }
+        }        
     }
 }
