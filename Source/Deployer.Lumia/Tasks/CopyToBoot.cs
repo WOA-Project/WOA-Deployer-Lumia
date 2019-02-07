@@ -11,9 +11,9 @@ namespace Deployer.Lumia.Tasks
         private readonly string origin;
         private readonly string destination;
         private readonly IFileSystemOperations fileSystemOperations;
-        private readonly Phone phone;
+        private readonly IPhone phone;
 
-        public CopyToBoot(string origin, string destination, IFileSystemOperations fileSystemOperations, Phone phone)
+        public CopyToBoot(string origin, string destination, IFileSystemOperations fileSystemOperations, IPhone phone)
         {
             this.origin = origin;
             this.destination = destination;

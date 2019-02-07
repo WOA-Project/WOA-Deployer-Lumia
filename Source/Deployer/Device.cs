@@ -9,7 +9,7 @@ using Serilog;
 
 namespace Deployer
 {
-    public abstract class Device
+    public abstract class Device : IDevice
     {
         private readonly ILowLevelApi lowLevelApi;
 

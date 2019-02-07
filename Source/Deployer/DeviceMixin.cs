@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Deployer.FileSystem;
@@ -8,7 +7,7 @@ namespace Deployer
 {
     public static class DeviceMixin
     {
-        public static async Task EnsureBootPartitionIs(this Device device, PartitionType partitionType)
+        public static async Task EnsureBootPartitionIs(this IDevice device, PartitionType partitionType)
         {
             Partition partition = await GetBootPartition(device);
             if (partition == null)
@@ -24,7 +23,7 @@ namespace Deployer
             await partition.SetGptType(partitionType);            
         }
 
-        public static async Task<Partition> GetBootPartition(this Device device)
+        public static async Task<Partition> GetBootPartition(this IDevice device)
         {
             var partitions = await (await device.GetDisk()).GetPartitions();
             var bootPartition = partitions.FirstOrDefault(x => Equals(x.PartitionType, PartitionType.Esp));

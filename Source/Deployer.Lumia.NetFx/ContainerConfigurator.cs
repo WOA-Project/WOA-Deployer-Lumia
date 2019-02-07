@@ -8,6 +8,7 @@ using Deployer.Filesystem.FullFx;
 using Deployer.FileSystem;
 using Deployer.Lumia.NetFx.PhoneInfo;
 using Deployer.Services;
+using Deployer.Tasks;
 using Grace.DependencyInjection;
 using Superpower;
 
@@ -19,10 +20,11 @@ namespace Deployer.Lumia.NetFx
             WindowsDeploymentOptionsProvider installOptionsProvider)
         {
             var taskTypes = from a in Assemblies.AppDomainAssemblies
-                from type in a.ExportedTypes
-                where type.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IDeploymentTask))
-                select type;
+                            from type in a.ExportedTypes
+                            where type.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IDeploymentTask))
+                            select type;
 
+            block.Export<ZipExtractor>().As<IZipExtractor>();
             block.ExportFactory(Tokenizer.Create).As<Tokenizer<LangToken>>();
             block.Export<ScriptParser>().As<IScriptParser>();
             block.ExportFactory(() => installOptionsProvider).As<IWindowsOptionsProvider>();
@@ -36,7 +38,7 @@ namespace Deployer.Lumia.NetFx
             block.ExportInstance(taskTypes).As<IEnumerable<Type>>();
             block.Export<ScriptRunner>().As<IScriptRunner>();
             block.Export<InstanceBuilder>().As<IInstanceBuilder>();
-            block.Export<Phone>().As<Phone>().As<Device>();
+            block.Export<Phone>().As<IPhone>().As<IDevice>();
             block.Export<FileSystemOperations>().As<IFileSystemOperations>();
             block.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>();
             block.Export<WindowsDeployer>().As<IWindowsDeployer>();

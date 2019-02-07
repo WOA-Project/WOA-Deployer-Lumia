@@ -8,11 +8,6 @@ namespace Deployer.Execution.Testing
 {
     public class TestLowLevelApi : ILowLevelApi
     {
-        public Task<Disk> GetPhoneDisk()
-        {
-            return Task.FromResult(new Disk(this, new DiskInfo()));
-        }
-
         public Task ResizePartition(Partition partition, ByteSize sizeInBytes)
         {
             throw new NotImplementedException();

@@ -9,11 +9,11 @@ namespace Deployer.Lumia.Tasks
     public class InstallDevMenu : IDeploymentTask
     {
         private readonly string rootFilesPath;
-        private readonly Phone phone;
+        private readonly IPhone phone;
         private readonly IBcdInvokerFactory bcdInvokerFactory;
         private readonly IFileSystemOperations fileSystemOperations;
 
-        public InstallDevMenu(string rootFilesPath, Phone phone, IBcdInvokerFactory bcdInvokerFactory, IFileSystemOperations fileSystemOperations)
+        public InstallDevMenu(string rootFilesPath, IPhone phone, IBcdInvokerFactory bcdInvokerFactory, IFileSystemOperations fileSystemOperations)
         {
             this.rootFilesPath = rootFilesPath;
             this.phone = phone;

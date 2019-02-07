@@ -8,11 +8,11 @@ namespace Deployer.Lumia
     public class WoaDeployer : IWoaDeployer
     {
         private readonly ITooling tooling;
-        private readonly Phone phone;
+        private readonly IPhone phone;
         private readonly IScriptRunner scriptRunner;
         private readonly IScriptParser parser;
 
-        public WoaDeployer(IScriptRunner scriptRunner, IScriptParser parser, ITooling tooling, Phone phone)
+        public WoaDeployer(IScriptRunner scriptRunner, IScriptParser parser, ITooling tooling, IPhone phone)
         {
             this.scriptRunner = scriptRunner;
             this.parser = parser;

@@ -23,7 +23,8 @@ namespace Deployer.Services.Wim
             }
             catch (InvalidOperationException e)
             {
-                throw new InvalidWimFileException("Could not read the metadata from the WIM file. Please, check it's a valid .WIM file", e);
+                throw new InvalidWimFileException("Could not read the metadata from the WIM " +
+                    "file. Please, check it's a valid .WIM file", e);
             }
 
             Log.Verbose("Wim metadata deserialized correctly {@Metadata}", metadata);

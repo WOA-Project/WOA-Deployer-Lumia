@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestPhone.cs" />
+    <Compile Include="TestPhoneModelReader.cs" />
     <Compile Include="Tooling.cs" />
     <Compile Include="ContainerConfigurator.cs" />
     <Compile Include="PhoneInfo\ByteOperations.cs" />

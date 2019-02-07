@@ -10,7 +10,7 @@ namespace Deployer.Lumia
     public class WindowsDeployer : IWindowsDeployer
     {
         private readonly IWindowsOptionsProvider optionsProvider;
-        private readonly Phone phone;
+        private readonly IPhone phone;
         private readonly IWindowsImageService imageService;
         private readonly IBootCreator bootCreator;
         private readonly IObserver<double> progressObserver;
@@ -20,7 +20,7 @@ namespace Deployer.Lumia
         private const string BootPartitionLabel = "BOOT";
         private const string WindowsPartitonLabel = "WindowsARM";
 
-        public WindowsDeployer(IWindowsOptionsProvider optionsProvider, Phone phone, IWindowsImageService imageService, IBootCreator bootCreator, IObserver<double> progressObserver)
+        public WindowsDeployer(IWindowsOptionsProvider optionsProvider, IPhone phone, IWindowsImageService imageService, IBootCreator bootCreator, IObserver<double> progressObserver)
         {
             this.optionsProvider = optionsProvider;
             this.phone = phone;

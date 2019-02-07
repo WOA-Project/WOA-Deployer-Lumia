@@ -9,17 +9,16 @@ using Serilog;
 
 namespace Deployer.Lumia
 {
-    public class Phone : Device
+    public class Phone : Device, IPhone
     {
         private readonly IPhoneModelReader phoneModelReader;
         private readonly BcdInvokerFactory bcdInvokerFactory;
-        private const string MainOsLabel = "MainOS";
+        protected const string MainOsLabel = "MainOS";
         private static readonly ByteSize MinimumPhoneDiskSize = ByteSize.FromGigaBytes(28);
         private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
         
         private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
         private Volume efiEspVolume;
-        private Volume mainOs;
         private IBcdInvoker bcdInvoker;
 
         public Phone(ILowLevelApi lowLevelApi, IPhoneModelReader phoneModelReader, BcdInvokerFactory bcdInvokerFactory) : base(lowLevelApi)
@@ -36,11 +35,6 @@ namespace Deployer.Lumia
         public async Task<IBcdInvoker> GetBcdInvoker()
         {
             return bcdInvoker ?? (bcdInvoker = bcdInvokerFactory.Create((await GetEfiespVolume()).GetBcdFullFilename()));
-        }
-
-        public async Task<Volume> GetMainOsVolume()
-        {
-            return mainOs ?? (mainOs = await GetVolume(MainOsLabel));
         }
 
         public async Task<PhoneModel> GetModel()

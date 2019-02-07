@@ -10,12 +10,12 @@ namespace Deployer.Lumia.Gui.ViewModels
 {
     public class DualBootViewModel : ReactiveObject, IBusy
     {
-        private readonly Phone phone;
+        private readonly IPhone phone;
         private bool isCapable;
         private bool isEnabled;
         private bool isUpdated;
 
-        public DualBootViewModel(Phone phone, IDialogService dialogService)
+        public DualBootViewModel(IPhone phone, IDialogService dialogService)
         {
             this.phone = phone;
             var isChangingDualBoot = new Subject<bool>();

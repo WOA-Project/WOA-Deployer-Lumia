@@ -8,10 +8,10 @@ namespace Deployer.Lumia.Tasks
     [TaskDescription("Configuring BCD")]
     public class ConfigureBCD : IDeploymentTask
     {
-        private readonly Phone phone;
+        private readonly IPhone phone;
         private readonly IBcdInvokerFactory bcdInvokerFactory;
 
-        public ConfigureBCD(Phone phone, IBcdInvokerFactory bcdInvokerFactory)
+        public ConfigureBCD(IPhone phone, IBcdInvokerFactory bcdInvokerFactory)
         {
             this.phone = phone;
             this.bcdInvokerFactory = bcdInvokerFactory;
