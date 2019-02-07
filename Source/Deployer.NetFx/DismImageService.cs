@@ -38,6 +38,9 @@ namespace Deployer.Filesystem.FullFx
             
             Log.Verbose("We are about to run DISM: {ExecName} {Parameters}", dismName, args);
             var resultCode = await ProcessUtils.RunProcessAsync(dismName, args, outputObserver: outputSubject);
+
+            progressObserver?.OnNext(double.NaN);
+
             if (resultCode != 0)
             {
                 throw new DeploymentException($"There has been a problem during deployment: DISM exited with code {resultCode}.");
