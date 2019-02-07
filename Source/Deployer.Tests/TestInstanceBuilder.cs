@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
-using Deployer.Core;
-using Deployment;
 using Grace.DependencyInjection;
 
-namespace Deployer.Test
+namespace Deployer.Tests
 {
     internal class TestInstanceBuilder : InstanceBuilder
     {
         private readonly List<object> createdInstances = new List<object>();
 
-        public TestInstanceBuilder(ILocatorService container, IPathBuilder pathBuilder) : base(container, pathBuilder)
+        public TestInstanceBuilder(ILocatorService container) : base(container)
         {
         }
 

@@ -1,9 +1,7 @@
 ﻿using System.IO;
-using System.IO.Compression;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Deployer.Execution;
-using Deployer.Utils;
 using Serilog;
 
 namespace Deployer.Tasks
@@ -13,17 +11,19 @@ namespace Deployer.Tasks
     {
         private readonly string downloadUrl;
         private readonly IGitHubDownloader downloader;
+        private readonly IZipExtractor extractor;
         private string repository;
         private string branch;
         private string folderName;
         private string folderPath;
         private const string SubFolder = "Downloaded";
 
-        public GitHubUnpack(string downloadUrl, IGitHubDownloader downloader)
+        public GitHubUnpack(string downloadUrl, IGitHubDownloader downloader, IZipExtractor extractor)
         {
             ParseUrl(downloadUrl);
             this.downloadUrl = downloadUrl;
             this.downloader = downloader;
+            this.extractor = extractor;
         }
 
         private void ParseUrl(string url)
@@ -43,19 +43,10 @@ namespace Deployer.Tasks
                 return;
             }
 
-            using (var zip = await downloader.DownloadAsZipArchive(downloadUrl))
+            var openZipStream = await downloader.OpenZipStream(downloadUrl);
+            using (var stream = openZipStream)
             {
-                var temp = FileUtils.GetTempDirectoryName();
-                zip.ExtractToDirectory(temp);
-                
-                if (Directory.Exists(folderPath))
-                {
-                    Directory.Delete(folderPath, true);
-                }
-
-                var firstChild = Path.Combine(temp, folderName);
-                Directory.Move(firstChild, folderPath);
-                Directory.Delete(temp);
+                await extractor.ExtractToFolder(stream, folderPath);
             }
         }
     }

@@ -1,8 +1,8 @@
-using Deployment;
+using Deployer.Execution;
 using FluentAssertions;
 using Xunit;
 
-namespace Deployer.Test
+namespace Deployer.Tests
 {
     public class ScriptParserTests
     {

@@ -1,13 +1,12 @@
-﻿using Deployer.Core;
-using Deployment;
+﻿using System.Threading.Tasks;
 
-namespace Deployer.Test
+namespace Deployer.Tests
 {
     public class TestStringBuilder : IPathBuilder
     {
-        public string Replace(string str)
+        public Task<string> Replace(string str)
         {
-            return str;
+            return Task.FromResult(str);
         }
     }
 }

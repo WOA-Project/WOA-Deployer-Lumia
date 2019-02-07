@@ -1,10 +1,10 @@
-﻿using System.IO.Compression;
+﻿using System.IO;
 using System.Threading.Tasks;
 
 namespace Deployer
 {
     public interface IGitHubDownloader
     {
-        Task<ZipArchive> DownloadAsZipArchive(string url);
+        Task<Stream> OpenZipStream(string url);
     }
 }

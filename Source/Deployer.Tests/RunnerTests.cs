@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Deployment;
+using Deployer.Execution;
 using FluentAssertions;
 using Xunit;
 
-namespace Deployer.Test
+namespace Deployer.Tests
 {
     public class RunnerTests
     {
@@ -32,8 +32,8 @@ namespace Deployer.Test
         {
             var parser = new ScriptParser(Tokenizer.Create());
             var script = parser.Parse(testtask);
-            var testInstanceBuilder = new TestInstanceBuilder(new NullLocator(), new TestStringBuilder());
-            var runner = new Runner(typeof(RunnerTests).Assembly.DefinedTypes, null);
+            var testInstanceBuilder = new TestInstanceBuilder(new NullLocator());
+            var runner = new ScriptRunner(typeof(RunnerTests).Assembly.DefinedTypes, testInstanceBuilder, new TestStringBuilder());
             await runner.Run(script);
             return testInstanceBuilder;
         }

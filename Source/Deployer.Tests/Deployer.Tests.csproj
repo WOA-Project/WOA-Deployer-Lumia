@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Installer\Deployment.csproj" />
+    <ProjectReference Include="..\Deployer\Deployer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Serilog;
 
 namespace Deployer.Execution.Testing
@@ -15,6 +16,17 @@ namespace Deployer.Execution.Testing
         {
             Log.Verbose("Copied folder {Source} to {Destination}", sourceDirectory, destination);
             return Task.CompletedTask;
+        }
+
+        public Task DeleteDirectory(string path)
+        {
+            Log.Verbose("Delete folder {Folder}", path);
+            return Task.CompletedTask;
+        }
+
+        public bool DirectoryExists(string path)
+        {
+            return Directory.Exists(path);
         }
     }
 }

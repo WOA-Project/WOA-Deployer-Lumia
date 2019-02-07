@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using Deployment;
+using Deployer.Execution;
 
-namespace Deployer.Test
+namespace Deployer.Tests
 {
     public class TestTask : IDeploymentTask
     {

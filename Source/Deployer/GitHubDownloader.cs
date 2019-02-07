@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.IO.Compression;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -7,7 +6,7 @@ namespace Deployer
 {
     public class GitHubDownloader : IGitHubDownloader
     {
-        public async Task<ZipArchive> DownloadAsZipArchive(string mainUrl)
+        public async Task<Stream> OpenZipStream(string mainUrl)
         {
             using (var client = new System.Net.Http.HttpClient())
             {
@@ -18,7 +17,8 @@ namespace Deployer
 
                 var url = $"https://github.com/{username}/{repository}/archive/{branch}.zip";
 
-                return new ZipArchive(new MemoryStream(await client.GetByteArrayAsync(url)));
+                var openZipStream = await client.GetStreamAsync(url);
+                return openZipStream;
             }
         }
     }

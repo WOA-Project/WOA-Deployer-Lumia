@@ -18,15 +18,17 @@ namespace Deployer.Tasks
         private int definitionId;
         private string artifactName;
         private readonly IAzureDevOpsBuildClient buildClient;
+        private readonly IZipExtractor extractor;
         private string folderPath;
 
         private const string SubFolder = "Downloaded";
 
-        public AzureDevOpsUnpack(string descriptor, IAzureDevOpsBuildClient buildClient)
+        public AzureDevOpsUnpack(string descriptor, IAzureDevOpsBuildClient buildClient, IZipExtractor extractor)
         {
             ParseDescriptor(descriptor);
             
             this.buildClient = buildClient;
+            this.extractor = extractor;
         }
 
         private void ParseDescriptor(string descriptor)
@@ -52,22 +54,8 @@ namespace Deployer.Tasks
 
             using (var httpClient = new HttpClient())
             {
-                var byteArray = httpClient.GetByteArrayAsync(artifact.Resource.DownloadUrl);
-                var stream = new MemoryStream(await byteArray);
-
-                using (var zip = new ZipArchive(stream))
-                {
-                    var temp = FileUtils.GetTempDirectoryName();
-                    zip.ExtractToDirectory(temp);
-
-                    if (Directory.Exists(folderPath))
-                    {
-                        Directory.Delete(folderPath, true);
-                    }
-
-                    Directory.Move(Path.Combine(temp, artifactName), folderPath);
-                    Directory.Delete(temp);
-                };
+                var stream = await httpClient.GetStreamAsync(artifact.Resource.DownloadUrl);
+                await extractor.ExtractToFolder(stream, folderPath);
             }
         }
     }
