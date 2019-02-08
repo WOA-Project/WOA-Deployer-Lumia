@@ -23,7 +23,7 @@ namespace Deployer.Lumia.NetFx
                             from type in a.ExportedTypes
                             where type.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IDeploymentTask))
                             select type;
-
+            block.ExportAssemblies(Assemblies.AppDomainAssemblies).ByInterface<ISpaceAllocator>();
             block.Export<ZipExtractor>().As<IZipExtractor>();
             block.ExportFactory(Tokenizer.Create).As<Tokenizer<LangToken>>();
             block.Export<ScriptParser>().As<IScriptParser>();
@@ -45,6 +45,8 @@ namespace Deployer.Lumia.NetFx
             block.Export<DismImageService>().As<IWindowsImageService>();
             block.Export<GitHubDownloader>().As<IGitHubDownloader>();
             block.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>();
+
+         
 
             return block;
         }

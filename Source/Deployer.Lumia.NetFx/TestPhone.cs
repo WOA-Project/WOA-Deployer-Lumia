@@ -11,9 +11,9 @@ namespace Deployer.Lumia.NetFx
         {
         }
 
-        public override async Task<Disk> GetDisk()
+        public override async Task<Disk> GetDeviceDisk()
         {
-            var disks = await GetDisks();
+            var disks = await LowLevelApi.GetDisks();
             foreach (var disk in disks.Where(x => x.Number != 0))
             {
                 if (true)

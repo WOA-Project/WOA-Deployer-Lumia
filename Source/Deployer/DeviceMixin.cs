@@ -25,7 +25,7 @@ namespace Deployer
 
         public static async Task<Partition> GetBootPartition(this IDevice device)
         {
-            var partitions = await (await device.GetDisk()).GetPartitions();
+            var partitions = await (await device.GetDeviceDisk()).GetPartitions();
             var bootPartition = partitions.FirstOrDefault(x => Equals(x.PartitionType, PartitionType.Esp));
             if (bootPartition != null)
             {

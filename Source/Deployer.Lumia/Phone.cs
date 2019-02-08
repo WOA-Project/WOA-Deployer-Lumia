@@ -39,7 +39,7 @@ namespace Deployer.Lumia
 
         public async Task<PhoneModel> GetModel()
         {
-            return phoneModelReader.GetPhoneModel((await GetDisk()).Number);
+            return phoneModelReader.GetPhoneModel((await GetDeviceDisk()).Number);
         }
 
         public async Task<DualBootStatus> GetDualBootStatus()
@@ -51,7 +51,7 @@ namespace Deployer.Lumia
             var isOobeFinished = await IsOobeFinished();
             var isBcdEntryPresent = await GetIsEntryPresent(WinPhoneBcdGuid);
 
-            var bootPartition = await DeviceMixin.GetBootPartition(this);
+            var bootPartition = await this.GetBootPartition();
             
             var isEnabled = bootPartition != null && Equals(bootPartition.PartitionType, PartitionType.Basic) && isBcdEntryPresent;
 
@@ -136,15 +136,15 @@ namespace Deployer.Lumia
         {
             Log.Verbose("Cleanup of possible previous Windows 10 ARM64 installation...");
 
-            await RemovePartition("Reserved", await (await GetDisk()).GetReservedPartition());
+            await RemovePartition("Reserved", await (await GetDeviceDisk()).GetReservedPartition());
             await RemovePartition("WoA ESP", await DeviceMixin.GetBootPartition(this));
             var winVol = await GetWindowsVolume();
             await RemovePartition("WoA", winVol?.Partition);
         }
 
-        public override async Task<Disk> GetDisk()
+        public override async Task<Disk> GetDeviceDisk()
         {
-            var disks = await GetDisks();
+            var disks = await LowLevelApi.GetDisks();
             foreach (var disk in disks.Where(x => x.Number != 0))
             {
                 var hasCorrectSize = HasCorrectSize(disk);

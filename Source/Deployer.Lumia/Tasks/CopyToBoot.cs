@@ -23,7 +23,7 @@ namespace Deployer.Lumia.Tasks
 
         public async Task Execute()
         {
-            var disk = await phone.GetDisk();
+            var disk = await phone.GetDeviceDisk();
             var espPart = await disk.GetBootEfiEspPartition();
             if (espPart != null)
             {

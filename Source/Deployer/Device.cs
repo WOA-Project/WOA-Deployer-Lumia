@@ -11,25 +11,20 @@ namespace Deployer
 {
     public abstract class Device : IDevice
     {
-        private readonly ILowLevelApi lowLevelApi;
+        protected ILowLevelApi LowLevelApi { get; }
 
         protected Device(ILowLevelApi lowLevelApi)
         {
-            this.lowLevelApi = lowLevelApi;
+            LowLevelApi = lowLevelApi;
         }
 
-        public abstract Task<Disk> GetDisk();
-
-        public Task<ICollection<Disk>> GetDisks()
-        {
-            return lowLevelApi.GetDisks();
-        }       
+        public abstract Task<Disk> GetDeviceDisk();
 
         protected async Task<Volume> GetVolume(string label)
         {
             Log.Verbose("Getting {Label} volume", label);
 
-            var volumes = await (await GetDisk()).GetVolumes();
+            var volumes = await (await GetDeviceDisk()).GetVolumes();
 
             var volume = volumes.SingleOrDefault(v => string.Equals(v.Label, label, StringComparison.InvariantCultureIgnoreCase));
 

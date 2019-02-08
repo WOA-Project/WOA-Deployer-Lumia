@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ByteSizeLib;
+using Deployer.Exceptions;
 using Deployer.FileSystem;
 using Deployer.Services;
 using Serilog;
@@ -13,6 +16,7 @@ namespace Deployer.Lumia
         private readonly IPhone phone;
         private readonly IWindowsImageService imageService;
         private readonly IBootCreator bootCreator;
+        private readonly IEnumerable<ISpaceAllocator> spaceAllocators;
         private readonly IObserver<double> progressObserver;
 
         private static readonly ByteSize ReservedPartitionSize = ByteSize.FromMegaBytes(200);
@@ -20,12 +24,13 @@ namespace Deployer.Lumia
         private const string BootPartitionLabel = "BOOT";
         private const string WindowsPartitonLabel = "WindowsARM";
 
-        public WindowsDeployer(IWindowsOptionsProvider optionsProvider, IPhone phone, IWindowsImageService imageService, IBootCreator bootCreator, IObserver<double> progressObserver)
+        public WindowsDeployer(IWindowsOptionsProvider optionsProvider, IPhone phone, IWindowsImageService imageService, IBootCreator bootCreator, IEnumerable<ISpaceAllocator> spaceAllocators,  IObserver<double> progressObserver)
         {
             this.optionsProvider = optionsProvider;
             this.phone = phone;
             this.imageService = imageService;
             this.bootCreator = bootCreator;
+            this.spaceAllocators = spaceAllocators;
             this.progressObserver = progressObserver;
         }
 
@@ -62,14 +67,14 @@ namespace Deployer.Lumia
         {
             Log.Verbose("Creating Windows partitions...");
 
-            await (await phone.GetDisk()).CreateReservedPartition((ulong)ReservedPartitionSize.Bytes);
+            await (await phone.GetDeviceDisk()).CreateReservedPartition((ulong)ReservedPartitionSize.Bytes);
 
-            var bootPartition = await (await phone.GetDisk()).CreatePartition((ulong)BootPartitionSize.Bytes);
+            var bootPartition = await (await phone.GetDeviceDisk()).CreatePartition((ulong)BootPartitionSize.Bytes);
             var bootVolume = await bootPartition.GetVolume();
             await bootVolume.Mount();
             await bootVolume.Format(FileSystemFormat.Fat32, BootPartitionLabel);
 
-            var windowsPartition = await (await phone.GetDisk()).CreatePartition(ulong.MaxValue);
+            var windowsPartition = await (await phone.GetDeviceDisk()).CreatePartition(ulong.MaxValue);
             var winVolume = await windowsPartition.GetVolume();
             await winVolume.Mount();
             await winVolume.Format(FileSystemFormat.Ntfs, WindowsPartitonLabel);
@@ -79,48 +84,36 @@ namespace Deployer.Lumia
             return new WindowsVolumes(await phone.GetBootVolume(), await phone.GetWindowsVolume());
         }
 
-        private async Task AllocateSpace(ByteSize sizeReservedForWindows)
+        private async Task AllocateSpace(ByteSize requiredSpace)
         {
             Log.Verbose("Verifying the available space...");
 
-            var refreshedDisk = await phone.GetDisk();
+            var refreshedDisk = await phone.GetDeviceDisk();
             var available = refreshedDisk.Size - refreshedDisk.AllocatedSize;
 
-            Log.Verbose("We will need {Size} of free space for Windows", sizeReservedForWindows);
+            Log.Verbose("We will need {Size} of free space for Windows", requiredSpace);
 
-            if (available < sizeReservedForWindows)
+            if (available < requiredSpace)
             {
-                Log.Warning("There's not enough space in the phone. Trying to take required space from the Data partition");
+                Log.Warning("There's not enough space in the phone. We will try to allocate it automatically");
 
-                await TakeSpaceFromDataPartition(sizeReservedForWindows);
-                Log.Verbose("Data partition resized correctly");
+                var success = await spaceAllocators.ToObservable()
+                    .Select(x => Observable.FromAsync(() => x.TryAllocate(phone, requiredSpace)))
+                    .Merge(1)
+                    .Any();
+
+                if (!success)
+                {
+                    Log.Verbose("Allocation attempt failed");
+                    throw new NotEnoughSpaceException($"Could not allocate {requiredSpace} on the phone. Please, try to allocate the necessary space manually and retry.");
+                }
+                
+                Log.Information("Space allocated correctly");
             }
             else
             {
                 Log.Verbose("We have enough available space to deploy Windows");
             }
         }
-
-        private async Task TakeSpaceFromDataPartition(ByteSize spaceNeeded)
-        {
-            Log.Verbose("Shrinking Data partition...");
-
-            var dataVolume = await phone.GetDataVolume();
-            var phoneDisk = await phone.GetDisk();
-            var data = dataVolume.Size;
-            var allocated = phoneDisk.AllocatedSize;
-            var available = phoneDisk.Size - allocated;
-            var newData =  data - (spaceNeeded - available);
-
-            Log.Verbose("Total size allocated: {Size}", allocated);
-            Log.Verbose("Space available: {Size}", available);
-            Log.Verbose("Space needed: {Size}", spaceNeeded);
-            Log.Verbose("'Data' size: {Size}", data);
-            Log.Verbose("Calculated new size for the 'Data' partition: {Size}", newData);
-            
-            Log.Verbose("Resizing 'Data' to {Size}", newData);
-
-            await dataVolume.Partition.Resize(newData);
-        }        
     }
 }

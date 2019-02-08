@@ -6,11 +6,9 @@ namespace Deployer
 {
     public interface IDevice
     {
-        Task<Disk> GetDisk();
-        Task<ICollection<Disk>> GetDisks();
+        Task<Disk> GetDeviceDisk();
         Task<Volume> GetWindowsVolume();
         Task<Volume> GetBootVolume();
-        Task<bool> IsOobeFinished();
         Task RemoveExistingWindowsPartitions();
         Task<ICollection<DriverMetadata>> GetDrivers();
     }

@@ -11,6 +11,7 @@ namespace Deployer.FileSystem
         public uint Number { get; }
         public ByteSize Size { get; }
         public ByteSize AllocatedSize { get; }
+        public ByteSize AvailableSize => Size - AllocatedSize;
 
         public Disk(ILowLevelApi lowLevelApi, DiskInfo diskProps)
         {
