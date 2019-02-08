@@ -5,36 +5,45 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:parts="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:Converters="http://metro.mahapps.com/winfx/xaml/shared"
                  mc:Ignorable="d"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
                  mah:DialogParticipation.Register="{Binding}"
                  Title="{Binding Title}" Width="800" Height="640"
                  Icon="/Assets/appicon.png"
                  WindowStartupLocation="CenterScreen">
+    <mah:MetroWindow.Resources>
+        <Style x:Key="DonateButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+            <Setter Property="TextElement.Foreground">
+                <Setter.Value>
+
+                        <MultiBinding Converter="{x:Static Converters:BackgroundToForegroundConverter.Instance}">
+                            <Binding Mode="OneWay"
+                                     Path="Background"
+                                     RelativeSource="{RelativeSource TemplatedParent}" />
+                            <Binding Mode="OneWay"
+                                     Path="(mah:GroupBoxHelper.HeaderForeground)"
+                                     RelativeSource="{RelativeSource TemplatedParent}" />
+                        </MultiBinding>
+
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </mah:MetroWindow.Resources>
+
+    <!--<mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button Command="{Binding DonateCommand}" ToolTip="Please, support this tool. Thanks in advance :)">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="16" VerticalAlignment="Center" Source="/Assets/heart.png" RenderOptions.BitmapScalingMode="HighQuality" />
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="Donate" />
+                </StackPanel>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>-->
     <Grid>
-        <Grid.Resources>
-            <Style x:Key="DonateButtonStyle" TargetType="Button">
-                <Setter Property="Foreground" Value="#FF002EFF" />
-                <Setter Property="RenderTransformOrigin" Value="0.785,0.737" />
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <RadialGradientBrush GradientOrigin="1,1" Center="1,1" RadiusX="2" RadiusY="1">
-                            <RadialGradientBrush.RelativeTransform>
-                                <TransformGroup>
-                                    <ScaleTransform CenterY="0.5" CenterX="0.5"/>
-                                    <SkewTransform CenterY="0.5" CenterX="0.5"/>
-                                    <RotateTransform Angle="26" CenterY="0.5" CenterX="0.5"/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </RadialGradientBrush.RelativeTransform>
-                            <GradientStop Color="White" Offset="0"/>
-                            <GradientStop Color="#FFB6EEFF" Offset="1"/>
-                            <GradientStop Color="White" Offset="0.528"/>
-                        </RadialGradientBrush>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -80,7 +89,15 @@
             </TabItem>
         </TabControl>
 
-        <Button Command="{Binding DonateCommand}" ToolTip="Please, support this tool. Thanks in advance :)" Grid.Row="1" Margin="0,0,20,20" Padding="10,5,10,5" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="Donate" Style="{StaticResource DonateButtonStyle}" />
+        <Button Command="{Binding DonateCommand}" ToolTip="Please, support this tool. Thanks in advance :)" Grid.Row="1" Margin="0,0,20,20" Padding="10,5,10,5" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                Style="{StaticResource DonateButtonStyle}">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="16" VerticalAlignment="Center" Source="/Assets/heart.png" RenderOptions.BitmapScalingMode="HighQuality" />
+                    <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="Donate" />
+                </StackPanel>
+            </Button.Content>
+        </Button>
 
         <Expander Grid.Row="2" Header="Log" IsExpanded="False" MaxHeight="400">
             <parts:LogPart />

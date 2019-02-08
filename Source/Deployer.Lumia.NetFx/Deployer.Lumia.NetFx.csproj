@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\SharedAssemblyInfo.cs" />
     <Compile Include="TestPhone.cs" />
     <Compile Include="TestPhoneModelReader.cs" />
     <Compile Include="Tooling.cs" />
@@ -57,7 +58,6 @@
     <Compile Include="PhoneInfo\Streams\DeviceStream.cs" />
     <Compile Include="PhoneInfo\Streams\GetDiskSize.cs" />
     <Compile Include="PhoneInfo\Streams\PartialStream.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deployer.Lumia\Deployer.Lumia.csproj">
@@ -81,5 +81,6 @@
       <Version>2.8.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

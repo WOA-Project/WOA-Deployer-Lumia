@@ -62,6 +62,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\Deployer.Lumia.NetFx\Properties\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ViewModels\AdvancedViewModel.cs" />
     <Compile Include="ViewModels\DualBootViewModel.cs" />
     <Compile Include="ViewModels\IBusyObject.cs" />
@@ -194,7 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MahApps.Metro">
-      <Version>1.6.5</Version>
+      <Version>2.0.0-alpha0212</Version>
     </PackageReference>
     <PackageReference Include="Markdown.Xaml">
       <Version>1.0.0</Version>
@@ -265,6 +268,9 @@
       <Link>Scripts\update-uefi-950xl.txt</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\heart.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

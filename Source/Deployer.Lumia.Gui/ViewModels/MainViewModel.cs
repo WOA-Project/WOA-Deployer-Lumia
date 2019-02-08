@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -42,6 +41,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             var isBusyObs = busies.Select(x => x.IsBusyObservable).Merge();
 
             DonateCommand = ReactiveCommand.Create(() => { Process.Start(DonationLink); });
+            OpenLogFolder = ReactiveCommand.Create(() => { Process.Start("Logs"); });
 
             isBusyHelper = isBusyObs.ToProperty(this, model => model.IsBusy);
         }
@@ -66,8 +66,10 @@ namespace Deployer.Lumia.Gui.ViewModels
             isProgressVisibleHelper?.Dispose();
         }
 
-        public string Title => string.Format(Resources.AppTitle, Assembly.GetEntryAssembly().GetName().Version); 
-        
+        public string Title => string.Format(Resources.AppTitle, Assembly.GetEntryAssembly().GetName().Version);
+
+        public ReactiveCommand<Unit, Unit> OpenLogFolder { get; }
+
         private void SetupLogging(IObservable<LogEvent> events)
         {
             var conn = events

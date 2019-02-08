@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Deployer.Lumia.NetFx\Properties\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ConsoleMarkdownDisplayer.cs" />
     <Compile Include="Options\DisableDualBootCmdOptions.cs" />
     <Compile Include="Options\EnableDualBootCmdOptions.cs" />

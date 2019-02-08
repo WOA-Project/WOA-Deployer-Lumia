@@ -7,7 +7,10 @@ namespace Deployer.Lumia.Gui
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);            
+            base.OnStartup(e);  
+            
+            MahApps.Metro.ThemeManager.IsAutomaticWindowsAppModeSettingSyncEnabled = true;
+            MahApps.Metro.ThemeManager.SyncThemeWithWindowsAppModeSetting();
         }
     }
 }
