@@ -16,7 +16,19 @@ namespace Deployer.Lumia.NetFx
 {
     public static class ContainerConfigurator
     {
-        public static IExportRegistrationBlock Configure(IExportRegistrationBlock block,
+        public static IExportRegistrationBlock Configure(this IExportRegistrationBlock block,
+            WindowsDeploymentOptionsProvider installOptionsProvider)
+        {
+            return WithCommon(block, installOptionsProvider).WithRealPhone();
+        }
+
+        public static IExportRegistrationBlock ConfigureForTesting(this IExportRegistrationBlock block,
+            WindowsDeploymentOptionsProvider installOptionsProvider)
+        {
+            return WithCommon(block, installOptionsProvider).WithTestingPhone();
+        }
+
+        public static IExportRegistrationBlock WithCommon(this IExportRegistrationBlock block,
             WindowsDeploymentOptionsProvider installOptionsProvider)
         {
             var taskTypes = from a in Assemblies.AppDomainAssemblies
@@ -28,7 +40,7 @@ namespace Deployer.Lumia.NetFx
             block.ExportFactory(Tokenizer.Create).As<Tokenizer<LangToken>>();
             block.Export<ScriptParser>().As<IScriptParser>();
             block.ExportFactory(() => installOptionsProvider).As<IWindowsOptionsProvider>();
-            block.Export<PhoneModelReader>().As<IPhoneModelReader>();
+            
             block.Export<PhoneInfoReader>().As<IPhoneInfoReader>();
             block.Export<WoaDeployer>().As<IWoaDeployer>();
             block.Export<Tooling>().As<ITooling>();
@@ -38,15 +50,33 @@ namespace Deployer.Lumia.NetFx
             block.ExportInstance(taskTypes).As<IEnumerable<Type>>();
             block.Export<ScriptRunner>().As<IScriptRunner>();
             block.Export<InstanceBuilder>().As<IInstanceBuilder>();
-            block.Export<Phone>().As<IPhone>().As<IDevice>();
+            
             block.Export<FileSystemOperations>().As<IFileSystemOperations>();
             block.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>();
             block.Export<WindowsDeployer>().As<IWindowsDeployer>();
             block.Export<DismImageService>().As<IWindowsImageService>();
             block.Export<GitHubDownloader>().As<IGitHubDownloader>();
+
+            WithRealPhone(block);
+
             block.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>();
 
          
+
+            return block;
+        }
+
+        private static IExportRegistrationBlock WithRealPhone(this IExportRegistrationBlock block)
+        {
+            block.Export<PhoneModelReader>().As<IPhoneModelReader>();
+            block.Export<Phone>().As<IPhone>().As<IDevice>();
+            return block;
+        }
+
+        private static IExportRegistrationBlock WithTestingPhone(this IExportRegistrationBlock block)
+        {
+            block.Export<TestPhoneModelReader>().As<IPhoneModelReader>();
+            block.Export<TestPhone>().As<IPhone>().As<IDevice>();
 
             return block;
         }

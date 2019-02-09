@@ -38,7 +38,7 @@ namespace Deployer.Lumia.Gui
 
             container.Configure(x =>
             {
-                ContainerConfigurator.Configure(x, optionsProvider);
+                x.ConfigureForTesting(optionsProvider);
                 x.Export<WpfMarkdownDisplayer>().As<IMarkdownDisplayer>();
                 x.ExportFactory(() => new BehaviorSubject<double>(double.NaN))
                     .As<IObserver<double>>()

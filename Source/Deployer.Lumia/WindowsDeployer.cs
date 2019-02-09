@@ -100,7 +100,7 @@ namespace Deployer.Lumia
                 var success = await spaceAllocators.ToObservable()
                     .Select(x => Observable.FromAsync(() => x.TryAllocate(phone, requiredSpace)))
                     .Merge(1)
-                    .Any();
+                    .Any(successful => successful);
 
                 if (!success)
                 {
