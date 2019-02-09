@@ -1,14 +1,12 @@
-﻿# Donations are welcome!
- 
-I'm SuperJMN, the creator of this tool. If you like it, you can support my work. 
+﻿I'm José Manuel, the creator of this tool 😊
 
-[Donate me via Paypal](http://paypal.me/superjmn)
+If you like it, I would be really happy if make a donation to support my work.
 
-You can donate any amount. Maybe enough for a coffee? 😊 It encourages me to keep it up-to-date and improve it. Thanks in advance!!
+Thanks in advance!! 🙏
 
+👉 [Donate me via Paypal](http://paypal.me/superjmn)
 
-
-## But hey! I'm not alone
+### But hey! I'm not alone
 They are the real heros: The (core) Dev-Team.
 
 *Please, guys, consider donating to them.* **They made this possible.** It's one of the best ways to keep them motivated, along with respect to their work. Any amount is fine. Thanks!
