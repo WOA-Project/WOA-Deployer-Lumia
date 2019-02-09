@@ -30,19 +30,20 @@ namespace Deployer.Lumia
             Log.Verbose("Space needed: {Size}", requiredSpace);
             Log.Verbose("'Data' size: {Size}", data);
             Log.Verbose("Calculated new size for the 'Data' partition: {Size}", newData);
-            
-            if (available < requiredSpace)
-            {
-                return false;
-            }
-
+          
             Log.Verbose("Resizing 'Data' to {Size}", newData);
 
             await dataVolume.Partition.Resize(newData);
 
             Log.Verbose("Resize operation completed successfully");
 
-            return (await phone.GetDeviceDisk()).AvailableSize >= requiredSpace;
-        }        
+            return await IsThereEnoughSpace(phone, requiredSpace);
+        }
+
+        private static async Task<bool> IsThereEnoughSpace(IPhone phone, ByteSize requiredSpace)
+        {
+            var disk = await phone.GetDeviceDisk();
+            return disk.AvailableSize >= requiredSpace;
+        }
     }
 }

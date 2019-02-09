@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using ByteSizeLib;
 using CommandLine;
@@ -21,24 +22,29 @@ namespace Deployment.Console
         {
             ConfigureLogger();
 
-            try
+            var progress = new Subject<double>();
+            using (new ConsoleDisplayUpdater(progress))
             {
-                await Execute(args);
-                Log.Information("Execution finished");
+                try
+                {
+                    await Execute(args, progress);
+                
+                    Log.Information("Execution finished");
 
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "Operation failed");
-                throw;
+                }
+                catch (Exception e)
+                {
+                    Log.Fatal(e, "Operation failed");
+                    throw;
+                }              
             }
         }
-
-        private static async Task Execute(string[] args)
+        
+        private static async Task Execute(IEnumerable<string> args, Subject<double> subject)
         {
-            var op = new WindowsDeploymentOptionsProvider();
-
-            var deployer = GetDeployer(op);
+            var optionsProvider = new WindowsDeploymentOptionsProvider();
+            
+            var deployer = GetDeployer(optionsProvider, subject);
 
             var parserResult = Parser.Default
                 .ParseArguments<WindowsDeploymentCmdOptions,
@@ -51,7 +57,7 @@ namespace Deployment.Console
                 .MapResult(
                     (WindowsDeploymentCmdOptions opts) =>
                     {
-                        op.Options = new WindowsDeploymentOptions()
+                        optionsProvider.Options = new WindowsDeploymentOptions()
                         {
                             ImageIndex = opts.Index,
                             ImagePath = opts.WimImage,
@@ -67,14 +73,15 @@ namespace Deployment.Console
                     HandleErrors);
         }
 
-        private static IWoaDeployer GetDeployer(WindowsDeploymentOptionsProvider op)
+        private static IWoaDeployer GetDeployer(WindowsDeploymentOptionsProvider op, Subject<double> progress)
         {
             var container = new DependencyInjectionContainer();
 
             container.Configure(x =>
             {
-                ContainerConfigurator.Configure(x, op);
+                x.Configure(op);
                 x.Export<ConsoleMarkdownDisplayer>().As<IMarkdownDisplayer>();
+                x.ExportInstance(progress).As<IObserver<double>>();
             });
 
             var deployer = container.Locate<IWoaDeployer>();

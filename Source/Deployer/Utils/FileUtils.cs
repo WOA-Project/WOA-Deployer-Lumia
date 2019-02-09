@@ -14,16 +14,6 @@ namespace Deployer.Utils
             return pathsToCheck.All(IsExistingPath);
         }
 
-        public static void DeleteDirectyRecursive(string path)
-        {
-            Log.Verbose("Ensuring that '{Directory}' is empty", path);
-            
-            if (Directory.Exists(path))
-            {
-                Directory.Delete(path, true);
-            }
-        }
-
         public static async Task Copy(string source, string destination, CancellationToken cancellationToken)
         {
             var fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
@@ -50,14 +40,18 @@ namespace Deployer.Utils
                 throw new ArgumentNullException(nameof(destination));
             }
 
-            Log.Verbose("Copying file {Source} to {Destination}", source, destination);
-
             if (destination.EndsWith(char.ToString(Path.DirectorySeparatorChar)))
             {
                 destination = Path.Combine(destination, Path.GetFileName(source));
             }
 
             var dir = Path.GetDirectoryName(destination);
+
+            if (dir == null)
+            {
+                throw new InvalidOperationException("The directory name could be retrieved");
+            }
+
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
@@ -80,11 +74,8 @@ namespace Deployer.Utils
             return CopyDirectory(new DirectoryInfo(source), new DirectoryInfo(destination));
         }
 
-        public static async Task CopyDirectory(DirectoryInfo source, DirectoryInfo destination)
+        private static async Task CopyDirectory(DirectoryInfo source, DirectoryInfo destination)
         {
-            Log.Verbose("Copying directory {Source} to {Destination}", source, destination);
-
-
             foreach (var dir in source.GetDirectories())
             {
                 await CopyDirectory(dir, destination.CreateSubdirectory(dir.Name));
