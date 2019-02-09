@@ -54,14 +54,11 @@ namespace Deployer.Lumia.NetFx
             block.Export<FileSystemOperations>().As<IFileSystemOperations>();
             block.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>();
             block.Export<WindowsDeployer>().As<IWindowsDeployer>();
-            block.Export<DismImageService>().As<IWindowsImageService>();
             block.Export<GitHubDownloader>().As<IGitHubDownloader>();
 
             WithRealPhone(block);
 
-            block.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>();
-
-         
+            block.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>();         
 
             return block;
         }
@@ -70,6 +67,7 @@ namespace Deployer.Lumia.NetFx
         {
             block.Export<PhoneModelReader>().As<IPhoneModelReader>();
             block.Export<Phone>().As<IPhone>().As<IDevice>();
+            block.Export<DismImageService>().As<IWindowsImageService>();
             return block;
         }
 
@@ -77,6 +75,7 @@ namespace Deployer.Lumia.NetFx
         {
             block.Export<TestPhoneModelReader>().As<IPhoneModelReader>();
             block.Export<TestPhone>().As<IPhone>().As<IDevice>();
+            block.Export<TestImageService>().As<IWindowsImageService>();
 
             return block;
         }

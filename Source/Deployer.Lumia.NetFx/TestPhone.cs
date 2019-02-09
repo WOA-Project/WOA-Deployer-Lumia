@@ -28,6 +28,6 @@ namespace Deployer.Lumia.NetFx
             }
 
             throw new PhoneDiskNotFoundException("Cannot get the Phone Disk. Please, verify that the Phone is in Mass Storage Mode.");
-        }
+        }        
     }
 }

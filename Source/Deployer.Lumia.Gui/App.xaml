@@ -29,6 +29,7 @@
             </Style>
 
             <valueConverters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverterInverted" IsInverted="True" />
+
             <local:Locator x:Key="Locator" />
 
         </ResourceDictionary>

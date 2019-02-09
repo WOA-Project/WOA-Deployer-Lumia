@@ -61,7 +61,7 @@ namespace Deployer.Gui.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
+        ///   Looks up a localized string similar to Failure.
         /// </summary>
         internal static string ErrorTitle {
             get {

@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:Deployer.Gui.Common">
 
     <valueConverters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverterInverted" IsInverted="True" />
+    <valueConverters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <Style TargetType="{x:Type local:BusyButton}">
         <Setter Property="Template">
@@ -45,7 +46,7 @@
                             </Viewbox>
                             <ContentControl Visibility="{TemplateBinding IsBusy, Converter={StaticResource BooleanToVisibilityConverterInverted}}"
                                    RenderOptions.BitmapScalingMode="HighQuality" Content="{TemplateBinding Icon}" />
-                            <Viewbox VerticalAlignment="Center" Visibility="Collapsed">
+                            <Viewbox VerticalAlignment="Center" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <mah:ProgressRing IsActive="{TemplateBinding IsBusy}" />
                             </Viewbox>
                         </StackPanel>

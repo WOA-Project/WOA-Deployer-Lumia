@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Reflection;
 using System.Threading;
 using DynamicData;
 using ReactiveUI;
@@ -66,7 +65,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             isProgressVisibleHelper?.Dispose();
         }
 
-        public string Title => string.Format(Resources.AppTitle, Assembly.GetEntryAssembly().GetName().Version);
+        public string Title => string.Format(Resources.AppTitle, AppVersionMixin.VersionString);
 
         public ReactiveCommand<Unit, Unit> OpenLogFolder { get; }
 

@@ -18,9 +18,14 @@ namespace Deployer.Tasks
         public async Task ExtractToFolder(Stream stream, string folderPath)
         {                  
             var temp = FileUtils.GetTempDirectoryName();
-            var zip = new ZipArchive(stream, ZipArchiveMode.Read, false);
 
-            await Observable.Start(() => zip.ExtractToDirectory(temp));
+            await Observable.Start(() =>
+            {
+                using (var zip = new ZipArchive(stream, ZipArchiveMode.Read, false))
+                {
+                    zip.ExtractToDirectory(temp);
+                }
+            });
             
             var folderName = Path.GetFileName(folderPath);
 

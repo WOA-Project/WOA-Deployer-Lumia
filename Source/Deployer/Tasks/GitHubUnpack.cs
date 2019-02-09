@@ -6,7 +6,7 @@ using Serilog;
 
 namespace Deployer.Tasks
 {
-    [TaskDescription("Unpacking from GitHub: {0}")]
+    [TaskDescription("Fetching from GitHub: {0}")]
     public class GitHubUnpack : IDeploymentTask
     {
         private readonly string downloadUrl;

@@ -10,7 +10,7 @@ using Serilog;
 
 namespace Deployer.Tasks
 {
-    [TaskDescription("Unpacking from Azure DevOps: {0}")]
+    [TaskDescription("Fetching from Azure DevOps: {0}")]
     public class AzureDevOpsUnpack : IDeploymentTask
     {
         private string org;
