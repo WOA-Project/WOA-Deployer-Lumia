@@ -16,19 +16,19 @@ Please keep reading carefully. All you need is here.
 - A Windows 10 ARM64 Image (.wim). Please, check [this link](Docs/GettingWoA.md) to get it.
 
 ## It allows Dual Booting Windows 10 Mobile
-You don't have to ditch Windows 10 Phone 😃 You can **keep it!**! Using this tool, you can enable Dual Boot in literally 2 clicks. Please, check [this video](https://www.youtube.com/watch?v=3j2rWL4hHGc) to see a demonstration of the feature.
+You don't have to ditch Windows 10 Phone 😃 You can **keep it!**! Using this tool, you can enable Dual Boot in literally 2 clicks. Please, check [this video](https://www.youtube.com/watch?v=3j2rWL4hHGc) to see a demo of this feature.
 
 # How do I use it?
 
 Please, watch this video tutorial make by our friends at [WindowsArea.de](https://windowsarea.de/)
 
-📺 [Watch it here](https://www.youtube.com/watch?v=FkE9SJOgGLM)
+[📺 Watch it here](https://www.youtube.com/watch?v=FkE9SJOgGLM)
 
 # Download it!
 
 Download the latest version [here](https://github.com/WOA-project/WOA-Deployer/releases/latest)
 
-# Show the love ♥
+# Show the love 🧡
 
 Do you like my tool? Has it been useful for you?
-Then, I hope you [support my work](Docs/Donations)
+Then, I hope you [👉 support my work](Docs/Donations.md)
