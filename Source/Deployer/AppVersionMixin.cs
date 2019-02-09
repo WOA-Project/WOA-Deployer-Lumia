@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Deployer.Lumia.Gui.ViewModels
+namespace Deployer
 {
     public class AppVersionMixin
     {

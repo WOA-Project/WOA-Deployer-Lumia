@@ -56,6 +56,7 @@ namespace Deployment.Console
                             ImageIndex = opts.Index,
                             ImagePath = opts.WimImage,
                             SizeReservedForWindows = ByteSize.FromGigaBytes(opts.ReservedSizeForWindowsInGb),
+                            UseCompact = opts.UseCompact,
                         };
                         return deployer.Deploy();
                     },

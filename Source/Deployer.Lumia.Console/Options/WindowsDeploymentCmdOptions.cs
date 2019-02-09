@@ -13,5 +13,8 @@ namespace Deployment.Console.Options
 
         [Option("windows-size", Default = 18, HelpText = "Size reserved for Windows partitions in GB")]
         public double ReservedSizeForWindowsInGb { get; set; }
+
+        [Option("compact", Default = false, HelpText = "Enable Compact deployment. Slower, but saves phone disk space")]
+        public bool UseCompact { get; set; }
     }
 }
