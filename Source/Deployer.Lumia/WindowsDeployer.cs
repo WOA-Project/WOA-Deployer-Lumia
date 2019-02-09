@@ -95,7 +95,7 @@ namespace Deployer.Lumia
 
             if (available < requiredSpace)
             {
-                Log.Warning("There's not enough space in the phone. We will try to allocate it automatically");
+                Log.Verbose("There's not enough space in the phone. We will try to allocate it automatically");
 
                 var success = await spaceAllocators.ToObservable()
                     .Select(x => Observable.FromAsync(() => x.TryAllocate(phone, requiredSpace)))
@@ -108,7 +108,7 @@ namespace Deployer.Lumia
                     throw new NotEnoughSpaceException($"Could not allocate {requiredSpace} on the phone. Please, try to allocate the necessary space manually and retry.");
                 }
                 
-                Log.Information("Space allocated correctly");
+                Log.Verbose("Space allocated correctly");
             }
             else
             {

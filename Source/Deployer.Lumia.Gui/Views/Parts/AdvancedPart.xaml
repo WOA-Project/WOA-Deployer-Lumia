@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:common="clr-namespace:Deployer.Gui.Common;assembly=Deployer.Gui.Common"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800" Padding="8"
              DataContext="{Binding Source={StaticResource Locator}, Path=AdvancedViewModel}" mah:DialogParticipation.Register="{Binding}">
-    <StackPanel Grid.Row="1">
-        <GroupBox Header="GPU" Grid.Row="1" Padding="20" Margin="0,20,0,0">
+    <StackPanel>
+        <GroupBox Header="GPU" Padding="20" Margin="0,20,0,0">
             <HeaderedContentControl
                 HorizontalContentAlignment="Stretch">
                 <HeaderedContentControl.Header>
@@ -19,10 +20,14 @@
                         <Bold>ONLY for Lumia 950 XL.</Bold>
                     </TextBlock>
                 </HeaderedContentControl.Header>
-                <common:BusyButton Margin="20"
+                <common:IconButton Margin="20" 
                                    VerticalAlignment="Center" HorizontalAlignment="Center" Height="50"
                                    Content="Install GPU" Command="{Binding InstallGpuWrapper.Command}"
-                                   IsBusy="{Binding InstallGpuWrapper.IsExecuting}" Image="/Assets/gpu.png" />
+                                   IsBusy="{Binding InstallGpuWrapper.IsExecuting}">
+                    <common:IconButton.Icon>
+                        <iconPacks:PackIconMaterial Kind="Chip" Style="{StaticResource ButtonIconStyle}" />
+                    </common:IconButton.Icon>
+                </common:IconButton>
             </HeaderedContentControl>
 
         </GroupBox>

@@ -199,6 +199,9 @@
     <PackageReference Include="MahApps.Metro">
       <Version>2.0.0-alpha0212</Version>
     </PackageReference>
+    <PackageReference Include="MahApps.Metro.IconPacks">
+      <Version>3.0.0-alpha0103</Version>
+    </PackageReference>
     <PackageReference Include="Markdown.Xaml">
       <Version>1.0.0</Version>
     </PackageReference>

@@ -32,5 +32,27 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type local:IconButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:IconButton}">
+                    <Button DataContext="{Binding ElementName=UserControl}" Command="{TemplateBinding Command}" Padding="10">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Viewbox Margin="0 4 8 4">
+                                <mah:ContentControlEx VerticalAlignment="Stretch"
+                                                      HorizontalAlignment="Stretch" Content="{TemplateBinding Content}" />
+                            </Viewbox>
+                            <ContentControl Visibility="{TemplateBinding IsBusy, Converter={StaticResource BooleanToVisibilityConverterInverted}}"
+                                   RenderOptions.BitmapScalingMode="HighQuality" Content="{TemplateBinding Icon}" />
+                            <Viewbox VerticalAlignment="Center" Visibility="Collapsed">
+                                <mah:ProgressRing IsActive="{TemplateBinding IsBusy}" />
+                            </Viewbox>
+                        </StackPanel>
+                    </Button>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
 

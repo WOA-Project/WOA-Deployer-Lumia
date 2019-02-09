@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusyButton.cs" />
+    <Compile Include="IconButton.cs" />
     <Compile Include="ISettingsService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\FilePicker.cs" />
