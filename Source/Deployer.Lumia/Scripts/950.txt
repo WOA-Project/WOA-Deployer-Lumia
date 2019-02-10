@@ -1,7 +1,7 @@
 ﻿AzureDevOpsUnpack "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
 AzureDevOpsUnpack "LumiaWOA;Lumia950XLPkg;1;MSM8992 UEFI (Lumia 950)"
 GitHubUnpack "https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers"
-Copy "Downloaded\MSM8992 UEFI (Lumia 950)\ELF\UEFI.elf" "EFIESP"
+Copy "Core\Good UEFI\950\UEFI.elf" "EFIESP"
 Copy "Downloaded\UEFI Loader for 8992 and 8994\ARM\Debug\BootShim.efi" "EFIESP\EFI\boot\"
 ConfigureBCD
 InstallDevMenu "Core\Developer Menu\"
