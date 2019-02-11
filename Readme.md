@@ -44,7 +44,7 @@ Then, I hope you [👉 support my work](Docs/Donations.md)
 
 # Credits and Acknowledgements
 - [Ben Imbushuo](https://github.com/imbushuo) for his awesome work with UEFI and misc stuff.
-- [Gustave M.](https://twitter.com/gus33000) for his HUGE load of work on drivers, testing, fixing... For his support, suggestions, for testing and those neat prices of code!
+- [Gustave M.](https://twitter.com/gus33000) for his HUGE load of work on drivers, testing, fixing... For his support, suggestions, for testing and those neat pieces of code!
 - René Lergner ([Heathcliff74XDA](http://www.twitter.com/Heathcliff74XDA)) for WPInternals and for the code to read info from the phone. You started everthing 😉
 - [Googulator](https://github.com/Googulator). For his work on the USB-C and for the great support. 
 - Swift (AppleCyclone) for suggestions and his work with the rest of team.
