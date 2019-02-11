@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using ByteSizeLib;
 using Serilog;
 
@@ -37,13 +38,7 @@ namespace Deployer.Lumia
 
             Log.Verbose("Resize operation completed successfully");
 
-            return await IsThereEnoughSpace(phone, requiredSpace);
-        }
-
-        private static async Task<bool> IsThereEnoughSpace(IPhone phone, ByteSize requiredSpace)
-        {
-            var disk = await phone.GetDeviceDisk();
-            return disk.AvailableSize >= requiredSpace;
-        }
+            return await phone.IsThereEnoughSpace(requiredSpace);
+        }     
     }
 }
