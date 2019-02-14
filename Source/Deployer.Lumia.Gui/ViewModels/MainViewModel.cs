@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
+using Deployer.Gui.Common;
 using DynamicData;
 using ReactiveUI;
 using Serilog.Events;

@@ -9,8 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Deployer.NetFx\Deployer.NetFx.csproj" />
-    <ProjectReference Include="..\Deployer\Deployer.csproj" />
+    <ProjectReference Include="..\DeployerPlatform\Deployer\Deployer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

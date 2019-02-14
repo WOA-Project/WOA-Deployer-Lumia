@@ -19,6 +19,7 @@
                 <Setter.Value>
 
                         <MultiBinding Converter="{x:Static Converters:BackgroundToForegroundConverter.Instance}">
+                            <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                             <Binding Mode="OneWay"
                                      Path="Background"
                                      RelativeSource="{RelativeSource TemplatedParent}" />

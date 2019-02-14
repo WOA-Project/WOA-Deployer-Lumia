@@ -35,12 +35,12 @@ namespace Deployer.Lumia.NetFx
                             from type in a.ExportedTypes
                             where type.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IDeploymentTask))
                             select type;
-            block.ExportAssemblies(Assemblies.AppDomainAssemblies).ByInterface<ISpaceAllocator>();
+            block.ExportAssemblies(Assemblies.AppDomainAssemblies).ByInterface<ISpaceAllocator<IPhone>>();
             block.Export<ZipExtractor>().As<IZipExtractor>();
             block.ExportFactory(Tokenizer.Create).As<Tokenizer<LangToken>>();
             block.Export<ScriptParser>().As<IScriptParser>();
             block.ExportFactory(() => installOptionsProvider).As<IWindowsOptionsProvider>();
-            
+            block.Export<LumiaDisklayoutPreparer>().As<IDisklayoutPreparer>();
             block.Export<PhoneInfoReader>().As<IPhoneInfoReader>();
             block.Export<WoaDeployer>().As<IWoaDeployer>();
             block.Export<Tooling>().As<ITooling>();
@@ -50,7 +50,8 @@ namespace Deployer.Lumia.NetFx
             block.ExportInstance(taskTypes).As<IEnumerable<Type>>();
             block.Export<ScriptRunner>().As<IScriptRunner>();
             block.Export<InstanceBuilder>().As<IInstanceBuilder>();
-            
+            block.ExportFactory((IPhone p) => new DeviceProvider { Device = p }).As<IDeviceProvider>();
+
             block.Export<FileSystemOperations>().As<IFileSystemOperations>();
             block.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>();
             block.Export<WindowsDeployer>().As<IWindowsDeployer>();
@@ -58,7 +59,7 @@ namespace Deployer.Lumia.NetFx
 
             WithRealPhone(block);
 
-            block.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>();         
+            block.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>();
 
             return block;
         }

@@ -5,7 +5,7 @@ using Serilog;
 
 namespace Deployer.Lumia
 {
-    public class DefaultSpaceAllocator : ISpaceAllocator
+    public class DefaultSpaceAllocator : ISpaceAllocator<IPhone>
     {
         public async Task<bool> TryAllocate(IPhone phone, ByteSize requiredSpace)
         {

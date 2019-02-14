@@ -2,7 +2,6 @@ using System;
 using System.Reactive.Subjects;
 using Deployer.Gui.Common;
 using Deployer.Gui.Common.Services;
-using Deployer.Gui.Core;
 using Deployer.Lumia.Gui.Specifics;
 using Deployer.Lumia.Gui.ViewModels;
 using Deployer.Lumia.Gui.Views;
@@ -38,7 +37,7 @@ namespace Deployer.Lumia.Gui
 
             container.Configure(x =>
             {
-                x.Configure(optionsProvider);
+                x.ConfigureForTesting(optionsProvider);
                 x.Export<WpfMarkdownDisplayer>().As<IMarkdownDisplayer>();
                 x.ExportFactory(() => new BehaviorSubject<double>(double.NaN))
                     .As<IObserver<double>>()

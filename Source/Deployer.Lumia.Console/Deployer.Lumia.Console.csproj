@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{16500914-E053-433E-9B6A-27D4A5717130}</ProjectGuid>
+    <ProjectGuid>{B29156BB-B183-4B55-BB04-7B9B926EC926}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Deployment.Console</RootNamespace>
     <AssemblyName>WoaDeployer</AssemblyName>
@@ -118,12 +118,12 @@
       <Project>{20501832-13f5-4673-9d86-9e7e0c562027}</Project>
       <Name>Deployer.Lumia</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Deployer.NetFx\Deployer.NetFx.csproj">
+    <ProjectReference Include="..\DeployerPlatform\Deployer.NetFx\Deployer.NetFx.csproj">
       <Project>{fbedaf0e-e2ed-4005-8d83-f980fa67feb2}</Project>
       <Name>Deployer.NetFx</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Deployer\Deployer.csproj">
-      <Project>{b0709401-1148-43b4-a06c-79173393dd98}</Project>
+    <ProjectReference Include="..\DeployerPlatform\Deployer\Deployer.csproj">
+      <Project>{20d40dc1-0237-47a0-b169-b420159e341c}</Project>
       <Name>Deployer</Name>
     </ProjectReference>
   </ItemGroup>

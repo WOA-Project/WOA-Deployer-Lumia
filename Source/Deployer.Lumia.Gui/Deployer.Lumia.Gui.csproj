@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ED104C3D-4B45-4C45-82BD-B043E85F0FE8}</ProjectGuid>
+    <ProjectGuid>{76DCD56D-98E7-4EA1-B04B-FA063B953FD7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Deployer.Lumia.Gui</RootNamespace>
     <AssemblyName>WOA Deployer</AssemblyName>
@@ -67,7 +67,6 @@
     </Compile>
     <Compile Include="ViewModels\AdvancedViewModel.cs" />
     <Compile Include="ViewModels\DualBootViewModel.cs" />
-    <Compile Include="ViewModels\IBusyObject.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\DeploymentViewModel.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -219,32 +218,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Deployer.Gui.Common\Deployer.Gui.Common.csproj">
-      <Project>{AD8EA86C-AF60-4CCF-9CAA-07BBF5E039EC}</Project>
-      <Name>Deployer.Gui.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Deployer.Gui.Core\Deployer.Gui.Core.csproj">
-      <Project>{4DDBED8A-6445-4E59-9E64-6FA3B7419052}</Project>
-      <Name>Deployer.Gui.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Deployer.Lumia.NetFx\Deployer.Lumia.NetFx.csproj">
-      <Project>{2ABBF26A-2C87-4657-861E-08EC55DEAD77}</Project>
-      <Name>Deployer.Lumia.NetFx</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Deployer.Lumia\Deployer.Lumia.csproj">
-      <Project>{20501832-13f5-4673-9d86-9e7e0c562027}</Project>
-      <Name>Deployer.Lumia</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Deployer.NetFx\Deployer.NetFx.csproj">
-      <Project>{FBEDAF0E-E2ED-4005-8D83-F980FA67FEB2}</Project>
-      <Name>Deployer.NetFx</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Deployer\Deployer.csproj">
-      <Project>{B0709401-1148-43B4-A06C-79173393DD98}</Project>
-      <Name>Deployer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\950.png" />
     <Resource Include="Assets\950xl.png" />
     <Resource Include="Assets\appicon.ico" />
@@ -274,6 +247,24 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\heart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeployerPlatform\Deployer.Gui.Common\Deployer.Gui.Common.csproj">
+      <Project>{ad8ea86c-af60-4ccf-9caa-07bbf5e039ec}</Project>
+      <Name>Deployer.Gui.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Deployer.Lumia.NetFx\Deployer.Lumia.NetFx.csproj">
+      <Project>{cfa21504-2cfd-468b-8458-bd9bd05bcf19}</Project>
+      <Name>Deployer.Lumia.NetFx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Deployer.Lumia\Deployer.Lumia.csproj">
+      <Project>{f78af625-5811-4d00-b95d-0b2a331152fd}</Project>
+      <Name>Deployer.Lumia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeployerPlatform\Deployer\Deployer.csproj">
+      <Project>{20d40dc1-0237-47a0-b169-b420159e341c}</Project>
+      <Name>Deployer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
