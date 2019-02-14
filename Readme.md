@@ -22,7 +22,7 @@ You don't have to ditch Windows 10 Phone 😃 You can **keep it!**! Using this t
 
 Please, watch this video tutorial made by our friends at [WindowsArea.de](https://windowsarea.de/)
 
-[📺 Watch it here](https://www.youtube.com/watch?v=FkE9SJOgGLM)
+[▶ Watch it here](https://www.youtube.com/watch?v=FkE9SJOgGLM)
 
 # Download it!
 
