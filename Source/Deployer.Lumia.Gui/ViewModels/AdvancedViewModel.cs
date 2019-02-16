@@ -11,16 +11,16 @@ namespace Deployer.Lumia.Gui.ViewModels
     {
         private readonly UIServices uiServices;
         private readonly ISettingsService settingsService;
-        private readonly IWoaDeployer autoDeployer;
+        private readonly IWoaDeployer wapDeployer;
         public CommandWrapper<Unit, Unit> InstallGpuWrapper { get; set; }
 
         private readonly ObservableAsPropertyHelper<ByteSize> sizeReservedForWindows;
 
-        public AdvancedViewModel(UIServices uiServices, ISettingsService settingsService, IWoaDeployer autoDeployer)
+        public AdvancedViewModel(UIServices uiServices, ISettingsService settingsService, IWoaDeployer wapDeployer)
         {
             this.uiServices = uiServices;
             this.settingsService = settingsService;
-            this.autoDeployer = autoDeployer;
+            this.wapDeployer = wapDeployer;
             InstallGpuWrapper = new CommandWrapper<Unit, Unit>(this,
                 ReactiveCommand.CreateFromTask(InstallGpu), uiServices.DialogService);
 
@@ -48,7 +48,7 @@ namespace Deployer.Lumia.Gui.ViewModels
         {
             try
             {
-                await autoDeployer.InstallGpu();
+                await wapDeployer.InstallGpu();
                 var messageViewModel =
                     new MessageViewModel(Resources.ManualStepsTitle, Resources.InstallGpuManualSteps);
 

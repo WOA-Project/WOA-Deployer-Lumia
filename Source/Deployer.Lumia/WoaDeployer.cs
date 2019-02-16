@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Deployer.Execution;
+using Serilog;
 
 namespace Deployer.Lumia
 {
@@ -29,8 +30,10 @@ namespace Deployer.Lumia
             };
 
             var phoneModel = await phone.GetModel();
+            Log.Verbose("{Model detected}", phoneModel);
             var path = dict[phoneModel];
-
+            
+            Log.Information("Starting deployment");
             await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));
         }
 
