@@ -18,6 +18,10 @@ You don't have to ditch Windows 10 Phone 😃 You can **keep it!**! Using this t
 - A USB-C cable to connect the Lumia to your PC
 - A Windows 10 ARM64 Image (.wim). Please, check [this link](Docs/GettingWoA.md) to get it.
 
+### Additional requierements
+- To run WOA Deployer you need a recent version of Windows 10 (please, use the latest to ensure it'll run correctly, don't open issues otherwise)
+- .NET Framework 4.6.1 (should come included in recent versions of Windows 
+
 # How do I use it?
 
 Please, watch this video tutorial made by our friends at [WindowsArea.de](https://windowsarea.de/)
@@ -33,9 +37,6 @@ Download the latest version [here](https://github.com/WOA-project/WOA-Deployer/r
 2. Navigate to the GUI folder
 3. Find the .exe file
 4. Run it
-
-## Important
-This tool requires Windows 10 to run. If you get deployment errors, please, update.
 
 # Show the love 🧡
 
