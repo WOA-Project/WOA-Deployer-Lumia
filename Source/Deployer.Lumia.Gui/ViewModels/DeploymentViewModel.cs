@@ -52,7 +52,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             await deployer.Deploy();
 
-            await uiServices.DialogService.ShowAlert(this, Resources.Finished,
+            await uiServices.DialogService.ShowAlert(this, Resources.Done,
                 Resources.WindowsDeployedSuccessfully);
         }
 

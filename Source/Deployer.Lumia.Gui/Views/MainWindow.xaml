@@ -6,10 +6,11 @@
                  xmlns:parts="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:Converters="http://metro.mahapps.com/winfx/xaml/shared"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                  mc:Ignorable="d"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
                  mah:DialogParticipation.Register="{Binding}"
-                 Title="{Binding Title}" Width="800" Height="640"
+                 Title="{Binding Title}" Width="720" Height="640"
                  Icon="/Assets/appicon.png"
                  WindowStartupLocation="CenterScreen">
     <mah:MetroWindow.Resources>
@@ -33,16 +34,16 @@
         </Style>
     </mah:MetroWindow.Resources>
 
-    <!--<mah:MetroWindow.RightWindowCommands>
+    <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-            <Button Command="{Binding DonateCommand}" ToolTip="Please, support this tool. Thanks in advance :)">
+            <Button Command="{Binding HelpCommand}" ToolTip="Do you need help?">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="16" VerticalAlignment="Center" Source="/Assets/heart.png" RenderOptions.BitmapScalingMode="HighQuality" />
-                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="Donate" />
+                    <iconPacks:PackIconMaterial Kind="Help" />
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="Help" />
                 </StackPanel>
             </Button>
         </mah:WindowCommands>
-    </mah:MetroWindow.RightWindowCommands>-->
+    </mah:MetroWindow.RightWindowCommands>
     <Grid>
 
         <Grid.RowDefinitions>

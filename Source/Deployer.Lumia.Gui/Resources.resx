@@ -118,10 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="WindowsDeployedSuccessfully" xml:space="preserve">
-    <value>Done!
-Now, please, **eject the Phone safely** to avoid data corruption issues and reboot your Phone.
-After reboot, choose "Windows 10" in the Boot Menu to start the Windows 10 ARM Setup.
-Enjoy!</value>
+    <value># Done!
+
+Now, follow these directions:
+1. **Eject the phone safely** to avoid data corruption issues. If it refuses to be ejected, restart your PC and unplug the phone after the PC has rebooted (the device should no longer by used)
+2. Reboot the phone by pressing the **[Power]** and holding it until it vibrates.
+3. The phone will boot.
+4. The booth menu will be shown. Choose the **"Windows 10"** entry to start the Windows 10 ARM Setup. To select it press the **[Camera]** button
+    - If you don't see any boot menu and the screen is completely black, press the **[Camera]** button to continue. It's a known issue. 
+
+## Support my work
+If this tool has been useful for you, please, consider a donation to support my work using the [**♥ Donate**](https://github.com/WOA-Project/WOA-Deployer-Lumia/blob/master/Docs/Donations.md) button. Thanks 😊
+
+Enjoy!!</value>
   </data>
   <data name="WarningNotice" xml:space="preserve">
     <value>- This tool comes with no warranty. 
@@ -129,9 +138,6 @@ Enjoy!</value>
 - This tool intended for usage with Lumia 950 and 950 XL **ONLY**.
     
 By clicking "OK" you accept the aforementioned risks.</value>
-  </data>
-  <data name="DriversInjectedSucessfully" xml:space="preserve">
-    <value>The drivers have been injected correctly</value>
   </data>
   <data name="TermsOfUseTitle" xml:space="preserve">
     <value>Disclaimer Notice and Terms of Use</value>
@@ -143,7 +149,7 @@ The Core Package that is currently installed doesn't have an additional post-OOB
   <data name="CannotInstallGpu" xml:space="preserve">
     <value>Unable to install the GPU. Please, ensure that WOA is installed.</value>
   </data>
-  <data name="Finished" xml:space="preserve">
+  <data name="DeploymentFinished" xml:space="preserve">
     <value>Finished</value>
   </data>
   <data name="WimFileNoValidArchitecture" xml:space="preserve">
@@ -196,6 +202,9 @@ Don't disable Dual Boot after installing the GPU drivers or the phone **will NOT
     <value>Invalid WIM file</value>
   </data>
   <data name="WimFilesFilter" xml:space="preserve">
-    <value>WIM files</value>
+    <value>Windows Images</value>
+  </data>
+  <data name="WindowsDeployedSuccessfullyTitle" xml:space="preserve">
+    <value>Deployment successful</value>
   </data>
 </root>

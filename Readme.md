@@ -43,6 +43,14 @@ Download the latest version [here](https://github.com/WOA-project/WOA-Deployer/r
 Do you like my tool? Has it been useful for you?
 Then, I hope you [👉 support my work](Docs/Donations.md)
 
+
+# Need help?
+You have many options!
+1. Read the [FAQ 📘](https://www.woaproject.net/viewtopic.php?f=16&t=6)
+2. Visit our projects website at https://woaproject.net, the one-stop solution for all your questions 😊
+3. Join our great [Telegram group 📱](https://t.me/joinchat/ACWtm0Up3wzSbWjjfxk-NA)
+
+
 # Credits and Acknowledgements
 - [Ben Imbushuo](https://github.com/imbushuo) for his awesome work with UEFI and misc stuff.
 - [Gustave M.](https://twitter.com/gus33000) for his HUGE load of work on drivers, testing, fixing... For his support, suggestions, for testing and those neat pieces of code!

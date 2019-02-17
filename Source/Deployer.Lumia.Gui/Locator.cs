@@ -6,6 +6,7 @@ using Deployer.Lumia.Gui.Specifics;
 using Deployer.Lumia.Gui.ViewModels;
 using Deployer.Lumia.Gui.Views;
 using Deployer.Lumia.NetFx;
+using Deployer.Raspberry.Gui.Views;
 using Deployer.Tasks;
 using Grace.DependencyInjection;
 using MahApps.Metro.Controls.Dialogs;
