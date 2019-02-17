@@ -16,7 +16,7 @@ You don't have to ditch Windows 10 Phone 😃 You can **keep it!**! Using this t
 - A Lumia 950 or 950 XL with **unlocked bootloader** that can correctly enter *Mass Storage Mode*
 	- You can unlock the bootloader using this tool: [WPInternals](http://www.wpinternals.net). You can follow [this guide](https://github.com/WOA-Project/guides/blob/master/BL-unlock.md).
 - A USB-C cable to connect the Lumia to your PC
-- A Windows 10 ARM64 Image (.wim). Please, check [this link](Docs/GettingWoA.md) to get it.
+- A Windows 10 ARM64 Image (.wim). Please, check [this link](https://github.com/WOA-Project/guides/blob/master/GettingWOA.md) to get it.
 
 # How do I use it?
 
