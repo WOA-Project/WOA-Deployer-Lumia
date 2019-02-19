@@ -26,7 +26,7 @@ Please, watch this video tutorial made by our friends at [WindowsArea.de](https:
 
 # Download it!
 
-Download the latest version [here](https://github.com/WOA-project/WOA-Deployer/releases/latest)
+Download the latest version [here](https://github.com/WOA-Project/WOA-Deployer-Lumia/releases/latest)
 
 # Executing the tool
 1. Extract the .zip to a folder in you PC
