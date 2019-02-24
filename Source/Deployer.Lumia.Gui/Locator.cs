@@ -37,7 +37,7 @@ namespace Deployer.Lumia.Gui
 
             container.Configure(x =>
             {
-                x.ConfigureForTesting(optionsProvider);
+                x.Configure(optionsProvider);
                 x.Export<WpfMarkdownDisplayer>().As<IMarkdownDisplayer>();
                 x.ExportFactory(() => new BehaviorSubject<double>(double.NaN))
                     .As<IObserver<double>>()
@@ -50,7 +50,7 @@ namespace Deployer.Lumia.Gui
                 x.Export<DeploymentViewModel>().ByInterfaces().As<DeploymentViewModel>().Lifestyle.Singleton();
                 x.Export<UIServices>();
                 x.ExportFactory(() => viewService).As<IViewService>();
-                x.Export<DialogService>().As<IDialogService>();
+                x.Export<Dialog>().As<IDialog>();
                 x.Export<FilePicker>().As<IFilePicker>();
                 x.Export<SettingsService>().As<ISettingsService>();
                 x.ExportFactory(() => DialogCoordinator.Instance).As<IDialogCoordinator>();

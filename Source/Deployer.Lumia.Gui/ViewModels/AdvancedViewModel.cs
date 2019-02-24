@@ -22,7 +22,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             this.settingsService = settingsService;
             this.autoDeployer = autoDeployer;
             InstallGpuWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(InstallGpu), uiServices.DialogService);
+                ReactiveCommand.CreateFromTask(InstallGpu), uiServices.Dialog);
 
             sizeReservedForWindows =
                 this.WhenAnyValue(x => x.GbsReservedForWindows, ByteSize.FromGigaBytes)

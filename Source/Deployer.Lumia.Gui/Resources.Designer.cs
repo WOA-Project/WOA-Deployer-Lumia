@@ -220,10 +220,15 @@ namespace Deployer.Lumia.Gui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Done!
+        ///   Looks up a localized string similar to # Done!
+        ///
         ///Now, please, **eject the Phone safely** to avoid data corruption issues and reboot your Phone.
         ///After reboot, choose &quot;Windows 10&quot; in the Boot Menu to start the Windows 10 ARM Setup.
-        ///Enjoy!.
+        ///
+        ///## Support my work
+        ///If this tool has been useful for you, please, consider a donation to support my work using the [**♥ Donate**](https://github.com/WOA-Project/WOA-Deployer-Lumia/blob/master/Docs/Donations.md) button. Thanks 😊
+        ///
+        ///Enjoy!!.
         /// </summary>
         public static string WindowsDeployedSuccessfully {
             get {

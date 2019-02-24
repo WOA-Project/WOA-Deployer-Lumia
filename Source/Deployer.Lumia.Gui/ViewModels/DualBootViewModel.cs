@@ -15,7 +15,7 @@ namespace Deployer.Lumia.Gui.ViewModels
         private bool isEnabled;
         private bool isUpdated;
 
-        public DualBootViewModel(IPhone phone, IDialogService dialogService)
+        public DualBootViewModel(IPhone phone, IDialog dialogService)
         {
             this.phone = phone;
             var isChangingDualBoot = new Subject<bool>();

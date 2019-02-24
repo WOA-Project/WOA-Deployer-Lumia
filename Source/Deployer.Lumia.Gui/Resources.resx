@@ -118,10 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="WindowsDeployedSuccessfully" xml:space="preserve">
-    <value>Done!
+    <value># Done!
+
 Now, please, **eject the Phone safely** to avoid data corruption issues and reboot your Phone.
 After reboot, choose "Windows 10" in the Boot Menu to start the Windows 10 ARM Setup.
-Enjoy!</value>
+
+## Support my work
+If this tool has been useful for you, please, consider a donation to support my work using the [**♥ Donate**](https://github.com/WOA-Project/WOA-Deployer-Lumia/blob/master/Docs/Donations.md) button. Thanks 😊
+
+Enjoy!!</value>
   </data>
   <data name="WarningNotice" xml:space="preserve">
     <value>- This tool comes with no warranty. 
