@@ -14,9 +14,9 @@ You don't have to ditch Windows 10 Phone 😃 You can **keep it!**! Using this t
 
 # Requirements
 - A Lumia 950 or 950 XL with **unlocked bootloader** that can correctly enter *Mass Storage Mode*
-	- You can unlock the bootloader using this tool: [WPInternals](http://www.wpinternals.net). You can follow [this guide](https://1drv.ms/w/s!AtXoQFW327DIyd4XabdpcztOVGGANA).
+	- You can unlock the bootloader using this tool: [WPInternals](http://www.wpinternals.net). You can follow [this guide](https://github.com/WOA-Project/guides/blob/master/BL-unlock.md).
 - A USB-C cable to connect the Lumia to your PC
-- A Windows 10 ARM64 Image (.wim). Please, check [this link](Docs/GettingWoA.md) to get it.
+- A Windows 10 ARM64 Image (.wim). Please, check [this link](https://github.com/WOA-Project/guides/blob/master/GettingWOA.md) to get it.
 
 ### Additional requirements
 - To run WOA Deployer you need a recent version of Windows 10 (please, use the latest to ensure it'll run correctly, don't open issues otherwise)
@@ -30,7 +30,7 @@ Please, watch this video tutorial made by our friends at [WindowsArea.de](https:
 
 # Download it!
 
-Download the latest version [here](https://github.com/WOA-project/WOA-Deployer/releases/latest)
+Download the latest version [here](https://github.com/WOA-Project/WOA-Deployer-Lumia/releases/latest)
 
 # Executing the tool
 1. Extract the .zip to a folder in you PC
