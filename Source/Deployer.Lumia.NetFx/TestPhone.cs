@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Deployer.Exceptions;
-using Deployer.Filesystem.FullFx;
 using Deployer.FileSystem;
 
 namespace Deployer.Lumia.NetFx

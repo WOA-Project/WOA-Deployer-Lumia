@@ -4,9 +4,9 @@ using System.Linq;
 using System.Reflection;
 using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
-using Deployer.Filesystem.FullFx;
 using Deployer.FileSystem;
 using Deployer.Lumia.NetFx.PhoneInfo;
+using Deployer.NetFx;
 using Deployer.Services;
 using Deployer.Tasks;
 using Grace.DependencyInjection;
@@ -55,7 +55,7 @@ namespace Deployer.Lumia.NetFx
             block.Export<FileSystemOperations>().As<IFileSystemOperations>();
             block.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>();
             block.Export<WindowsDeployer>().As<IWindowsDeployer>();
-            block.Export<GitHubDownloader>().As<IGitHubDownloader>();
+            block.Export<GitHubClient>().As<IGitHubClient>();
 
             WithRealPhone(block);
 

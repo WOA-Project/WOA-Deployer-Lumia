@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 .Select(metadata => metadata != null);
 
             FullInstallWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.DialogService);
+                ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.Dialog);
             IsBusyObservable = FullInstallWrapper.Command.IsExecuting;
             isBusyHelper = IsBusyObservable.ToProperty(this, model => model.IsBusy);
         }
@@ -52,8 +53,10 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             await deployer.Deploy();
 
-            await uiServices.DialogService.ShowAlert(this, Resources.Done,
-                Resources.WindowsDeployedSuccessfully);
+            await uiServices.Dialog.PickOptions(Resources.WindowsDeployedSuccessfully, new List<Option>()
+            {
+                new Option("Close")
+            });
         }
 
         public CommandWrapper<Unit, Unit> FullInstallWrapper { get; set; }

@@ -10,7 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800" Padding="8"
              DataContext="{Binding Source={StaticResource Locator}, Path=AdvancedViewModel}" mah:DialogParticipation.Register="{Binding}">
     <StackPanel>
-        <GroupBox Header="GPU" Padding="20" Margin="0,20,0,0">
+        <GroupBox Visibility="Collapsed" Header="GPU" Padding="20" Margin="0,20,0,0">
             <HeaderedContentControl
                 HorizontalContentAlignment="Stretch">
                 <HeaderedContentControl.Header>
