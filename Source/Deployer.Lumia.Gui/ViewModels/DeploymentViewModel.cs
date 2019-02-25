@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Deployer.Gui.Common;
 using ReactiveUI;
+using Serilog;
 
 namespace Deployer.Lumia.Gui.ViewModels
 {
@@ -52,6 +53,8 @@ namespace Deployer.Lumia.Gui.ViewModels
             optionsProvider.Options = windowsDeploymentOptions;
 
             await deployer.Deploy();
+
+            Log.Information("Deployment successful");
 
             await uiServices.Dialog.PickOptions(Resources.WindowsDeployedSuccessfully, new List<Option>()
             {

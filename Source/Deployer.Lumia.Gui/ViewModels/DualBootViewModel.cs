@@ -5,6 +5,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Deployer.Gui.Common;
 using ReactiveUI;
+using Serilog;
 
 namespace Deployer.Lumia.Gui.ViewModels
 {
@@ -91,11 +92,13 @@ namespace Deployer.Lumia.Gui.ViewModels
         private async Task EnableDualBoot()
         {
             await phone.EnableDualBoot(true);
+            Log.Information("Dual Boot enabled");
         }
 
         private async Task DisableDualBoot()
         {
             await phone.EnableDualBoot(false);
+            Log.Information("Dual Boot disabled");
         }
 
         private async Task<DualBootStatus> GetStatus()

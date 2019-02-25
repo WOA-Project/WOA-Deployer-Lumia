@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Deployer.Execution;
+using Serilog;
 
 namespace Deployer.Lumia
 {
@@ -31,7 +32,7 @@ namespace Deployer.Lumia
             var phoneModel = await phone.GetModel();
             var path = dict[phoneModel];
 
-            await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));
+            await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));            
         }
 
         public async Task InstallGpu()
