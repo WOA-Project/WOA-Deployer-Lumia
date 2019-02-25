@@ -32,9 +32,8 @@ namespace Deployer.Lumia
             var phoneModel = await phone.GetModel();
             Log.Verbose("{Model detected}", phoneModel);
             var path = dict[phoneModel];
-            
-            Log.Information("Starting deployment");
-            await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));
+
+            await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));            
         }
 
         public async Task InstallGpu()
