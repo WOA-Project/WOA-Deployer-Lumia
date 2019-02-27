@@ -18,6 +18,10 @@ You don't have to ditch Windows 10 Phone 😃 You can **keep it!**! Using this t
 - A USB-C cable to connect the Lumia to your PC
 - A Windows 10 ARM64 Image (.wim). Please, check [this link](https://github.com/WOA-Project/guides/blob/master/GettingWOA.md) to get it.
 
+### Additional requirements
+- To run WOA Deployer you need a recent version of Windows 10 (please, use the latest to ensure it'll run correctly, don't open issues otherwise)
+- .NET Framework 4.6.1 (should come included in recent versions of Windows)
+
 # How do I use it?
 
 Please, watch this video tutorial made by our friends at [WindowsArea.de](https://windowsarea.de/)
@@ -29,23 +33,26 @@ Please, watch this video tutorial made by our friends at [WindowsArea.de](https:
 Download the latest version [here](https://github.com/WOA-Project/WOA-Deployer-Lumia/releases/latest)
 
 # Executing the tool
-1. Extract the .zip to a folder in you PC
+1. Extract the .zip to a folder in your PC
 2. Navigate to the GUI folder
 3. Find the .exe file
 4. Run it
-
-## Important
-This tool requires Windows 10 to run. If you get deployment errors, please, update.
 
 # Show the love 🧡
 
 Do you like my tool? Has it been useful for you?
 Then, I hope you [👉 support my work](Docs/Donations.md)
 
+# Need help?
+Then visit our projects website at https://www.woaproject.net/, the one-stop solution for all your questions 😊
+
+It's also recommended that you read the [FAQ 📘](https://www.woaproject.net/viewtopic.php?f=16&t=6)
+And, of course, don't hesitate to join our great [Telegram group 📱](https://t.me/joinchat/Ey6mehEPg0Fe4utQNZ9yjA)
+
 # Credits and Acknowledgements
-- [Ben Imbushuo](https://github.com/imbushuo) for his awesome work with UEFI and misc stuff.
+- [Ben Imbushuo](https://github.com/imbushuo) for his awesome work with UEFI and misc. stuff.
 - [Gustave M.](https://twitter.com/gus33000) for his HUGE load of work on drivers, testing, fixing... For his support, suggestions, for testing and those neat pieces of code!
-- René Lergner ([Heathcliff74XDA](http://www.twitter.com/Heathcliff74XDA)) for WPInternals and for the code to read info from the phone. You started everthing 😉
+- René Lergner ([Heathcliff74XDA](http://www.twitter.com/Heathcliff74XDA)) for WPInternals and for the code to read info from the phone. You started everything 😉
 - [Googulator](https://github.com/Googulator). For his work on the USB-C and for the great support. 
 - Swift (AppleCyclone) for suggestions and his work with the rest of team.
 - Abdel [ADeltaX](https://twitter.com/ADeltaXForce?s=17) for testing and for his work.
