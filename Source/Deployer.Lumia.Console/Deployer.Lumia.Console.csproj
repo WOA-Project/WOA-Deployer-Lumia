@@ -88,14 +88,6 @@
       <Link>Core\Developer Menu\ui\boot.ums.waiting.bmpx</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Deployer.Lumia\Core\Good UEFI\950 XL\UEFI.elf">
-      <Link>Core\Good UEFI\950 XL\UEFI.elf</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Deployer.Lumia\Core\Good UEFI\950\UEFI.elf">
-      <Link>Core\Good UEFI\950\UEFI.elf</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="App.config" />
     <None Include="App.config">
       <SubType>Designer</SubType>
