@@ -15,6 +15,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 {
     public class MainViewModel : ReactiveObject, IDisposable
     {
+        private readonly IFileSystemOperations fileSystemOperations;
         private readonly ObservableAsPropertyHelper<bool> isProgressVisibleHelper;
         private readonly ObservableAsPropertyHelper<double> progressHelper;
         private ReadOnlyObservableCollection<RenderedLogEvent> logEvents;
@@ -23,10 +24,12 @@ namespace Deployer.Lumia.Gui.ViewModels
         private ObservableAsPropertyHelper<RenderedLogEvent> statusHelper;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
         private const string DonationLink = "https://github.com/WoA-project/WOA-Deployer/blob/master/Docs/Donations.md";
+        private const string HelpLink = "https://github.com/WOA-Project/WOA-Deployer-Lumia#need-help";
 
-        public MainViewModel(IObservable<LogEvent> events, 
+        public MainViewModel(IObservable<LogEvent> events,  IFileSystemOperations fileSystemOperations,
             IObservable<double> progressSubject, IEnumerable<IBusy> busies)
         {
+            this.fileSystemOperations = fileSystemOperations;
             progressHelper = progressSubject
                 .Where(d => !double.IsNaN(d))
                 .ObserveOn(SynchronizationContext.Current)
@@ -41,9 +44,16 @@ namespace Deployer.Lumia.Gui.ViewModels
             var isBusyObs = busies.Select(x => x.IsBusyObservable).Merge();
 
             DonateCommand = ReactiveCommand.Create(() => { Process.Start(DonationLink); });
-            OpenLogFolder = ReactiveCommand.Create(() => { Process.Start("Logs"); });
+            HelpCommand = ReactiveCommand.Create(() => { Process.Start(HelpLink); });
+            OpenLogFolder = ReactiveCommand.Create(OpenLogs);
 
             isBusyHelper = isBusyObs.ToProperty(this, model => model.IsBusy);
+        }
+
+        private void OpenLogs()
+        {
+            fileSystemOperations.EnsureDirectoryExists("Logs");
+            Process.Start("Logs");
         }
 
         public ReactiveCommand<Unit, Unit> DonateCommand { get; }
@@ -69,6 +79,8 @@ namespace Deployer.Lumia.Gui.ViewModels
         public string Title => string.Format(Resources.AppTitle, AppVersionMixin.VersionString);
 
         public ReactiveCommand<Unit, Unit> OpenLogFolder { get; }
+
+        public ReactiveCommand<Unit, Unit> HelpCommand { get; set; }
 
         private void SetupLogging(IObservable<LogEvent> events)
         {

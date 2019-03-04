@@ -30,6 +30,7 @@ namespace Deployer.Lumia
             };
 
             var phoneModel = await phone.GetModel();
+            Log.Verbose("{Model detected}", phoneModel);
             var path = dict[phoneModel];
 
             await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));            

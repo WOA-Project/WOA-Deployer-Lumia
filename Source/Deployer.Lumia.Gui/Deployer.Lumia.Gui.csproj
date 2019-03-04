@@ -98,6 +98,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Markdown.Styles.Default.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MarkdownViewerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -184,6 +188,14 @@
     </None>
     <None Include="..\Deployer.Lumia\Core\Developer Menu\ui\boot.ums.waiting.bmpx">
       <Link>Core\Developer Menu\ui\boot.ums.waiting.bmpx</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Deployer.Lumia\Core\Good UEFI\950 XL\UEFI.elf">
+      <Link>Core\Good UEFI\950 XL\UEFI.elf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Deployer.Lumia\Core\Good UEFI\950\UEFI.elf">
+      <Link>Core\Good UEFI\950\UEFI.elf</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="app.manifest" />

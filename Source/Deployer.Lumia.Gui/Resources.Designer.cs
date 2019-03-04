@@ -79,20 +79,20 @@ namespace Deployer.Lumia.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finished.
+        /// </summary>
+        public static string DeploymentFinished {
+            get {
+                return ResourceManager.GetString("DeploymentFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Done.
         /// </summary>
         public static string Done {
             get {
                 return ResourceManager.GetString("Done", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The drivers have been injected correctly.
-        /// </summary>
-        public static string DriversInjectedSucessfully {
-            get {
-                return ResourceManager.GetString("DriversInjectedSucessfully", resourceCulture);
             }
         }
         
@@ -111,15 +111,6 @@ namespace Deployer.Lumia.Gui {
         public static string DualBootEnabled {
             get {
                 return ResourceManager.GetString("DualBootEnabled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Finished.
-        /// </summary>
-        public static string Finished {
-            get {
-                return ResourceManager.GetString("Finished", resourceCulture);
             }
         }
         
@@ -211,7 +202,7 @@ namespace Deployer.Lumia.Gui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WIM files.
+        ///   Looks up a localized string similar to Windows Images.
         /// </summary>
         public static string WimFilesFilter {
             get {
@@ -222,17 +213,25 @@ namespace Deployer.Lumia.Gui {
         /// <summary>
         ///   Looks up a localized string similar to # Done!
         ///
-        ///Now, please, **eject the Phone safely** to avoid data corruption issues and reboot your Phone.
-        ///After reboot, choose &quot;Windows 10&quot; in the Boot Menu to start the Windows 10 ARM Setup.
-        ///
-        ///## Support my work
-        ///If this tool has been useful for you, please, consider a donation to support my work using the [**♥ Donate**](https://github.com/WOA-Project/WOA-Deployer-Lumia/blob/master/Docs/Donations.md) button. Thanks 😊
-        ///
-        ///Enjoy!!.
+        ///Now, follow these directions:
+        ///1. **Eject the phone safely** to avoid data corruption issues. If it refuses to be ejected, restart your PC and unplug the phone after the PC has rebooted (the device should no longer by used)
+        ///2. Reboot the phone by pressing the **[Power]** and holding it until it vibrates.
+        ///3. The phone will boot.
+        ///4. The booth menu will be shown. Choose the **&quot;Windows 10&quot;** entry to start the Windows 10 ARM Setup. To select it press the **[Camera]** button
+        ///    - If you don&apos;t see [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WindowsDeployedSuccessfully {
             get {
                 return ResourceManager.GetString("WindowsDeployedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deployment successful.
+        /// </summary>
+        public static string WindowsDeployedSuccessfullyTitle {
+            get {
+                return ResourceManager.GetString("WindowsDeployedSuccessfullyTitle", resourceCulture);
             }
         }
     }
