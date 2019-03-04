@@ -44,7 +44,7 @@ namespace Deployer.Lumia.NetFx
 
             IList<Sentence> sentences = new List<Sentence>()
             {
-                new Sentence(new Command(nameof(GitHubUnpack), new[] {new Argument("https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers"),})),
+                new Sentence(new Command(nameof(FetchGitHub), new[] {new Argument("https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers"),})),
                 new Sentence(new Command(nameof(CopyDirectory), new[]
                 {
                     new Argument(@"Downloaded\MSM8994-8992-NT-ARM64-Drivers-master\Supplemental\GPU\Cityman"),
