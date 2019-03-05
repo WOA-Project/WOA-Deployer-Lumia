@@ -51,11 +51,9 @@ namespace Deployer.Lumia.NetFx
             block.Export<ScriptRunner>().As<IScriptRunner>();
             block.Export<InstanceBuilder>().As<IInstanceBuilder>();
             block.ExportFactory((IPhone p) => new DeviceProvider { Device = p }).As<IDeviceProvider>();
-
             block.Export<FileSystemOperations>().As<IFileSystemOperations>();
             block.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>();
             block.Export<WindowsDeployer>().As<IWindowsDeployer>();
-            block.Export<GitHubClient>().As<IGitHubClient>();
 
             WithRealPhone(block);
 
