@@ -214,11 +214,12 @@ namespace Deployer.Lumia.Gui {
         ///   Looks up a localized string similar to # Done!
         ///
         ///Now, follow these directions:
+        ///
         ///1. **Eject the phone safely** to avoid data corruption issues. If it refuses to be ejected, restart your PC and unplug the phone after the PC has rebooted (the device should no longer by used)
         ///2. Reboot the phone by pressing the **[Power]** and holding it until it vibrates.
         ///3. The phone will boot.
         ///4. The booth menu will be shown. Choose the **&quot;Windows 10&quot;** entry to start the Windows 10 ARM Setup. To select it press the **[Camera]** button
-        ///    - If you don&apos;t see [rest of string was truncated]&quot;;.
+        ///    - If you don&apos;t s [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WindowsDeployedSuccessfully {
             get {

@@ -52,7 +52,7 @@ namespace Deployer.Lumia.Gui
                 x.Export<DeploymentViewModel>().ByInterfaces().As<DeploymentViewModel>().Lifestyle.Singleton();
                 x.Export<UIServices>();
                 x.ExportFactory(() => viewService).As<IViewService>();
-                x.Export<Dialog>().As<IDialog>();
+                x.Export<Dialog>().ByInterfaces();
                 x.Export<FilePicker>().As<IFilePicker>();
                 x.Export<SettingsService>().As<ISettingsService>();
                 x.ExportFactory(() => DialogCoordinator.Instance).As<IDialogCoordinator>();

@@ -5,6 +5,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using ByteSizeLib;
 using CommandLine;
+using Deployer.Console;
 using Deployer.Lumia.Console.Options;
 using Deployer.Lumia.NetFx;
 using Deployer.Tasks;
@@ -76,6 +77,7 @@ namespace Deployer.Lumia.Console
             container.Configure(x =>
             {
                 x.Configure(op);
+                x.Export<ConsoleMarkdownDialog>().As<IMarkdownDialog>();
                 x.Export<ConsoleMarkdownDisplayer>().As<IMarkdownDisplayer>();
                 x.ExportInstance(progress).As<IObserver<double>>();
             });
