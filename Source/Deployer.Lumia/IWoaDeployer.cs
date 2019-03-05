@@ -6,6 +6,5 @@ namespace Deployer.Lumia
     {
         Task Deploy();
         Task ToogleDualBoot(bool p0);
-        Task InstallGpu();
     }
 }

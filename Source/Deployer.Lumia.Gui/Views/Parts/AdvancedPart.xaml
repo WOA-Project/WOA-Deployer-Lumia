@@ -10,28 +10,6 @@
              d:DesignHeight="450" d:DesignWidth="800" Padding="8"
              DataContext="{Binding Source={StaticResource Locator}, Path=AdvancedViewModel}" mah:DialogParticipation.Register="{Binding}">
     <StackPanel>
-        <GroupBox Visibility="Collapsed" Header="GPU" Padding="20" Margin="0,20,0,0">
-            <HeaderedContentControl
-                HorizontalContentAlignment="Stretch">
-                <HeaderedContentControl.Header>
-                    <TextBlock>
-                        EXPERIMENTAL: This will install the GPU drivers. Use it with caution.
-                        <LineBreak />
-                        <Bold>ONLY for Lumia 950 XL.</Bold>
-                    </TextBlock>
-                </HeaderedContentControl.Header>
-                <common:IconButton Margin="20" 
-                                   VerticalAlignment="Center" HorizontalAlignment="Center" Height="50"
-                                   Content="Install GPU" Command="{Binding InstallGpuWrapper.Command}"
-                                   IsBusy="{Binding InstallGpuWrapper.IsExecuting}">
-                    <common:IconButton.Icon>
-                        <iconPacks:PackIconMaterial Kind="Chip" Style="{StaticResource ButtonIconStyle}" />
-                    </common:IconButton.Icon>
-                </common:IconButton>
-            </HeaderedContentControl>
-
-        </GroupBox>
-
         <GroupBox Header="Misc" Padding="20" Margin="0,20,0,0">
             <UniformGrid Rows="1">
                 <HeaderedContentControl

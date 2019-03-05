@@ -1,6 +1,5 @@
 using System;
-using System.Reactive;
-using System.Threading.Tasks;
+using System.Reactive.Linq;
 using ByteSizeLib;
 using Deployer.Gui.Common;
 using ReactiveUI;
@@ -9,26 +8,19 @@ namespace Deployer.Lumia.Gui.ViewModels
 {
     public class AdvancedViewModel : ReactiveObject, IBusy
     {
-        private readonly UIServices uiServices;
         private readonly ISettingsService settingsService;
-        private readonly IWoaDeployer wapDeployer;
-        public CommandWrapper<Unit, Unit> InstallGpuWrapper { get; set; }
 
         private readonly ObservableAsPropertyHelper<ByteSize> sizeReservedForWindows;
 
-        public AdvancedViewModel(UIServices uiServices, ISettingsService settingsService, IWoaDeployer wapDeployer)
+        public AdvancedViewModel(ISettingsService settingsService)
         {
-            this.uiServices = uiServices;
             this.settingsService = settingsService;
-            this.wapDeployer = wapDeployer;
-            InstallGpuWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(InstallGpu), uiServices.Dialog);
 
             sizeReservedForWindows =
                 this.WhenAnyValue(x => x.GbsReservedForWindows, ByteSize.FromGigaBytes)
                     .ToProperty(this, x => x.SizeReservedForWindows);
 
-            IsBusyObservable = InstallGpuWrapper.Command.IsExecuting;
+            IsBusyObservable = Observable.Return(false);
         }
 
         public ByteSize SizeReservedForWindows => sizeReservedForWindows.Value;
@@ -41,26 +33,6 @@ namespace Deployer.Lumia.Gui.ViewModels
                 settingsService.SizeReservedForWindows = value;
                 settingsService.Save();
                 this.RaisePropertyChanged(nameof(GbsReservedForWindows));
-            }
-        }
-
-        private async Task InstallGpu()
-        {
-            try
-            {
-                await wapDeployer.InstallGpu();
-                var messageViewModel =
-                    new MessageViewModel(Resources.ManualStepsTitle, Resources.InstallGpuManualSteps);
-
-                uiServices.ViewService.Show("MarkdownViewer", messageViewModel);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new ApplicationException(Resources.PhoneIsNotLumia950XL);
-            }
-            catch (Exception)
-            {
-                throw new ApplicationException(Resources.CannotInstallGpu);
             }
         }
 

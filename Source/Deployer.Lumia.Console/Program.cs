@@ -5,20 +5,18 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using ByteSizeLib;
 using CommandLine;
-using Deployer;
-using Deployer.Lumia;
+using Deployer.Lumia.Console.Options;
 using Deployer.Lumia.NetFx;
 using Deployer.Tasks;
-using Deployment.Console.Options;
 using Grace.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 
-namespace Deployment.Console
+namespace Deployer.Lumia.Console
 {
-    internal static class Program
+    public static class Program
     {
-        private static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             ConfigureLogger();
 
@@ -50,7 +48,6 @@ namespace Deployment.Console
                 .ParseArguments<WindowsDeploymentCmdOptions,
                         EnableDualBootCmdOptions,
                         DisableDualBootCmdOptions,
-                        InstallGpuCmdOptions,
                         NonWindowsDeploymentCmdOptions>(args);
 
             await parserResult
@@ -68,7 +65,6 @@ namespace Deployment.Console
                     },
                     (EnableDualBootCmdOptions opts) => deployer.ToogleDualBoot(true),
                     (DisableDualBootCmdOptions opts) => deployer.ToogleDualBoot(false),
-                    (InstallGpuCmdOptions opts) => deployer.InstallGpu(),
                     (NonWindowsDeploymentCmdOptions opts) => deployer.Deploy(),
                     HandleErrors);
         }

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace Deployer.Raspberry.Gui.Views
+namespace Deployer.Lumia.Gui.Views
 {
     
     public partial class MarkdownViewerWindow

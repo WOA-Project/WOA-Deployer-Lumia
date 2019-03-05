@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Deployer.Tasks;
 
-namespace Deployment.Console
+namespace Deployer.Lumia.Console
 {
     internal class ConsoleMarkdownDisplayer : IMarkdownDisplayer
     {

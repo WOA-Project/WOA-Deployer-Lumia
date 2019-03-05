@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace Deployment.Console.Options
+namespace Deployer.Lumia.Console.Options
 {
     [Verb("enable-dualboot", HelpText = "Enabled Dual Boot")]
     public class EnableDualBootCmdOptions
