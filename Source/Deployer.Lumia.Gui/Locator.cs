@@ -33,6 +33,8 @@ namespace Deployer.Lumia.Gui
                 .MinimumLevel.Verbose()
                 .CreateLogger();
 
+            UpdateChecker.CheckForUpdates(AppProperties.GitHubBaseUrl);
+
             var optionsProvider = new WindowsDeploymentOptionsProvider();
 
             container.Configure(x =>
