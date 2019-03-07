@@ -10,7 +10,7 @@ using Serilog;
 
 namespace Deployer.Lumia
 {
-    public class LumiaDisklayoutPreparer : IDisklayoutPreparer
+    public class LumiaDiskLayoutPreparer : IDiskLayoutPreparer
     {
         private readonly IWindowsOptionsProvider optionsProvider;
         private readonly IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators;
@@ -20,7 +20,7 @@ namespace Deployer.Lumia
         private const string BootPartitionLabel = "BOOT";
         private const string WindowsPartitionLabel = "WindowsARM";
 
-        public LumiaDisklayoutPreparer(IWindowsOptionsProvider optionsProvider,  IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IPhone phone)
+        public LumiaDiskLayoutPreparer(IWindowsOptionsProvider optionsProvider,  IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IPhone phone)
         {
             this.optionsProvider = optionsProvider;
             this.spaceAllocators = spaceAllocators;
