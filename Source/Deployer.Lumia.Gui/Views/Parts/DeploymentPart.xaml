@@ -34,9 +34,6 @@
                                Height="50"                               
                                HorizontalAlignment="Center"
                                ToolTip="Use this option to install Windows into a Phone that has just been unlocked.">
-                <common:IconButton.Resources>
-                   
-                </common:IconButton.Resources>
                 <common:IconButton.Icon>
                     <iconPacks:PackIconFontAwesome
                         Kind="RocketSolid" Style="{StaticResource ButtonIconStyle}" />                     

@@ -68,5 +68,7 @@ namespace Deployer.Lumia.Gui
         public AdvancedViewModel AdvancedViewModel => container.Locate<AdvancedViewModel>();
 
         public DualBootViewModel DualBootViewModel => container.Locate<DualBootViewModel>();
+
+        public StatusViewModel StatusViewModel => container.Locate<StatusViewModel>();
     }
 }

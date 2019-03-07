@@ -10,7 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800" Padding="8"
              DataContext="{Binding Source={StaticResource Locator}, Path=AdvancedViewModel}" mah:DialogParticipation.Register="{Binding}">
     <StackPanel>
-        <GroupBox Header="Misc" Padding="20" Margin="0,20,0,0">
+        <GroupBox Header="Deployment" Padding="20" Margin="0,20,0,0">
             <UniformGrid Rows="1">
                 <HeaderedContentControl
                     HorizontalContentAlignment="Stretch">
@@ -27,6 +27,13 @@
                 </HeaderedContentControl>
                 <CheckBox IsChecked="{Binding UseCompactDeployment, Mode=TwoWay}" HorizontalAlignment="Center" Margin="10" Content="Use Compact Deployment" ToolTip="Checking this will reduce the size of the Windows installation. However, the deployment process will take longer. It will help you save space on your device"></CheckBox>
             </UniformGrid>
+        </GroupBox>
+        <GroupBox Header="Misc" Padding="20" Margin="0,20,0,0">
+           <common:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding DeleteDownloadedWrapper.Command}" Content="Delete 'Downloaded' folder" IsBusy="{Binding DeleteDownloadedWrapper.IsExecuting}">
+               <common:IconButton.Icon>
+                    <iconPacks:MaterialLight Kind="Delete" Height="30" />
+               </common:IconButton.Icon>
+           </common:IconButton>
         </GroupBox>
     </StackPanel>
 </UserControl>

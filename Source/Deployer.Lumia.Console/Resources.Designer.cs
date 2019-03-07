@@ -61,6 +61,15 @@ namespace Deployer.Lumia.Console {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The downloaded files have been deleted successfully.
+        /// </summary>
+        internal static string DownloadedFolderHasBeenDelete {
+            get {
+                return ResourceManager.GetString("DownloadedFolderHasBeenDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GPU is ready to be installed.
         ///However, you still have to do a manual step:
         ///Reboot to WoA and navigate to C:\Users\Public\OEMPanel, right click the .inf file and select &apos;Install&apos;.
