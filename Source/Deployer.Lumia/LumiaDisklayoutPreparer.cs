@@ -18,7 +18,7 @@ namespace Deployer.Lumia
         private static readonly ByteSize ReservedPartitionSize = ByteSize.FromMegaBytes(16);
         private static readonly ByteSize BootPartitionSize = ByteSize.FromMegaBytes(100);
         private const string BootPartitionLabel = "BOOT";
-        private const string WindowsPartitonLabel = "WindowsARM";
+        private const string WindowsPartitionLabel = "WindowsARM";
 
         public LumiaDisklayoutPreparer(IWindowsOptionsProvider optionsProvider,  IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IPhone phone)
         {
@@ -83,7 +83,7 @@ namespace Deployer.Lumia
             var windowsPartition = await (await phone.GetDeviceDisk()).CreatePartition(ulong.MaxValue);
             var winVolume = await windowsPartition.GetVolume();
             await winVolume.Mount();
-            await winVolume.Format(FileSystemFormat.Ntfs, WindowsPartitonLabel);
+            await winVolume.Format(FileSystemFormat.Ntfs, WindowsPartitionLabel);
 
             Log.Verbose("Windows Partitions created successfully");
 
