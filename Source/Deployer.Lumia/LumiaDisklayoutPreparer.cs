@@ -15,7 +15,7 @@ namespace Deployer.Lumia
         private readonly IWindowsOptionsProvider optionsProvider;
         private readonly IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators;
         private readonly IPhone phone;
-        private static readonly ByteSize ReservedPartitionSize = ByteSize.FromMegaBytes(200);
+        private static readonly ByteSize ReservedPartitionSize = ByteSize.FromMegaBytes(16);
         private static readonly ByteSize BootPartitionSize = ByteSize.FromMegaBytes(100);
         private const string BootPartitionLabel = "BOOT";
         private const string WindowsPartitonLabel = "WindowsARM";
