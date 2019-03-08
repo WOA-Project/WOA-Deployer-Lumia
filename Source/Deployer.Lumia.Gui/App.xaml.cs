@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Deployer.Gui.Common;
+using Deployer.Gui;
 using Deployer.Lumia.Console;
 using Deployer.Lumia.Gui.Views;
 
@@ -15,6 +15,9 @@ namespace Deployer.Lumia.Gui
 
             MahApps.Metro.ThemeManager.IsAutomaticWindowsAppModeSettingSyncEnabled = true;
             MahApps.Metro.ThemeManager.SyncThemeWithWindowsAppModeSetting();
+
+            UpdateChecker.CheckForUpdates(AppProperties.GitHubBaseUrl);
+            Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
 
             if (e.Args.Any())
             {
@@ -35,8 +38,6 @@ namespace Deployer.Lumia.Gui
 
         private void LaunchConsole(string[] args)
         {
-            UpdateChecker.CheckForUpdates(AppProperties.GitHubBaseUrl);
-            
             ConsoleEmbedder.ExecuteInsideConsole(() => Task.Run(() => Program.Main(args)).Wait());
             Shutdown();
         }

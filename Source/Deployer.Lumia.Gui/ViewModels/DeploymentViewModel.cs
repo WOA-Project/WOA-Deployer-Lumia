@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Deployer.Gui.Common;
+using Deployer.Gui;
+using Deployer.Gui.ViewModels;
 using ReactiveUI;
 using Serilog;
 

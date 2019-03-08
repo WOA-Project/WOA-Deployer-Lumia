@@ -1,4 +1,4 @@
-﻿using Deployer.Gui.Common;
+﻿using Deployer.Gui;
 using Deployer.Lumia.Gui.Properties;
 
 namespace Deployer.Lumia.Gui.Specifics

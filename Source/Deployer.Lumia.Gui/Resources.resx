@@ -154,10 +154,7 @@ The Core Package that is currently installed doesn't have an additional post-OOB
   </data>
   <data name="DeploymentFinished" xml:space="preserve">
     <value>Finished</value>
-  </data>
-  <data name="WimFileNoValidArchitecture" xml:space="preserve">
-    <value>The selected .WIM file doesn't contain any image for ARM64. Please, select a .wim file that targets this architecture.</value>
-  </data>      
+  </data>     
   <data name="DualBootEnabled" xml:space="preserve">
     <value>Dual Boot Enabled!</value>
   </data>
@@ -169,12 +166,6 @@ The Core Package that is currently installed doesn't have an additional post-OOB
   </data>
   <data name="AppTitle" xml:space="preserve">
     <value>WOA Deployer for Lumia v{0}</value>
-  </data>
-  <data name="InvalidWimFile" xml:space="preserve">
-    <value>Invalid WIM file</value>
-  </data>
-  <data name="WimFilesFilter" xml:space="preserve">
-    <value>Windows Images</value>
   </data>
   <data name="WindowsDeployedSuccessfullyTitle" xml:space="preserve">
     <value>Deployment successful</value>

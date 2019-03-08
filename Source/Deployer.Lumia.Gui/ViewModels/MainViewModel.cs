@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using Deployer.Gui.Common;
+using Deployer.Gui;
 using ReactiveUI;
 
 namespace Deployer.Lumia.Gui.ViewModels

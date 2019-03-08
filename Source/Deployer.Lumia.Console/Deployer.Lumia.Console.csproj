@@ -53,6 +53,7 @@
     <Compile Include="..\Deployer.Lumia.NetFx\Properties\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CompositionRoot.cs" />
     <Compile Include="Options\DisableDualBootCmdOptions.cs" />
     <Compile Include="Options\EnableDualBootCmdOptions.cs" />
     <Compile Include="Options\NonWindowsDeploymentCmdOptions.cs" />

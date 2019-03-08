@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:parts="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
-             xmlns:common="clr-namespace:Deployer.Gui.Common;assembly=Deployer.Gui.Common"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:gui="clr-namespace:Deployer.Gui;assembly=Deployer.Gui"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource Locator}, Path=DeploymentViewModel}" mah:DialogParticipation.Register="{Binding}">
@@ -29,16 +29,16 @@
 
             <parts:WimOptionsPart Margin="8,10,0,10" />
 
-            <common:IconButton Grid.Row="1" VerticalAlignment="Center" Command="{Binding FullInstallWrapper.Command}"
+            <gui:IconButton Grid.Row="1" VerticalAlignment="Center" Command="{Binding FullInstallWrapper.Command}"
                                IsBusy="{Binding FullInstallWrapper.IsExecuting}" Content="Deploy"
                                Height="50"                               
                                HorizontalAlignment="Center"
                                ToolTip="Use this option to install Windows into a Phone that has just been unlocked.">
-                <common:IconButton.Icon>
+                <gui:IconButton.Icon>
                     <iconPacks:PackIconFontAwesome
                         Kind="RocketSolid" Style="{StaticResource ButtonIconStyle}" />                     
-                </common:IconButton.Icon>
-            </common:IconButton>
+                </gui:IconButton.Icon>
+            </gui:IconButton>
             
         </Grid>
     </Grid>

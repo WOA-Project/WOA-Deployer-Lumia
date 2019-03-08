@@ -142,15 +142,6 @@ namespace Deployer.Lumia.Gui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid WIM file.
-        /// </summary>
-        public static string InvalidWimFile {
-            get {
-                return ResourceManager.GetString("InvalidWimFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sorry, there are no post-OOBE drivers available to inject.
         ///The Core Package that is currently installed doesn&apos;t have an additional post-OOBE driver set..
         /// </summary>
@@ -179,24 +170,6 @@ namespace Deployer.Lumia.Gui {
         public static string WarningNotice {
             get {
                 return ResourceManager.GetString("WarningNotice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The selected .WIM file doesn&apos;t contain any image for ARM64. Please, select a .wim file that targets this architecture..
-        /// </summary>
-        public static string WimFileNoValidArchitecture {
-            get {
-                return ResourceManager.GetString("WimFileNoValidArchitecture", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Windows Images.
-        /// </summary>
-        public static string WimFilesFilter {
-            get {
-                return ResourceManager.GetString("WimFilesFilter", resourceCulture);
             }
         }
         

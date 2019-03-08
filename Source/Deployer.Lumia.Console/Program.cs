@@ -7,9 +7,6 @@ using ByteSizeLib;
 using CommandLine;
 using Deployer.Console;
 using Deployer.Lumia.Console.Options;
-using Deployer.Lumia.NetFx;
-using Deployer.Tasks;
-using Grace.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 
@@ -72,15 +69,7 @@ namespace Deployer.Lumia.Console
 
         private static IWoaDeployer GetDeployer(WindowsDeploymentOptionsProvider op, Subject<double> progress)
         {
-            var container = new DependencyInjectionContainer();
-
-            container.Configure(x =>
-            {
-                x.Configure(op);
-                x.Export<ConsoleMarkdownDialog>().As<IMarkdownDialog>();
-                x.Export<ConsoleMarkdownDisplayer>().As<IMarkdownDisplayer>();
-                x.ExportInstance(progress).As<IObserver<double>>();
-            });
+            var container = CompositionRoot.CreateContainer(op, progress);
 
             var deployer = container.Locate<IWoaDeployer>();
             return deployer;

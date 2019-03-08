@@ -67,6 +67,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppProperties.cs" />
+    <Compile Include="CompositionRoot.cs" />
     <Compile Include="ViewModels\AdvancedViewModel.cs" />
     <Compile Include="ViewModels\DualBootViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
@@ -91,23 +92,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\StatusViewModel.cs" />
-    <Compile Include="ViewModels\RenderedLogEvent.cs" />
-    <Compile Include="ViewModels\WimPickViewModel.cs" />
     <Compile Include="Locator.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Markdown.Styles.Default.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MarkdownViewerWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\Parts\AdvancedPart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -134,9 +124,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\MarkdownViewerWindow.xaml.cs">
-      <DependentUpon>MarkdownViewerWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Parts\AdvancedPart.xaml.cs">
       <DependentUpon>AdvancedPart.xaml</DependentUpon>
     </Compile>
@@ -261,9 +248,9 @@
       <Project>{b29156bb-b183-4b55-bb04-7b9b926ec926}</Project>
       <Name>Deployer.Lumia.Console</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DeployerPlatform\Deployer.Gui.Common\Deployer.Gui.Common.csproj">
+    <ProjectReference Include="..\DeployerPlatform\Deployer.Gui.Common\Deployer.Gui.csproj">
       <Project>{ad8ea86c-af60-4ccf-9caa-07bbf5e039ec}</Project>
-      <Name>Deployer.Gui.Common</Name>
+      <Name>Deployer.Gui</Name>
     </ProjectReference>
     <ProjectReference Include="..\Deployer.Lumia.NetFx\Deployer.Lumia.NetFx.csproj">
       <Project>{cfa21504-2cfd-468b-8458-bd9bd05bcf19}</Project>
