@@ -14,7 +14,7 @@ using Serilog.Events;
 
 namespace Deployer.Lumia.Gui
 {
-    public class CompositionRoot
+    public static class CompositionRoot
     {
         public static DependencyInjectionContainer CreateContainer()
         {
