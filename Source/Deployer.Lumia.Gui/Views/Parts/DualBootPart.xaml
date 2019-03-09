@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <TextBlock Margin="20" FontSize="20" TextWrapping="Wrap" Visibility="{Binding IsUpdated, Converter={StaticResource BooleanToVisibilityConverterInverted}}">
-                Please, check the current status in order to see the avaliable options regarding <Bold>Dual Boot</Bold>.
+                Please, check the current status in order to see the available options regarding <Bold>Dual Boot</Bold>.
             </TextBlock>
             <gui:IconButton Margin="18" Height="50" HorizontalAlignment="Center"
                                Command="{Binding UpdateStatusWrapper.Command}"

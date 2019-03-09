@@ -142,16 +142,6 @@ namespace Deployer.Lumia.Gui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, there are no post-OOBE drivers available to inject.
-        ///The Core Package that is currently installed doesn&apos;t have an additional post-OOBE driver set..
-        /// </summary>
-        public static string NoPostOobeDrivers {
-            get {
-                return ResourceManager.GetString("NoPostOobeDrivers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Disclaimer Notice and Terms of Use.
         /// </summary>
         public static string TermsOfUseTitle {
