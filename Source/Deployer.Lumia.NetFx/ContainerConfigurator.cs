@@ -11,7 +11,6 @@ using Deployer.NetFx;
 using Deployer.Services;
 using Deployer.Tasks;
 using Grace.DependencyInjection;
-using NLog.LayoutRenderers;
 using Octokit;
 using Superpower;
 

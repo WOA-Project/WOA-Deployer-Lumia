@@ -7,7 +7,7 @@ namespace Deployer.Lumia.Console
 {
     public static class CompositionRoot
     {
-        public static DependencyInjectionContainer CreateContainer(WindowsDeploymentOptionsProvider op, IDownloadProgress downloadProgress)
+        public static DependencyInjectionContainer CreateContainer(WindowsDeploymentOptionsProvider op, IDownloadProgress progress)
         {
             var container = new DependencyInjectionContainer();
 
@@ -16,7 +16,7 @@ namespace Deployer.Lumia.Console
                 x.Configure(op);
                 x.Export<ConsoleMarkdownDialog>().As<IMarkdownDialog>();
                 x.Export<ConsoleMarkdownDisplayer>().As<IMarkdownDisplayer>();
-                x.ExportInstance(downloadProgress).As<IDownloadProgress>();
+                x.ExportInstance(progress).As<IDownloadProgress>();
             });
 
             return container;
