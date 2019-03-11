@@ -59,6 +59,7 @@ namespace Deployer.Lumia.NetFx
             block.ExportFactory(() => new HttpClient() {Timeout = TimeSpan.FromMinutes(30)}).Lifestyle.Singleton();
             block.ExportFactory(() => new GitHubClient(new ProductHeaderValue("WOADeployer"))).As<IGitHubClient>();
             block.Export<Downloader>().As<IDownloader>();
+            block.Export<ProviderBasedWindowsDeployer>().As<IProviderBasedWindowsDeployer>();
 
             WithRealPhone(block);
 
