@@ -8,7 +8,7 @@ namespace Deployer.Lumia.NetFx
     public class TestImageService : IWindowsImageService
     {
         public Task ApplyImage(Volume windowsVolume, string imagePath, int imageIndex = 1, bool useCompact = false,
-            IObserver<double> progressObserver = null)
+            IDownloadProgress progressObserver = null)
         {
             return Task.Delay(5000);
         }
@@ -19,6 +19,11 @@ namespace Deployer.Lumia.NetFx
         }
 
         public Task RemoveDriver(string path, Volume volume)
+        {
+            return Task.Delay(5000);
+        }
+
+        public Task CaptureImage(Volume windowsVolume, string destination, IDownloadProgress progressObserver = null)
         {
             return Task.Delay(5000);
         }

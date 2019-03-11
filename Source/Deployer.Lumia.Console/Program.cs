@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using ByteSizeLib;
 using CommandLine;
@@ -18,7 +17,7 @@ namespace Deployer.Lumia.Console
         {
             ConfigureLogger();
 
-            var progress = new Subject<double>();
+            var progress = new DownloadProgress();
             using (new ConsoleDisplayUpdater(progress))
             {
                 try
@@ -36,11 +35,11 @@ namespace Deployer.Lumia.Console
             }
         }
         
-        private static async Task Execute(IEnumerable<string> args, Subject<double> subject)
+        private static async Task Execute(IEnumerable<string> args, IDownloadProgress progress)
         {
             var optionsProvider = new WindowsDeploymentOptionsProvider();
             
-            var deployer = GetDeployer(optionsProvider, subject);
+            var deployer = GetDeployer(optionsProvider, progress);
 
             var parserResult = Parser.Default
                 .ParseArguments<WindowsDeploymentCmdOptions,
@@ -67,7 +66,7 @@ namespace Deployer.Lumia.Console
                     HandleErrors);
         }
 
-        private static IWoaDeployer GetDeployer(WindowsDeploymentOptionsProvider op, Subject<double> progress)
+        private static IWoaDeployer GetDeployer(WindowsDeploymentOptionsProvider op, IDownloadProgress progress)
         {
             var container = CompositionRoot.CreateContainer(op, progress);
 
@@ -91,5 +90,5 @@ namespace Deployer.Lumia.Console
                 .MinimumLevel.Verbose()
                 .CreateLogger();
         }
-    }
+    }  
 }

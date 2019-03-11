@@ -9,6 +9,7 @@ using Deployer.Lumia.NetFx;
 using Deployer.Tasks;
 using Grace.DependencyInjection;
 using MahApps.Metro.Controls.Dialogs;
+using Octokit;
 using Serilog;
 using Serilog.Events;
 
@@ -34,9 +35,8 @@ namespace Deployer.Lumia.Gui
             {
                 x.Configure(optionsProvider);
                 x.Export<WpfMarkdownDisplayer>().As<IMarkdownDisplayer>();
-                x.ExportFactory(() => new BehaviorSubject<double>(double.NaN))
-                    .As<IObserver<double>>()
-                    .As<IObservable<double>>()
+                x.ExportFactory(() => new DownloadProgress())
+                    .As<IDownloadProgress>()
                     .Lifestyle.Singleton();
                 x.ExportFactory(() => logEvents).As<IObservable<LogEvent>>();
                 x.Export<WimPickViewModel>().ByInterfaces().As<WimPickViewModel>().Lifestyle.Singleton();
@@ -45,10 +45,11 @@ namespace Deployer.Lumia.Gui
                 x.Export<DeploymentViewModel>().ByInterfaces().As<DeploymentViewModel>().Lifestyle.Singleton();
                 x.Export<UIServices>();
                 x.Export<Dialog>().ByInterfaces();
-                x.Export<FilePicker>().As<IFilePicker>();
+                x.Export<OpenFilePicker>().As<IOpenFilePicker>();
                 x.Export<SettingsService>().As<ISettingsService>();
+                x.Export<SaveFilePicker>().As<ISaveFilePicker>();
                 x.Export<ViewService>().As<IViewService>();
-                x.ExportFactory(() => DialogCoordinator.Instance).As<IDialogCoordinator>();
+                x.ExportFactory(() => DialogCoordinator.Instance).As<IDialogCoordinator>();                
             });
 
             return container;

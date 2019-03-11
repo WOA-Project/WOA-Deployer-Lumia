@@ -33,6 +33,10 @@
                 <TextBlock Text="{Binding ElementName=ProgressBar, Path=Value, StringFormat={}{0:P0}}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center" Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource BooleanToVisibilityConverterInverted}}" />
+
+                <TextBlock Text="{Binding Downloaded, StringFormat='{}{0} downloaded'}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </Grid>
         </StatusBarItem>
     </StatusBar>

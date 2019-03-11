@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
@@ -10,6 +11,8 @@ using Deployer.NetFx;
 using Deployer.Services;
 using Deployer.Tasks;
 using Grace.DependencyInjection;
+using NLog.LayoutRenderers;
+using Octokit;
 using Superpower;
 
 namespace Deployer.Lumia.NetFx
@@ -54,6 +57,9 @@ namespace Deployer.Lumia.NetFx
             block.Export<FileSystemOperations>().As<IFileSystemOperations>();
             block.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>();
             block.Export<WindowsDeployer>().As<IWindowsDeployer>();
+            block.ExportFactory(() => new HttpClient() {Timeout = TimeSpan.FromMinutes(30)}).Lifestyle.Singleton();
+            block.ExportFactory(() => new GitHubClient(new ProductHeaderValue("WOADeployer"))).As<IGitHubClient>();
+            block.Export<Downloader>().As<IDownloader>();
 
             WithRealPhone(block);
 
