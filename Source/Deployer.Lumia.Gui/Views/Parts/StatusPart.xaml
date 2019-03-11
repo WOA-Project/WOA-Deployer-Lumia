@@ -88,17 +88,12 @@
 
                 <Grid Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource BooleanToVisibilityConverter}}">
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition Height="4" />
-                    </Grid.RowDefinitions>
-
                     <TextBlock Text="{Binding Downloaded, StringFormat='{}{0} downloaded'}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                    <mah:MetroProgressBar Grid.Row="1" IsIndeterminate="True" />
+                    <mah:MetroProgressBar Height="4" IsIndeterminate="True" />
                 </Grid>
             </Grid>
         </StatusBarItem>
