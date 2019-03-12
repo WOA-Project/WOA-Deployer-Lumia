@@ -114,6 +114,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Parts\ProgressControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Parts\ProgressPart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Parts\StatusPart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -135,6 +143,12 @@
     </Compile>
     <Compile Include="Views\Parts\LogPart.xaml.cs">
       <DependentUpon>LogPart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Parts\ProgressControl.xaml.cs">
+      <DependentUpon>ProgressControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Parts\ProgressPart.xaml.cs">
+      <DependentUpon>ProgressPart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Parts\StatusPart.xaml.cs">
       <DependentUpon>StatusPart.xaml</DependentUpon>

@@ -1,5 +1,4 @@
 using System;
-using System.Reactive.Subjects;
 using Deployer.Gui;
 using Deployer.Gui.Services;
 using Deployer.Gui.ViewModels;
@@ -9,7 +8,6 @@ using Deployer.Lumia.NetFx;
 using Deployer.Tasks;
 using Grace.DependencyInjection;
 using MahApps.Metro.Controls.Dialogs;
-using Octokit;
 using Serilog;
 using Serilog.Events;
 
@@ -28,6 +26,8 @@ namespace Deployer.Lumia.Gui
                 .WriteTo.Observers(x => logEvents = x)
                 .MinimumLevel.Verbose()
                 .CreateLogger();
+
+            Log.Verbose($"Started {AppProperties.AppTitle}");
 
             var optionsProvider = new WindowsDeploymentOptionsProvider();
 

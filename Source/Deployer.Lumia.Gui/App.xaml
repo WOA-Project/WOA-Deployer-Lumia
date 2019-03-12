@@ -26,7 +26,10 @@
                 <Setter Property="HorizontalAlignment" Value="Center" />                
             </Style>
 
-            <valueConverters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverterInverted" IsInverted="True" />
+            <valueConverters:BoolToVisibilityConverter x:Key="CollapseOnTrue" IsInverted="True" />
+            <valueConverters:BoolToVisibilityConverter x:Key="CollapseOnFalse"  />
+            <valueConverters:BoolToVisibilityConverter x:Key="HideOnFalse" FalseValue="Hidden" TrueValue="Visible" />
+            <valueConverters:BoolToVisibilityConverter x:Key="HideOnTrue" TrueValue="Hidden" FalseValue="Visible" />
 
             <local:Locator x:Key="Locator" />
 

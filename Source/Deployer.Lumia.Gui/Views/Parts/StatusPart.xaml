@@ -67,13 +67,13 @@
                 </Style.Triggers>
             </Style>
         </StatusBar.Style>
-        <StatusBarItem ToolTip="{Binding Status.Message}">
-            <TextBlock Text="{Binding Status.Message}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+        <StatusBarItem ToolTip="{Binding CurrentActionDetail}">
+            <TextBlock Text="{Binding CurrentActionDetail}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
         </StatusBarItem>
         <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch" 
                        Visibility="{Binding IsProgressVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid>
-                <Grid Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource BooleanToVisibilityConverterInverted}}">
+                <Grid Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource CollapseOnTrue}}">
                     <mah:MetroProgressBar Minimum="0"
                                           Maximum="1"
                                           IsIndeterminate="{Binding IsProgressIndeterminate}"
@@ -82,7 +82,7 @@
                     <TextBlock Text="{Binding ElementName=PercentProgressBar, Path=Value, StringFormat={}{0:P0}}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource BooleanToVisibilityConverterInverted}}" />
+                               Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource CollapseOnTrue}}" />
 
                 </Grid>
 

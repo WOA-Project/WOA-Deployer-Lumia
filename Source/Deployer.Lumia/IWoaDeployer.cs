@@ -5,6 +5,6 @@ namespace Deployer.Lumia
     public interface IWoaDeployer
     {
         Task Deploy();
-        Task ToogleDualBoot(bool p0);
+        Task ToggleDualBoot(bool p0);
     }
 }

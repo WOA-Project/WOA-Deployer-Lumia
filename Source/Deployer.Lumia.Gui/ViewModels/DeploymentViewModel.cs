@@ -43,6 +43,8 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private async Task Deploy()
         {
+            Log.Information("# Starting deployment...");
+
             var windowsDeploymentOptions = new WindowsDeploymentOptions
             {
                 ImagePath = wimPickViewModel.WimMetadata.Path,

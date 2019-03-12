@@ -35,13 +35,7 @@ namespace Deployer.Lumia
 
             await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));            
         }
-
-        public async Task InstallGpu()
-        {
-            await tooling.InstallGpu();
-        }
-
-        public Task ToogleDualBoot(bool isEnabled)
+        public Task ToggleDualBoot(bool isEnabled)
         {
             return tooling.ToogleDualBoot(isEnabled);
         }

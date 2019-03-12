@@ -60,8 +60,8 @@ namespace Deployer.Lumia.Console
                         };
                         return deployer.Deploy();
                     },
-                    (EnableDualBootCmdOptions opts) => deployer.ToogleDualBoot(true),
-                    (DisableDualBootCmdOptions opts) => deployer.ToogleDualBoot(false),
+                    (EnableDualBootCmdOptions opts) => deployer.ToggleDualBoot(true),
+                    (DisableDualBootCmdOptions opts) => deployer.ToggleDualBoot(false),
                     (NonWindowsDeploymentCmdOptions opts) => deployer.Deploy(),
                     HandleErrors);
         }

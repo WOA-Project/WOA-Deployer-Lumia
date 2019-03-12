@@ -7,7 +7,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:gui="clr-namespace:Deployer.Gui;assembly=Deployer.Gui"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding Source={StaticResource Locator}, Path=DualBootViewModel}"
+             d:DesignHeight="561" d:DesignWidth="858.5" DataContext="{Binding Source={StaticResource Locator}, Path=DualBootViewModel}"
              mah:DialogParticipation.Register="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
@@ -15,7 +15,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel>
-            <TextBlock Margin="20" FontSize="20" TextWrapping="Wrap" Visibility="{Binding IsUpdated, Converter={StaticResource BooleanToVisibilityConverterInverted}}">
+            <TextBlock Margin="20" FontSize="20" TextWrapping="Wrap" Visibility="{Binding IsUpdated, Converter={StaticResource CollapseOnTrue}}">
                 Please, check the current status in order to see the available options regarding <Bold>Dual Boot</Bold>.
             </TextBlock>
             <gui:IconButton Margin="18" Height="50" HorizontalAlignment="Center"
@@ -37,11 +37,11 @@
 
                 <StackPanel Margin="20,10,0,20" HorizontalAlignment="Center">
                     <TextBlock Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"><Bold>Dual Boot</Bold> is currently <Bold>ENABLED</Bold></TextBlock>
-                    <TextBlock Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverterInverted}}"><Bold>Dual Boot</Bold> is currently <Bold>DISABLED</Bold></TextBlock>
+                    <TextBlock Visibility="{Binding IsEnabled, Converter={StaticResource CollapseOnTrue}}"><Bold>Dual Boot</Bold> is currently <Bold>DISABLED</Bold></TextBlock>
                 </StackPanel>
 
                 <Grid>
-                    <StackPanel Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverterInverted}}">
+                    <StackPanel Visibility="{Binding IsEnabled, Converter={StaticResource CollapseOnTrue}}">
                         <gui:BusyButton Content="Enable Dual Boot" Width="180"
                                         Command="{Binding EnableDualBootWrapper.Command}"
                                         IsBusy="{Binding EnableDualBootWrapper.IsExecuting}" Image="/Assets/dual.png" />
@@ -56,10 +56,10 @@
                 <TextBlock MaxWidth="280" Margin="20" TextWrapping="Wrap" TextAlignment="Center">Please, notice that while Dual Boot is enabled, <Bold>Windows Update will not work</Bold> inside Windows 10 ARM64. Please, disable Dual Boot to before using Windows Update.</TextBlock>
             </StackPanel>
 
-            <StackPanel Visibility="{Binding IsCapable, Converter={StaticResource BooleanToVisibilityConverterInverted}}">
+            <StackPanel Visibility="{Binding IsCapable, Converter={StaticResource CollapseOnTrue}}">
 
                 <TextBlock FontSize="18" Margin="20" TextWrapping="Wrap"
-                    Visibility="{Binding IsCapable, Converter={StaticResource BooleanToVisibilityConverterInverted}}"
+                    Visibility="{Binding IsCapable, Converter={StaticResource CollapseOnTrue}}"
                     IsHitTestVisible="False">
                     <Bold>Dual Boot</Bold> cannot be enabled in this phone. Please, check that Windows 10 Phone (the original OS) and Windows 10 ARM64 are both present. Also, check that Windows 10 ARM Setup has been completed.
                 </TextBlock>

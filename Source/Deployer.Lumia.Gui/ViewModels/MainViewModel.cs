@@ -29,7 +29,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         public ReactiveCommand<Unit, Unit> DonateCommand { get; }
 
-        public string Title => string.Format(Resources.AppTitle, AppVersionMixin.VersionString);
+        public string Title => AppProperties.AppTitle;
 
         public ReactiveCommand<Unit, Unit> HelpCommand { get; set; }
     }
