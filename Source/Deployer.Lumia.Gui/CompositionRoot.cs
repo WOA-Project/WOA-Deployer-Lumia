@@ -46,6 +46,7 @@ namespace Deployer.Lumia.Gui
                 x.Export<UIServices>();
                 x.Export<Dialog>().ByInterfaces();
                 x.Export<OpenFilePicker>().As<IOpenFilePicker>();
+                x.Export<SaveFilePicker>().As<ISaveFilePicker>();
                 x.Export<SettingsService>().As<ISettingsService>();
                 x.Export<SaveFilePicker>().As<ISaveFilePicker>();
                 x.Export<ViewService>().As<IViewService>();

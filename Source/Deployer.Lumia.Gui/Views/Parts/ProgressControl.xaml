@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="35" d:DesignWidth="153.75" DataContext="{Binding Source={StaticResource Locator}, Path=StatusViewModel}">
     <Grid>
-        <Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1">
-            <Grid Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource CollapseOnTrue}}">
+        <Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1" Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource CollapseOnTrue}}">
+            <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />

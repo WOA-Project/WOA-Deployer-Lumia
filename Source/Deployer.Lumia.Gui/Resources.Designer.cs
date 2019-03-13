@@ -142,6 +142,24 @@ namespace Deployer.Lumia.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image captured.
+        /// </summary>
+        public static string ImageCaptured {
+            get {
+                return ResourceManager.GetString("ImageCaptured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image restored.
+        /// </summary>
+        public static string ImageRestored {
+            get {
+                return ResourceManager.GetString("ImageRestored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disclaimer Notice and Terms of Use.
         /// </summary>
         public static string TermsOfUseTitle {

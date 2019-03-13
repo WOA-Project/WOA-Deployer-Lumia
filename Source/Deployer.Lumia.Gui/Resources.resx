@@ -175,4 +175,10 @@ By clicking "OK" you accept the aforementioned risks.</value>
   <data name="DownloadedFolderNotFoundTitle" xml:space="preserve">
     <value>Nothing to delete</value>
   </data>
+  <data name="ImageCaptured" xml:space="preserve">
+    <value>Image captured</value>
+  </data>
+  <data name="ImageRestored" xml:space="preserve">
+    <value>Image restored</value>
+  </data>
 </root>

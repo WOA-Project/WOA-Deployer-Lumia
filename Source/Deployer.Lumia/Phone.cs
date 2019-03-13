@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ByteSizeLib;
@@ -18,6 +19,7 @@ namespace Deployer.Lumia
         private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
         
         private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
+        private static readonly string DefaultBcdText = "{Default}";
         private Volume efiEspVolume;
         private IBcdInvoker bcdInvoker;
 
@@ -49,11 +51,13 @@ namespace Deployer.Lumia
             var isWoaPresent = await IsWoAPresent();
             var isWPhonePresent = await IsWindowsPhonePresent();
             var isOobeFinished = await IsOobeFinished();
-            var isBcdEntryPresent = await GetIsEntryPresent(WinPhoneBcdGuid);
+            var isWinPhoneEntryPresent = await LookupStringInBcd(WinPhoneBcdGuid.ToString());
+            var isWinDefaultEntryPresent = await LookupStringInBcd(DefaultBcdText);
+            var isPresentInBcd = isWinPhoneEntryPresent || isWinDefaultEntryPresent;
 
             var bootPartition = await this.GetBootPartition();
             
-            var isEnabled = bootPartition != null && Equals(bootPartition.PartitionType, PartitionType.Basic) && isBcdEntryPresent;
+            var isEnabled = bootPartition != null && Equals(bootPartition.PartitionType, PartitionType.Basic) && isPresentInBcd;
 
             var isCapable = isWoaPresent && isWPhonePresent && isOobeFinished;
             var status = new DualBootStatus(isCapable, isEnabled);
@@ -67,12 +71,12 @@ namespace Deployer.Lumia
 
             return status;
         }
-
-        private async Task<bool> GetIsEntryPresent(Guid guid)
+        
+        private async Task<bool> LookupStringInBcd(string str)
         {
             var invoker = await GetBcdInvoker();
             var result = invoker.Invoke();
-            return result.Contains(guid.ToString());
+            return CultureInfo.InvariantCulture.CompareInfo.IndexOf(result, str, CompareOptions.IgnoreCase) >= 0;
         }
 
         public async Task EnableDualBoot(bool enable)

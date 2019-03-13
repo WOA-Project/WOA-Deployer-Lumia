@@ -28,12 +28,37 @@
                 <CheckBox IsChecked="{Binding UseCompactDeployment, Mode=TwoWay}" HorizontalAlignment="Center" Margin="10" Content="Use Compact Deployment" ToolTip="Checking this will reduce the size of the Windows installation. However, the deployment process will take longer. It will help you save space on your device"></CheckBox>
             </UniformGrid>
         </GroupBox>
+        <Grid>
+            <GroupBox Header="WOA Partition Maintenance" Padding="20" Margin="0,20,0,0">
+                <UniformGrid Rows="1">
+                    <gui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding BackupCommandWrapper.Command}" Content="Backup" IsBusy="{Binding BackupCommandWrapper.IsExecuting}">
+                        <gui:IconButton.Icon>
+                            <iconPacks:PackIconModern Kind="Download" Height="30" />
+                        </gui:IconButton.Icon>
+                    </gui:IconButton>
+                    <gui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding RestoreCommandWrapper.Command}" Content="Restore" IsBusy="{Binding RestoreCommandWrapper.IsExecuting}">
+                        <gui:IconButton.Icon>
+                            <iconPacks:PackIconModern Kind="Upload" Height="30" />
+                        </gui:IconButton.Icon>
+                    </gui:IconButton>
+                </UniformGrid>
+
+
+            </GroupBox>
+            <mah:MetroProgressBar VerticalAlignment="Bottom"
+                                  Maximum="1"
+                                  Value="{Binding StatusViewModel.Progress, Mode=OneWay}"
+                                  Visibility="{Binding StatusViewModel.IsProgressVisible, Converter={StaticResource CollapseOnFalse}}"
+                                  Grid.Column="0"
+                                  IsIndeterminate="{Binding StatusViewModel.IsProgressIndeterminate}">
+            </mah:MetroProgressBar>
+        </Grid>
         <GroupBox Header="Misc" Padding="20" Margin="0,20,0,0">
-           <gui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding DeleteDownloadedWrapper.Command}" Content="Delete 'Downloaded' folder" IsBusy="{Binding DeleteDownloadedWrapper.IsExecuting}">
-               <gui:IconButton.Icon>
+            <gui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding DeleteDownloadedWrapper.Command}" Content="Delete 'Downloaded' folder" IsBusy="{Binding DeleteDownloadedWrapper.IsExecuting}">
+                <gui:IconButton.Icon>
                     <iconPacks:MaterialLight Kind="Delete" Height="30" />
-               </gui:IconButton.Icon>
-           </gui:IconButton>
+                </gui:IconButton.Icon>
+            </gui:IconButton>
         </GroupBox>
     </StackPanel>
 </UserControl>
