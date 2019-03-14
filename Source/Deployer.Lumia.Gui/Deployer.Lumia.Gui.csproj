@@ -83,7 +83,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Specifics\SettingsService.cs" />
-    <Compile Include="Specifics\WpfMarkdownDisplayer.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

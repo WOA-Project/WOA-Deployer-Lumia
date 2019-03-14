@@ -34,7 +34,6 @@ namespace Deployer.Lumia.Gui
             container.Configure(x =>
             {
                 x.Configure(optionsProvider);
-                x.Export<WpfMarkdownDisplayer>().As<IMarkdownDisplayer>();
                 x.ExportFactory(() => new DownloadProgress())
                     .As<IDownloadProgress>()
                     .Lifestyle.Singleton();
