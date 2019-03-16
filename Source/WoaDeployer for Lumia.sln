@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Registry", "DeployerPlatfor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deployer.Gui", "DeployerPlatform\Deployer.Gui\Deployer.Gui.csproj", "{AD8EA86C-AF60-4CCF-9CAA-07BBF5E039EC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Core", "DeployerPlatform\Zafiro\Zafiro.Core\Zafiro.Core.csproj", "{FC32478F-26EA-4774-878C-92B08E468ABA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{AD8EA86C-AF60-4CCF-9CAA-07BBF5E039EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD8EA86C-AF60-4CCF-9CAA-07BBF5E039EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD8EA86C-AF60-4CCF-9CAA-07BBF5E039EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC32478F-26EA-4774-878C-92B08E468ABA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC32478F-26EA-4774-878C-92B08E468ABA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC32478F-26EA-4774-878C-92B08E468ABA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC32478F-26EA-4774-878C-92B08E468ABA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{FBEDAF0E-E2ED-4005-8D83-F980FA67FEB2} = {37EB1151-97FC-4910-BA90-DB0AA05EA107}
 		{C14523F8-313E-4338-B04B-7C15EC730FFD} = {37EB1151-97FC-4910-BA90-DB0AA05EA107}
 		{AD8EA86C-AF60-4CCF-9CAA-07BBF5E039EC} = {37EB1151-97FC-4910-BA90-DB0AA05EA107}
+		{FC32478F-26EA-4774-878C-92B08E468ABA} = {37EB1151-97FC-4910-BA90-DB0AA05EA107}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {17415657-E67C-4901-A9DD-6372AF9CC25E}

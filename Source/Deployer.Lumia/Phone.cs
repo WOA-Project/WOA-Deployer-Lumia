@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ByteSizeLib;
@@ -36,7 +37,15 @@ namespace Deployer.Lumia
 
         public async Task<IBcdInvoker> GetBcdInvoker()
         {
-            return bcdInvoker ?? (bcdInvoker = bcdInvokerFactory.Create((await GetEfiespVolume()).GetBcdFullFilename()));
+            if (bcdInvoker != null)
+            {
+                return bcdInvoker;
+            }
+
+            var volume = await GetMainOs();
+            var bcdFullFilename = Path.Combine(volume.RootDir.Name, "EFIESP", "EFI", "Microsoft", "Boot", "BCD");
+            bcdInvoker = bcdInvokerFactory.Create(bcdFullFilename);
+            return bcdInvoker;
         }
 
         public async Task<PhoneModel> GetModel()
@@ -134,6 +143,11 @@ namespace Deployer.Lumia
         public Task<Volume> GetDataVolume()
         {
             return GetVolume("Data");
+        }
+
+        public Task<Volume> GetMainOs()
+        {
+            return GetVolume(MainOsLabel);
         }
 
         public override async Task RemoveExistingWindowsPartitions()

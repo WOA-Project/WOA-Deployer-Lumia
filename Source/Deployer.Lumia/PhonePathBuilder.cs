@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,7 +20,12 @@ namespace Deployer.Lumia
         {
             IDictionary<string, Func<Task<string>>> mappings = new Dictionary<string, Func<Task<string>>>()
             {
-                { "EFIESP", async () => (await phone.GetEfiespVolume()).RootDir.Name },
+                { "EFIESP", async () =>
+                    {
+                        var volume = await phone.GetMainOs();
+                        return Path.Combine(volume.RootDir.Name, "EFIESP");
+                    }
+                },
                 { "WindowsARM", async () => (await phone.GetWindowsVolume()).RootDir.Name },
             };
 
