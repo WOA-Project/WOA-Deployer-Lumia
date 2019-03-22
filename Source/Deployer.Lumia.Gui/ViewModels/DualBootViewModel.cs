@@ -91,13 +91,13 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private async Task EnableDualBoot()
         {
-            await phone.EnableDualBoot(true);
+            await phone.ToogleDualBoot(true);
             Log.Information("Dual Boot enabled");
         }
 
         private async Task DisableDualBoot()
         {
-            await phone.EnableDualBoot(false);
+            await phone.ToogleDualBoot(false);
             Log.Information("Dual Boot disabled");
         }
 

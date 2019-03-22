@@ -23,9 +23,7 @@ namespace Deployer.Lumia
             var allocated = phoneDisk.AllocatedSize;
             var available = phoneDisk.AvailableSize;
             var newData =  data - (requiredSpace - available);
-
-
-
+            
             Log.Verbose("Total size allocated: {Size}", allocated);
             Log.Verbose("Space available: {Size}", available);
             Log.Verbose("Space needed: {Size}", requiredSpace);
@@ -38,7 +36,7 @@ namespace Deployer.Lumia
 
             Log.Verbose("Resize operation completed successfully");
 
-            return await phone.IsThereEnoughSpace(requiredSpace);
+            return await phone.HasEnoughSpace(requiredSpace);
         }     
     }
 }

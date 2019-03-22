@@ -22,11 +22,11 @@ namespace Deployer.Lumia
             {
                 { "EFIESP", async () =>
                     {
-                        var volume = await phone.GetMainOs();
-                        return Path.Combine(volume.RootDir.Name, "EFIESP");
+                        var volume = await phone.GetMainOsVolume();
+                        return Path.Combine(volume.Root, "EFIESP");
                     }
                 },
-                { "WindowsARM", async () => (await phone.GetWindowsVolume()).RootDir.Name },
+                { "WindowsARM", async () => (await phone.GetWindowsVolume()).Root },
             };
 
             var matching = mappings.Keys.FirstOrDefault(s => str.StartsWith(s, StringComparison.OrdinalIgnoreCase));

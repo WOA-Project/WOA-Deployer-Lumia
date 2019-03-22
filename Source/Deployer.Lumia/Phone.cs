@@ -13,39 +13,21 @@ namespace Deployer.Lumia
 {
     public class Phone : Device, IPhone
     {
-        private readonly IPhoneModelReader phoneModelReader;
-        private readonly BcdInvokerFactory bcdInvokerFactory;
-        protected const string MainOsLabel = "MainOS";
         private static readonly ByteSize MinimumPhoneDiskSize = ByteSize.FromGigaBytes(28);
         private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
-        
+
         private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
         private static readonly string DefaultBcdText = "{Default}";
-        private Volume efiEspVolume;
+        private readonly BcdInvokerFactory bcdInvokerFactory;
+        private readonly IPhoneModelReader phoneModelReader;
         private IBcdInvoker bcdInvoker;
+        private Volume efiEspVolume;
 
-        public Phone(ILowLevelApi lowLevelApi, IPhoneModelReader phoneModelReader, BcdInvokerFactory bcdInvokerFactory) : base(lowLevelApi)
+        public Phone(IDiskApi diskApi, IPhoneModelReader phoneModelReader, BcdInvokerFactory bcdInvokerFactory) :
+            base(diskApi)
         {
             this.phoneModelReader = phoneModelReader;
             this.bcdInvokerFactory = bcdInvokerFactory;
-        }
-
-        public async Task<Volume> GetEfiespVolume()
-        {
-            return efiEspVolume ?? (efiEspVolume = await GetVolume("EFIESP"));
-        }
-
-        public async Task<IBcdInvoker> GetBcdInvoker()
-        {
-            if (bcdInvoker != null)
-            {
-                return bcdInvoker;
-            }
-
-            var volume = await GetMainOs();
-            var bcdFullFilename = Path.Combine(volume.RootDir.Name, "EFIESP", "EFI", "Microsoft", "Boot", "BCD");
-            bcdInvoker = bcdInvokerFactory.Create(bcdFullFilename);
-            return bcdInvoker;
         }
 
         public async Task<PhoneModel> GetModel()
@@ -65,8 +47,9 @@ namespace Deployer.Lumia
             var isPresentInBcd = isWinPhoneEntryPresent || isWinDefaultEntryPresent;
 
             var bootPartition = await this.GetBootPartition();
-            
-            var isEnabled = bootPartition != null && Equals(bootPartition.PartitionType, PartitionType.Basic) && isPresentInBcd;
+
+            var isEnabled = bootPartition != null && Equals(bootPartition.PartitionType, PartitionType.Basic) &&
+                            isPresentInBcd;
 
             var isCapable = isWoaPresent && isWPhonePresent && isOobeFinished;
             var status = new DualBootStatus(isCapable, isEnabled);
@@ -80,15 +63,8 @@ namespace Deployer.Lumia
 
             return status;
         }
-        
-        private async Task<bool> LookupStringInBcd(string str)
-        {
-            var invoker = await GetBcdInvoker();
-            var result = invoker.Invoke();
-            return CultureInfo.InvariantCulture.CompareInfo.IndexOf(result, str, CompareOptions.IgnoreCase) >= 0;
-        }
 
-        public async Task EnableDualBoot(bool enable)
+        public async Task ToogleDualBoot(bool isEnabled)
         {
             var status = await GetDualBootStatus();
             if (!status.CanDualBoot)
@@ -96,9 +72,9 @@ namespace Deployer.Lumia
                 throw new InvalidOperationException("Cannot enable Dual Boot");
             }
 
-            if (status.IsEnabled != enable)
+            if (status.IsEnabled != isEnabled)
             {
-                if (enable)
+                if (isEnabled)
                 {
                     await EnableDualBoot();
                 }
@@ -113,18 +89,104 @@ namespace Deployer.Lumia
             }
         }
 
+        public Task<Volume> GetDataVolume()
+        {
+            return GetVolumeByLabel(VolumeName.Data);
+        }
+
+        public Task<Volume> GetMainOsVolume()
+        {
+            return GetVolumeByLabel(VolumeName.MainOs);
+        }
+
+        public Task<Volume> GetEfiEspVolume()
+        {
+            return GetVolumeByLabel(VolumeName.EfiEsp);
+        }
+
+        public override async Task<Disk> GetDeviceDisk()
+        {
+            var disks = await DiskApi.GetDisks();
+            foreach (var disk in disks.Where(x => x.Number != 0))
+            {
+                var hasCorrectSize = HasCorrectSize(disk);
+
+                if (hasCorrectSize)
+                {
+                    var mainOs = await disk.GetVolumeByLabel(VolumeName.MainOs);
+                    if (mainOs != null)
+                    {
+                        return disk;
+                    }
+                }
+            }
+
+            throw new PhoneDiskNotFoundException(
+                "Cannot get the Phone Disk. Please, verify that the Phone is in Mass Storage Mode.");
+        }
+
+        public override Task<Volume> GetWindowsVolume()
+        {
+            return GetVolumeByPartitionName(PartitionName.Windows);
+        }
+
+        public override async Task<Volume> GetSystemVolume()
+        {
+            return await GetVolumeByPartitionName(PartitionName.System);
+        }
+
+        private async Task<bool> IsWindowsPhonePresent()
+        {
+            try
+            {
+                await GetWindowsVolume();
+                await GetDataVolume();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Failed to get Windows Phone's volumes");
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<Volume> GetEfiespVolume()
+        {
+            return efiEspVolume ?? (efiEspVolume = await GetVolumeByLabel(VolumeName.EfiEsp));
+        }
+
+        public async Task<IBcdInvoker> GetBcdInvoker()
+        {
+            if (bcdInvoker != null)
+            {
+                return bcdInvoker;
+            }
+
+            var volume = await GetMainOsVolume();
+            var bcdFullFilename = Path.Combine(volume.Root, "EFIESP", "EFI", "Microsoft", "Boot", "BCD");
+            bcdInvoker = bcdInvokerFactory.Create(bcdFullFilename);
+            return bcdInvoker;
+        }
+
+        private async Task<bool> LookupStringInBcd(string str)
+        {
+            var invoker = await GetBcdInvoker();
+            var result = invoker.Invoke();
+            return CultureInfo.InvariantCulture.CompareInfo.IndexOf(result, str, CompareOptions.IgnoreCase) >= 0;
+        }
+
         private async Task EnableDualBoot()
         {
             Log.Verbose("Enabling Dual Boot...");
 
             await this.EnsureBootPartitionIs(PartitionType.Basic);
 
-            var volume = await GetEfiespVolume();
-            var bcdInvoker = new BcdInvoker(volume.GetBcdFullFilename());
-            bcdInvoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} description ""Windows 10 Phone""");
-            bcdInvoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /addfirst");
-            bcdInvoker.Invoke($@"/default {{{WinPhoneBcdGuid}}}");
-            
+            var invoker = await GetBcdInvoker();
+            invoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} description ""Windows 10 Phone""");
+            invoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /addfirst");
+            invoker.Invoke($@"/default {{{WinPhoneBcdGuid}}}");
+
             Log.Verbose("Dual Boot enabled");
         }
 
@@ -134,51 +196,10 @@ namespace Deployer.Lumia
 
             await this.EnsureBootPartitionIs(PartitionType.Esp);
 
-            var bcdInvoker = new BcdInvoker((await GetEfiespVolume()).GetBcdFullFilename());
-            bcdInvoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /remove");
+            var invoker = await GetBcdInvoker();
+            invoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /remove");
 
             Log.Verbose("Dual Boot disabled");
-        }
-
-        public Task<Volume> GetDataVolume()
-        {
-            return GetVolume("Data");
-        }
-
-        public Task<Volume> GetMainOs()
-        {
-            return GetVolume(MainOsLabel);
-        }
-
-        public override async Task RemoveExistingWindowsPartitions()
-        {
-            Log.Verbose("Cleanup of possible previous Windows 10 ARM64 installation...");
-
-            await RemovePartition("Reserved", await (await GetDeviceDisk()).GetReservedPartition());
-            await RemovePartition("WoA ESP", await this.GetBootPartition());
-            var winVol = await GetWindowsVolume();
-            await RemovePartition("WoA", winVol?.Partition);
-        }
-
-        public override async Task<Disk> GetDeviceDisk()
-        {
-            var disks = await LowLevelApi.GetDisks();
-            foreach (var disk in disks.Where(x => x.Number != 0))
-            {
-                var hasCorrectSize = HasCorrectSize(disk);
-
-                if (hasCorrectSize)
-                {
-                    var volumes = await disk.GetVolumes();
-                    var mainOsVol = volumes.FirstOrDefault(x => x.Label == MainOsLabel);
-                    if (mainOsVol != null)
-                    {
-                        return disk;
-                    }
-                }
-            }
-
-            throw new PhoneDiskNotFoundException("Cannot get the Phone Disk. Please, verify that the Phone is in Mass Storage Mode.");
         }
 
         private static bool HasCorrectSize(Disk disk)
@@ -186,11 +207,6 @@ namespace Deployer.Lumia
             var moreThanMinimum = disk.Size > MinimumPhoneDiskSize;
             var lessThanMaximum = disk.Size < MaximumPhoneDiskSize;
             return moreThanMinimum && lessThanMaximum;
-        }
-
-        public override async Task<Volume> GetBootVolume()
-        {
-            return await GetVolume("BOOT");
         }
     }
 }

@@ -15,7 +15,7 @@
                 </Grid.ColumnDefinitions>
                 <mah:MetroProgressBar Minimum="0"
                                       Width="300"
-                                      Height="16"
+                                      Height="20"
                                       Maximum="1"
                                       Margin="0"
                                       ToolTip="{Binding ElementName=PercentProgressBar, Path=Value, StringFormat={}{0:P0}}"

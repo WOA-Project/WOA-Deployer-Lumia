@@ -20,7 +20,7 @@ namespace Deployer.Lumia.NetFx
         {
             var enabledStr = isEnabled ? "Enabling" : "Disabling";
             Log.Information($"{enabledStr} Dual Boot");
-            await phone.EnableDualBoot(isEnabled);
+            await phone.ToogleDualBoot(isEnabled);
 
             Log.Information("Done");
         }

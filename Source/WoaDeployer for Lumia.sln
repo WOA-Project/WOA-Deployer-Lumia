@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deployer.Gui", "DeployerPla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Core", "DeployerPlatform\Zafiro\Zafiro.Core\Zafiro.Core.csproj", "{FC32478F-26EA-4774-878C-92B08E468ABA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deployer.Lumia.Tests", "Deployer.Lumia.Tests\Deployer.Lumia.Tests.csproj", "{06F14C7E-E1B3-4B97-A4B1-D778ABC4FC4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{FC32478F-26EA-4774-878C-92B08E468ABA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC32478F-26EA-4774-878C-92B08E468ABA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC32478F-26EA-4774-878C-92B08E468ABA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06F14C7E-E1B3-4B97-A4B1-D778ABC4FC4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06F14C7E-E1B3-4B97-A4B1-D778ABC4FC4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06F14C7E-E1B3-4B97-A4B1-D778ABC4FC4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06F14C7E-E1B3-4B97-A4B1-D778ABC4FC4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

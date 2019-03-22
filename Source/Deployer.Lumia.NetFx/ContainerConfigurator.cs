@@ -47,14 +47,7 @@ namespace Deployer.Lumia.NetFx
             block.Export<WoaDeployer>().As<IWoaDeployer>().Lifestyle.Singleton();
             block.Export<Tooling>().As<ITooling>().Lifestyle.Singleton();
             block.Export<BootCreator>().As<IBootCreator>().Lifestyle.Singleton();
-            block.ExportDecorator(typeof(CachingLowLevelApi)).As(typeof(ILowLevelApi));
-            block.ExportFactory(() =>
-            {
-                Func<ILowLevelApi> lo;
-                var cachingLowLevelApi = new CachingLowLevelApi(new LowLevelApi());
-                return cachingLowLevelApi;
-            });
-            block.Export<LowLevelApi>().As<ILowLevelApi>().Lifestyle.Singleton();
+            block.Export<DiskApi>().As<IDiskApi>().Lifestyle.Singleton();
             block.Export<PhonePathBuilder>().As<IPathBuilder>().Lifestyle.Singleton();
             block.ExportInstance(taskTypes).As<IEnumerable<Type>>();
             block.Export<ScriptRunner>().As<IScriptRunner>().Lifestyle.Singleton();
@@ -67,8 +60,6 @@ namespace Deployer.Lumia.NetFx
             block.ExportFactory(() => new GitHubClient(new ProductHeaderValue("WOADeployer"))).As<IGitHubClient>();
             block.Export<Downloader>().As<IDownloader>().Lifestyle.Singleton();
             block.Export<ProviderBasedWindowsDeployer>().As<IProviderBasedWindowsDeployer>();
-
-            WithRealPhone(block);
 
             block.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>();
 

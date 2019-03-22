@@ -7,8 +7,9 @@ namespace Deployer.Lumia
     {
         Task<PhoneModel> GetModel();
         Task<DualBootStatus> GetDualBootStatus();
-        Task EnableDualBoot(bool enable);
+        Task ToogleDualBoot(bool isEnabled);
         Task<Volume> GetDataVolume();
-        Task<Volume> GetMainOs();
+        Task<Volume> GetMainOsVolume();
+        Task<Volume> GetEfiEspVolume();
     }
 }

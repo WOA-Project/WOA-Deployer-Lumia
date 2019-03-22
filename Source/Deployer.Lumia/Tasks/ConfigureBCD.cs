@@ -19,10 +19,10 @@ namespace Deployer.Lumia.Tasks
 
         public async Task Execute()
         {
-            var efiespVolume = await phone.GetMainOs();
+            var efiEsp = await phone.GetEfiEspVolume();
 
-            var bcdInvoker = bcdInvokerFactory.Create(efiespVolume.GetBcdFullFilename());
-            new BcdConfigurator(bcdInvoker, efiespVolume).SetupBcd();                       
+            var bcdInvoker = bcdInvokerFactory.Create(efiEsp.Root.CombineRelativeBcdPath());
+            new BcdConfigurator(bcdInvoker, efiEsp).SetupBcd();                       
         }
     }
 }
