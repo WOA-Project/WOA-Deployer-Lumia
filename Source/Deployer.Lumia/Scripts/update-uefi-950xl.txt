@@ -1,4 +1,5 @@
-﻿FechAzureDevOpsArtifact "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
+﻿# Updating UEFI
+FechAzureDevOpsArtifact "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
 FechAzureDevOpsArtifact "LumiaWOA;Lumia950XLPkg;1;MSM8994 UEFI (Lumia 950 XL)"
-Copy "Downloaded\MSM8994 UEFI (Lumia 950 XL)\ELF\UEFI.elf" "EFIESP"
-Copy "Downloaded\UEFI Loader for 8992 and 8994\ARM\Debug\BootShim.efi" "EFIESP\EFI\boot\"
+Copy "Downloaded\MSM8994.UEFI.Lumia.950.XL\ELF\UEFI.elf" "[MainOS]\EFIESP\"
+Copy "Downloaded\UEFI Loader for 8992 and 8994\ARM\Debug\BootShim.efi" "[MainOS]\EFIESP\EFI\boot\"

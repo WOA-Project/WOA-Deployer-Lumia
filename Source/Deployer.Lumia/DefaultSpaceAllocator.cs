@@ -36,7 +36,8 @@ namespace Deployer.Lumia
 
             Log.Verbose("Resize operation completed successfully");
 
-            return await phone.HasEnoughSpace(requiredSpace);
+            var isEnoughAlready = await phone.HasEnoughSpace(requiredSpace);
+            return isEnoughAlready;
         }     
     }
 }

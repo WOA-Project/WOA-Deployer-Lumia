@@ -23,9 +23,10 @@ namespace Deployer.Lumia.Tasks
         }
         public async Task Execute()
         {
-            var efiespVolume = await phone.GetEfiEspVolume();
-            var rootDir = efiespVolume.Root;
-            var bcdInvoker = bcdInvokerFactory.Create(rootDir.CombineRelativeBcdPath());
+            var mainOsVolume = await phone.GetMainOsVolume();
+            var rootDir = mainOsVolume.Root;
+            var bcdPath = Path.Combine(mainOsVolume.Root, VolumeName.EfiEsp.CombineRelativeBcdPath());
+            var bcdInvoker = bcdInvokerFactory.Create(bcdPath);
 
             var destination = Path.Combine(rootDir, "Windows", "System32", "BOOT");
             await fileSystemOperations.CopyDirectory(Path.Combine(rootFilesPath), destination);

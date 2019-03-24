@@ -46,7 +46,7 @@ namespace Deployer.Lumia
             var isWinDefaultEntryPresent = await LookupStringInBcd(DefaultBcdText);
             var isPresentInBcd = isWinPhoneEntryPresent || isWinDefaultEntryPresent;
 
-            var bootPartition = await this.GetBootPartition();
+            var bootPartition = await GetSystemPartition();
 
             var isEnabled = bootPartition != null && Equals(bootPartition.PartitionType, PartitionType.Basic) &&
                             isPresentInBcd;
@@ -62,6 +62,12 @@ namespace Deployer.Lumia
             Log.Verbose("Dual Boot Status is {@Status}", status);
 
             return status;
+        }
+
+        public override async Task<Partition> GetSystemPartition()
+        {
+            var disk = await GetDeviceDisk();
+            return await disk.GetPartitionByName(PartitionName.System);
         }
 
         public async Task ToogleDualBoot(bool isEnabled)
@@ -180,7 +186,7 @@ namespace Deployer.Lumia
         {
             Log.Verbose("Enabling Dual Boot...");
 
-            await this.EnsureBootPartitionIs(PartitionType.Basic);
+            var systemPartition = await GetSystemPartition();
 
             var invoker = await GetBcdInvoker();
             invoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} description ""Windows 10 Phone""");
@@ -194,7 +200,8 @@ namespace Deployer.Lumia
         {
             Log.Verbose("Disabling Dual Boot...");
 
-            await this.EnsureBootPartitionIs(PartitionType.Esp);
+            var systemPartition = await GetSystemPartition();
+            await systemPartition.SetGptType(PartitionType.Esp);
 
             var invoker = await GetBcdInvoker();
             invoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /remove");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,36 +21,59 @@ namespace Deployer.Lumia
         {
             IDictionary<string, Func<Task<string>>> mappings = new Dictionary<string, Func<Task<string>>>()
             {
-                { "EFIESP", async () =>
+                { @"\[EFIESP\]", async () =>
                     {
                         var volume = await phone.GetMainOsVolume();
                         return Path.Combine(volume.Root, "EFIESP");
                     }
                 },
-                { "WindowsARM", async () => (await phone.GetWindowsVolume()).Root },
+                { @"\[Windows\]", async () => (await phone.GetWindowsVolume()).Root },
+                { @"\[MainOS\]", async () => (await phone.GetMainOsVolume()).Root },
             };
 
-            var matching = mappings.Keys.FirstOrDefault(s => str.StartsWith(s, StringComparison.OrdinalIgnoreCase));
-            if (matching !=null)
+            foreach (var mapping in mappings)
             {
-                var replacement = await mappings[matching]();
-                var replaced = Regex.Replace(str, $"^{matching}", replacement, RegexOptions.IgnoreCase);
-                return Regex.Replace(replaced, $@"\\+", @"\", RegexOptions.IgnoreCase);
+                if (Regex.IsMatch(str, mapping.Key))
+                {
+                    var mappingValue = await mapping.Value();
+                    str = Regex.Replace(str, $"^{mapping.Key}", mappingValue, RegexOptions.IgnoreCase);
+                    str = Regex.Replace(str, $@"\\+", @"\", RegexOptions.IgnoreCase);
+                }
+            }
+            
+            return str;
+        }
+    }
+
+    public static class StringExtensions
+    {
+
+        [Pure]
+        public static string Replace(this string source, string oldValue, string newValue,
+            StringComparison comparisonType)
+        {
+            if (source.Length == 0 || oldValue.Length == 0)
+                return source;
+
+            var result = new System.Text.StringBuilder();
+            int startingPos = 0;
+            int nextMatch;
+            while ((nextMatch = source.IndexOf(oldValue, startingPos, comparisonType)) > -1)
+            {
+                result.Append(source, startingPos, nextMatch - startingPos);
+                result.Append(newValue);
+                startingPos = nextMatch + oldValue.Length;
             }
 
-            return str;            
+            result.Append(source, startingPos, source.Length - startingPos);
+
+            return result.ToString();
         }
 
-        private async Task<string> Replace(string str, string identifier, Func<Task<string>> func)
+        [Pure]
+        public static bool Contains(this string source, string value, StringComparison comparisonType)
         {
-            var matching = str.StartsWith(identifier, StringComparison.OrdinalIgnoreCase);
-            if (matching)
-            {
-                var replacement = await func();
-                return Regex.Replace(str, $"^{identifier}", replacement, RegexOptions.IgnoreCase);
-            }
-
-            return str;
+            return source.IndexOf(value, comparisonType) >= 0;
         }
     }
 }

@@ -55,7 +55,6 @@ namespace Deployer.Lumia
         private async Task AllocateSpace(ByteSize requiredSize)
         {
             Log.Verbose("Verifying the available space...");
-
             Log.Verbose("We will need {Size} of free space for Windows", requiredSize);
 
             var hasEnoughSpace = await phone.HasEnoughSpace(requiredSize);
@@ -117,8 +116,8 @@ namespace Deployer.Lumia
 
         private async Task PatchBoot()
         {
-            var efiEsp = await phone.GetEfiEspVolume();
-            await fileOperations.Copy("Core\\Boot\\bootaa64.efi", Path.Combine(efiEsp.Root, "EFI", "Boot\\"));
+            var mainOs = await phone.GetMainOsVolume();
+            await fileOperations.Copy("Core\\Boot\\bootaa64.efi", Path.Combine(mainOs.Root, VolumeName.EfiEsp, "EFI", "Boot\\"));
         }
 
         private async Task FormatPartitions()

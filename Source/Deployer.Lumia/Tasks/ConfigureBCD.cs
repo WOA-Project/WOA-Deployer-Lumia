@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Deployer.Execution;
 using Deployer.FileSystem;
 using Deployer.Services;
@@ -19,10 +20,11 @@ namespace Deployer.Lumia.Tasks
 
         public async Task Execute()
         {
-            var efiEsp = await phone.GetEfiEspVolume();
+            var mainOs = await phone.GetMainOsVolume();
 
-            var bcdInvoker = bcdInvokerFactory.Create(efiEsp.Root.CombineRelativeBcdPath());
-            new BcdConfigurator(bcdInvoker, efiEsp).SetupBcd();                       
+            var bcdPath = Path.Combine(mainOs.Root, VolumeName.EfiEsp.CombineRelativeBcdPath());
+            var bcdInvoker = bcdInvokerFactory.Create(bcdPath);
+            new BcdConfigurator(bcdInvoker, mainOs).SetupBcd();                       
         }
     }
 }
