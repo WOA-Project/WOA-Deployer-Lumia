@@ -56,11 +56,11 @@ namespace Deployer.Lumia.NetFx
             block.Export<FileSystemOperations>().As<IFileSystemOperations>().Lifestyle.Singleton();
             block.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>().Lifestyle.Singleton();
             block.Export<WindowsDeployer>().As<IWindowsDeployer>().Lifestyle.Singleton();
-            block.ExportFactory(() => new HttpClient() {Timeout = TimeSpan.FromMinutes(30)}).Lifestyle.Singleton();
+            block.ExportFactory(() => new HttpClient {Timeout = TimeSpan.FromMinutes(30)}).Lifestyle.Singleton();
             block.ExportFactory(() => new GitHubClient(new ProductHeaderValue("WOADeployer"))).As<IGitHubClient>();
             block.Export<Downloader>().As<IDownloader>().Lifestyle.Singleton();
             block.Export<ProviderBasedWindowsDeployer>().As<IProviderBasedWindowsDeployer>();
-
+            block.Export<PartitionCleaner>().As<IPartitionCleaner>();
             block.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>();
 
             return block;

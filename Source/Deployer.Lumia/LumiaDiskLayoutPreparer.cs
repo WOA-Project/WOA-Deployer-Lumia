@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ByteSizeLib;
@@ -18,6 +17,7 @@ namespace Deployer.Lumia
         private readonly IWindowsOptionsProvider optionsProvider;
         private readonly IFileSystemOperations fileOperations;
         private readonly IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators;
+        private readonly IPartitionCleaner cleaner;
         private readonly IPhone phone;
         private Disk disk;
 
@@ -25,11 +25,13 @@ namespace Deployer.Lumia
         private readonly ByteSize systemSize = ByteSize.FromMegaBytes(100);
         private readonly ByteSize recoverySize = ByteSize.FromMegaBytes(500);
 
-        public LumiaDiskLayoutPreparer(IWindowsOptionsProvider optionsProvider, IFileSystemOperations fileOperations, IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IPhone phone)
+        public LumiaDiskLayoutPreparer(IWindowsOptionsProvider optionsProvider, IFileSystemOperations fileOperations,
+            IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IPartitionCleaner cleaner, IPhone phone)
         {
             this.optionsProvider = optionsProvider;
             this.fileOperations = fileOperations;
             this.spaceAllocators = spaceAllocators;
+            this.cleaner = cleaner;
             this.phone = phone;
         }
 
@@ -54,6 +56,7 @@ namespace Deployer.Lumia
 
         private async Task AllocateSpace(ByteSize requiredSize)
         {
+            Log.Information("Verifying available space");
             Log.Verbose("Verifying the available space...");
             Log.Verbose("We will need {Size} of free space for Windows", requiredSize);
 
@@ -81,47 +84,24 @@ namespace Deployer.Lumia
             }
         }
 
-        private async Task RemoveExistingPartitions()
+        public async Task RemoveExistingPartitions()
         {
-            RemoveExistingPartitionsByName();
-            await RemovePartitionsAfterData();
-            await disk.Refresh();
-        }
-
-        private async Task RemovePartitionsAfterData()
-        {
-            Log.Verbose("Trying to remove partitions created by previous versions of WOA Deployer");
-
-            var volume = await phone.GetDataVolume();
-
-            if (volume == null)
-            {
-                Log.Verbose("Data partition not found. Partition cleanup will be performed.");
-                return;
-            }
-
-            var dataPartition = volume.Partition;
-            var windowsPartNumber = (int) dataPartition.Number;
-            var partitions = await disk.GetPartitions();
-
-            var toRemove = partitions
-                .Skip(windowsPartNumber + 1);
-
-            Log.Verbose("Removing legacy partitions");
-            foreach (var partition in toRemove)
-            {
-                await partition.Remove();
-            }
+            Log.Information("Performing partition cleanup");
+            await cleaner.Clean(phone);
         }
 
         private async Task PatchBoot()
         {
+            Log.Verbose("Patching boot");
+
             var mainOs = await phone.GetMainOsVolume();
             await fileOperations.Copy("Core\\Boot\\bootaa64.efi", Path.Combine(mainOs.Root, VolumeName.EfiEsp, "EFI", "Boot\\"));
         }
 
         private async Task FormatPartitions()
         {
+            Log.Information("Formatting partitions");
+
             using (var transaction = new GptContext(disk.Number, FileAccess.Read))
             {
                 await transaction.Get(PartitionName.System).AsCommon(disk).Format(FileSystemFormat.Fat32, PartitionName.System);
@@ -132,6 +112,8 @@ namespace Deployer.Lumia
 
         private async Task CreatePartitions()
         {
+            Log.Verbose("Creating partitions");
+
             using (var t = new GptContext(disk.Number, FileAccess.ReadWrite))
             {
                 t.Add(new EntryBuilder(PartitionName.System, systemSize, PartitionType.Esp)
@@ -153,17 +135,6 @@ namespace Deployer.Lumia
             }
 
             await disk.Refresh();
-        }
-
-        private void RemoveExistingPartitionsByName()
-        {
-            using (var t = new GptContext(disk.Number, FileAccess.ReadWrite))
-            {
-                t.RemoveExisting(PartitionName.System);
-                t.RemoveExisting(PartitionName.Reserved);
-                t.RemoveExisting(PartitionName.Windows);
-                t.RemoveExisting(PartitionName.Recovery);
-            }
         }
     }
 }
