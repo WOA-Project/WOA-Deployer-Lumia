@@ -123,13 +123,8 @@ namespace Deployer.Lumia
                     .NoAutoMount()
                     .Build());
 
-                var windowsSize = t.AvailableSize - recoverySize;
+                var windowsSize = t.AvailableSize;
                 t.Add(new EntryBuilder(PartitionName.Windows, windowsSize, PartitionType.Basic)
-                    .Build());
-
-                t.Add(new EntryBuilder(PartitionName.Recovery, recoverySize, PartitionType.Recovery)
-                    .NoAutoMount()
-                    .MarkAsCritical()
                     .Build());
             }
 

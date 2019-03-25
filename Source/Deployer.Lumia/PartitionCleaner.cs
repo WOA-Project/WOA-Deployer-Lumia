@@ -40,8 +40,7 @@ namespace Deployer.Lumia
             {
                 t.RemoveExisting(PartitionName.System);
                 t.RemoveExisting(PartitionName.Reserved);
-                t.RemoveExisting(PartitionName.Windows);
-                t.RemoveExisting(PartitionName.Recovery);
+                t.RemoveExisting(PartitionName.Windows);                
             }
         }
 
