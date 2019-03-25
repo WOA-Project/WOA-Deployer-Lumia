@@ -105,11 +105,6 @@ namespace Deployer.Lumia
             return GetVolumeByLabel(VolumeName.MainOs);
         }
 
-        public Task<Volume> GetEfiEspVolume()
-        {
-            return GetVolumeByLabel(VolumeName.EfiEsp);
-        }
-
         public override async Task<Disk> GetDeviceDisk()
         {
             var disks = await DiskApi.GetDisks();
@@ -187,6 +182,7 @@ namespace Deployer.Lumia
             Log.Verbose("Enabling Dual Boot...");
 
             var systemPartition = await GetSystemPartition();
+            await systemPartition.SetGptType(PartitionType.Basic);
 
             var invoker = await GetBcdInvoker();
             invoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} description ""Windows 10 Phone""");
