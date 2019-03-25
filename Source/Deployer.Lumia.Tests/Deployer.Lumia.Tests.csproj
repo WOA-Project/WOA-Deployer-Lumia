@@ -43,10 +43,14 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LumiaDiskLayoutPreparerReloadedTests.cs" />
+    <Compile Include="LumiaDiskLayoutPreparerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Deployer.Lumia.NetFx\Deployer.Lumia.NetFx.csproj">
+      <Project>{CFA21504-2CFD-468B-8458-BD9BD05BCF19}</Project>
+      <Name>Deployer.Lumia.NetFx</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Deployer.Lumia\Deployer.Lumia.csproj">
       <Project>{20501832-13F5-4673-9D86-9E7E0C562027}</Project>
       <Name>Deployer.Lumia</Name>
