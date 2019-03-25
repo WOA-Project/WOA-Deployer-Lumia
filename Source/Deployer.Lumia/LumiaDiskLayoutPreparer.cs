@@ -84,9 +84,8 @@ namespace Deployer.Lumia
             }
         }
 
-        public async Task RemoveExistingPartitions()
+        private async Task RemoveExistingPartitions()
         {
-            Log.Information("Performing partition cleanup");
             await cleaner.Clean(phone);
         }
 
