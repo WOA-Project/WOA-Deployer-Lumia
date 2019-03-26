@@ -104,8 +104,7 @@ namespace Deployer.Lumia
             using (var transaction = new GptContext(disk.Number, FileAccess.Read))
             {
                 await transaction.Get(PartitionName.System).AsCommon(disk).Format(FileSystemFormat.Fat32, PartitionName.System);
-                await transaction.Get(PartitionName.Windows).AsCommon(disk).Format(FileSystemFormat.Ntfs, PartitionName.Windows);
-                await transaction.Get(PartitionName.Recovery).AsCommon(disk).Format(FileSystemFormat.Fat32, PartitionName.Recovery);
+                await transaction.Get(PartitionName.Windows).AsCommon(disk).Format(FileSystemFormat.Ntfs, PartitionName.Windows);                
             }
         }
 
