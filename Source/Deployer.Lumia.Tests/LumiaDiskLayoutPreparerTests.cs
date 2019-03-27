@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ByteSizeLib;
-using Deployer.Lumia.NetFx.PhoneInfo;
+using Deployer.Lumia.NetFx;
 using Deployer.NetFx;
 using Xunit;
 
@@ -8,7 +8,7 @@ namespace Deployer.Lumia.Tests
 {
     public class LumiaDiskLayoutPreparerTests
     {
-        [Fact(Skip = "Don't run this!")]
+        [Fact(Skip = "Don't run this")]
         [Trait("Category", "Real")]
         public async Task Prepare()
         {
@@ -20,11 +20,11 @@ namespace Deployer.Lumia.Tests
             {
                 Options = new WindowsDeploymentOptions
                 {
-                    SizeReservedForWindows = ByteSize.FromGigaBytes(20),
+                    SizeReservedForWindows = ByteSize.FromMegaBytes(200),
                 }
             };
 
-            var phone = new Phone(api, new PhoneModelReader(new PhoneInfoReader()), new BcdInvokerFactory());
+            var phone = new TestPhone(api, null, null);
             var preparer = new LumiaDiskLayoutPreparer(optionsProvider, operations, allocators, new PartitionCleaner(), phone);
 
             var disk = await api.GetDisk(3);

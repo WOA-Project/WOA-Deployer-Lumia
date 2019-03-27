@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Deployer.Lumia.NetFx;
 using Deployer.Lumia.NetFx.PhoneInfo;
 using Deployer.NetFx;
 using FluentAssertions;
@@ -10,12 +11,11 @@ namespace Deployer.Lumia.Tests
     public class PartitionCleanerTests
     {
         [Fact(Skip = "Don't run this!")]
+
         [Trait("Category", "Real")]
         public async Task Clean() 
         {
-            var api = new DiskApi();
-
-            var phone = new Phone(api, new PhoneModelReader(new PhoneInfoReader()), new BcdInvokerFactory());
+            var phone = new TestPhone(new DiskApi(), null, null);
 
             var partitionCleaner = new PartitionCleaner();
             await partitionCleaner.Clean(phone);

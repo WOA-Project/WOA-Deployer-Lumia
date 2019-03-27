@@ -124,6 +124,7 @@ namespace Deployer.Lumia
 
                 var windowsSize = t.AvailableSize;
                 t.Add(new EntryBuilder(PartitionName.Windows, windowsSize, PartitionType.Basic)
+                    .NoAutoMount()
                     .Build());
             }
 
