@@ -69,7 +69,7 @@ namespace Deployer.Lumia
 
         private IEnumerable<FileSystem.Gpt.Partition> GetPartitionsAfterData(GptContext c)
         {
-            var orderedPartitions = c.Partitions.OrderBy(p=>p.FirstSector).ToList().AsReadOnly();
+            var orderedPartitions = c.Partitions.OrderBy(p=>p.FirstSector).ToList();
             var indexOfData = orderedPartitions.IndexOf(orderedPartitions.Find(dataPartition.Guid));
             var toRemove = orderedPartitions
                 .Skip(indexOfData + 1)
