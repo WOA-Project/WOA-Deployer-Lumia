@@ -69,8 +69,9 @@ namespace Deployer.Lumia
 
         private IEnumerable<FileSystem.Gpt.Partition> GetPartitionsAfterData(GptContext c)
         {
-            var indexOfData = c.IndexOf(c.Find(dataPartition.Guid));
-            var toRemove = c.Partitions
+            var orderedPartitions = c.OrderBy(p=>p.FirstSector);
+            var indexOfData = orderedPartitions.IndexOf(c.Find(dataPartition.Guid));
+            var toRemove = orderedPartitions
                 .Skip(indexOfData + 1)
                 .ToList();
             return toRemove;
