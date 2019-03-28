@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,10 +37,17 @@ namespace Deployer.Lumia
             using (var c = new GptContext(disk.Number, FileAccess.Read))
             {
                 var last = c.Partitions.Last();
+
                 var asCommon = last.AsCommon(disk);
                 var volume = await asCommon.GetVolume();
-                if (volume.Label != "Data")
+
+                if (volume == null)
                 {
+                    throw new PartitioningException("Couldn't get the volume of the last partition");
+                }
+
+                if (volume.Label != VolumeName.Data)
+                {                   
                     throw new PartitioningException("Data should be the last volume after a the cleanup");
                 }
             }
@@ -69,11 +77,10 @@ namespace Deployer.Lumia
 
         private IEnumerable<FileSystem.Gpt.Partition> GetPartitionsAfterData(GptContext c)
         {
-            var orderedPartitions = c.Partitions.OrderBy(p => p.FirstSector).ToList();
             var gptPartition = c.Find(dataPartition.Guid);
-            var indexOfData = orderedPartitions.IndexOf(gptPartition);
+            var indexOfData = c.Partitions.IndexOf(gptPartition);
 
-            var toRemove = orderedPartitions
+            var toRemove = c.Partitions
                 .Skip(indexOfData + 1)
                 .ToList();
 

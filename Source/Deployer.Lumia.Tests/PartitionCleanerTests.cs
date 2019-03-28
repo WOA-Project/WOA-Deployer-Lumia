@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Deployer.Lumia.NetFx;
-using Deployer.Lumia.NetFx.PhoneInfo;
 using Deployer.NetFx;
 using FluentAssertions;
 using Xunit;
@@ -24,7 +23,7 @@ namespace Deployer.Lumia.Tests
             var partitions = await disk.GetPartitions();
             var volume = await partitions.Last().GetVolume();
             volume.Should().NotBeNull();
-            volume.Label.Should().Be("Data");
+            volume.Label.Should().Be(VolumeName.Data);
         }
     }
 }
