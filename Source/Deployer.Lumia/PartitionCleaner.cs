@@ -48,7 +48,7 @@ namespace Deployer.Lumia
 
                 if (volume.Label != VolumeName.Data)
                 {                   
-                    throw new PartitioningException("Data should be the last volume after a the cleanup");
+                    throw new PartitioningException("Data should be the last partition after the partition cleanup");
                 }
             }
         }
