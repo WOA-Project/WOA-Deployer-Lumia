@@ -101,7 +101,7 @@ namespace Deployer.Lumia
         {
             Log.Information("Formatting partitions");
 
-            using (var transaction = new GptContext(disk.Number, FileAccess.Read))
+            using (var transaction = await GptContextFactory.Create(disk.Number, FileAccess.Read, GptContext.DefaultBytesPerSector, GptContext.DefaultChunkSize))
             {
                 await transaction.Get(PartitionName.System).AsCommon(disk).Format(FileSystemFormat.Fat32, PartitionName.System);
                 await transaction.Get(PartitionName.Windows).AsCommon(disk).Format(FileSystemFormat.Ntfs, PartitionName.Windows);                
@@ -112,7 +112,7 @@ namespace Deployer.Lumia
         {
             Log.Verbose("Creating partitions");
 
-            using (var t = new GptContext(disk.Number, FileAccess.ReadWrite))
+            using (var t = await GptContextFactory.Create(disk.Number, FileAccess.ReadWrite, GptContext.DefaultBytesPerSector, GptContext.DefaultChunkSize))
             {
                 t.Add(new EntryBuilder(PartitionName.System, systemSize, PartitionType.Esp)
                     .NoAutoMount()

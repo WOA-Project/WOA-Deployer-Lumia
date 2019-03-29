@@ -22,6 +22,7 @@ namespace Deployer.Lumia
         private readonly IPhoneModelReader phoneModelReader;
         private IBcdInvoker bcdInvoker;
         private Volume efiEspVolume;
+        private Disk deviceDisk;
 
         public Phone(IDiskApi diskApi, IPhoneModelReader phoneModelReader, BcdInvokerFactory bcdInvokerFactory) :
             base(diskApi)
@@ -105,7 +106,9 @@ namespace Deployer.Lumia
             return GetVolumeByLabel(VolumeName.MainOs);
         }
 
-        public override async Task<Disk> GetDeviceDisk()
+        public override async Task<Disk> GetDeviceDisk() => deviceDisk ?? await GetDeviceDiskCore();
+
+        private  async Task<Disk> GetDeviceDiskCore()
         {
             var disks = await DiskApi.GetDisks();
             foreach (var disk in disks.Where(x => x.Number != 0))

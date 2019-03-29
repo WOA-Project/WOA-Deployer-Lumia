@@ -22,7 +22,7 @@ namespace Deployer.Lumia
             disk = await toClean.GetDeviceDisk();
             dataPartition = await disk.GetPartitionByVolumeLabel(VolumeName.Data);
 
-            RemoveAnyPartitionsAfterData();
+            await RemoveAnyPartitionsAfterData();
             await EnsureDataIsLastPartition();
 
             Log.Information("Cleanup done");
@@ -33,7 +33,7 @@ namespace Deployer.Lumia
         private async Task EnsureDataIsLastPartition()
         {
             Log.Verbose("Ensuring that Data partition is the last partition");
-            using (var c = new GptContext(disk.Number, FileAccess.Read))
+            using (var c = await GptContextFactory.Create(disk.Number, FileAccess.Read, GptContext.DefaultBytesPerSector, GptContext.DefaultChunkSize))
             {
                 var last = c.Partitions.Last();
 
@@ -52,7 +52,7 @@ namespace Deployer.Lumia
             }
         }
 
-        private void RemoveAnyPartitionsAfterData()
+        private async Task RemoveAnyPartitionsAfterData()
         {
             Log.Verbose("Removing all the partitions after the Data partition");
 
@@ -63,7 +63,7 @@ namespace Deployer.Lumia
                 return;
             }
 
-            using (var c = new GptContext(disk.Number, FileAccess.ReadWrite))
+            using (var c = await GptContextFactory.Create(disk.Number, FileAccess.ReadWrite, GptContext.DefaultBytesPerSector, GptContext.DefaultChunkSize))
             {
                 var toRemove = GetPartitionsAfterData(c);
 
