@@ -106,6 +106,8 @@ namespace Deployer.Lumia
                 await transaction.Get(PartitionName.System).AsCommon(disk).Format(FileSystemFormat.Fat32, PartitionName.System);
                 await transaction.Get(PartitionName.Windows).AsCommon(disk).Format(FileSystemFormat.Ntfs, PartitionName.Windows);                
             }
+
+            await disk.Refresh();
         }
 
         private async Task CreatePartitions()
