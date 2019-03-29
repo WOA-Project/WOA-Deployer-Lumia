@@ -27,7 +27,6 @@ namespace Deployer.Lumia
 
             Log.Information("Cleanup done");
 
-            Log.Verbose("Refreshing disk");
             await disk.Refresh();
         }
 
