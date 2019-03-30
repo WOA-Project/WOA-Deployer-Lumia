@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace Deployer.Lumia
         private async Task EnsureDataIsLastPartition()
         {
             Log.Verbose("Ensuring that Data partition is the last partition");
-            using (var c = await GptContextFactory.Create(disk.Number, FileAccess.Read, GptContext.DefaultBytesPerSector, GptContext.DefaultChunkSize))
+            using (var c = await GptContextFactory.Create(disk.Number, FileAccess.Read))
             {
                 var last = c.Partitions.Last();
 
@@ -42,12 +43,12 @@ namespace Deployer.Lumia
 
                 if (volume == null)
                 {
-                    throw new PartitioningException("Couldn't get the volume of the last partition");
+                    throw new PartitioningException("Cannot get the volume of the last partition to check its label.");
                 }
 
-                if (volume.Label != VolumeName.Data)
+                if (!string.Equals(volume.Label, VolumeName.Data, StringComparison.InvariantCultureIgnoreCase))
                 {                   
-                    throw new PartitioningException("Data should be the last partition after the partition cleanup");
+                    throw new PartitioningException($"The label of the last partition should be '{VolumeName.Data}' and it's '{volume.Label}'");
                 }
             }
         }
@@ -63,7 +64,7 @@ namespace Deployer.Lumia
                 return;
             }
 
-            using (var c = await GptContextFactory.Create(disk.Number, FileAccess.ReadWrite, GptContext.DefaultBytesPerSector, GptContext.DefaultChunkSize))
+            using (var c = await GptContextFactory.Create(disk.Number, FileAccess.ReadWrite))
             {
                 var toRemove = GetPartitionsAfterData(c);
 
