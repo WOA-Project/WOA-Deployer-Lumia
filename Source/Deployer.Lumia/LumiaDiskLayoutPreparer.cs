@@ -23,7 +23,6 @@ namespace Deployer.Lumia
 
         private readonly ByteSize reservedSize = ByteSize.FromMegaBytes(16);
         private readonly ByteSize systemSize = ByteSize.FromMegaBytes(100);
-        private readonly ByteSize recoverySize = ByteSize.FromMegaBytes(500);
 
         public LumiaDiskLayoutPreparer(IWindowsOptionsProvider optionsProvider, IFileSystemOperations fileOperations,
             IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IPartitionCleaner cleaner, IPhone phone)

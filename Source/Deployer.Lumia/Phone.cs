@@ -13,15 +13,14 @@ namespace Deployer.Lumia
 {
     public class Phone : Device, IPhone
     {
+        private const string WindowsSystem32BootWinloadEfi = @"windows\system32\boot\winload.efi";
         private static readonly ByteSize MinimumPhoneDiskSize = ByteSize.FromGigaBytes(28);
         private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
 
         private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
-        private static readonly string DefaultBcdText = "{Default}";
         private readonly BcdInvokerFactory bcdInvokerFactory;
         private readonly IPhoneModelReader phoneModelReader;
         private IBcdInvoker bcdInvoker;
-        private Volume efiEspVolume;
         private Disk deviceDisk;
 
         public Phone(IDiskApi diskApi, IPhoneModelReader phoneModelReader, BcdInvokerFactory bcdInvokerFactory) :
@@ -43,14 +42,12 @@ namespace Deployer.Lumia
             var isWoaPresent = await IsWoAPresent();
             var isWPhonePresent = await IsWindowsPhonePresent();
             var isOobeFinished = await IsOobeFinished();
-            var isWinPhoneEntryPresent = await LookupStringInBcd(WinPhoneBcdGuid.ToString());
-            var isWinDefaultEntryPresent = await LookupStringInBcd(DefaultBcdText);
-            var isPresentInBcd = isWinPhoneEntryPresent || isWinDefaultEntryPresent;
+            var isWinPhoneEntryPresent = await IsWindowsPhoneBcdEntryPresent();
 
             var bootPartition = await GetSystemPartition();
 
             var isEnabled = bootPartition != null && Equals(bootPartition.PartitionType, PartitionType.Basic) &&
-                            isPresentInBcd;
+                            isWinPhoneEntryPresent;
 
             var isCapable = isWoaPresent && isWPhonePresent && isOobeFinished;
             var status = new DualBootStatus(isCapable, isEnabled);
@@ -106,7 +103,7 @@ namespace Deployer.Lumia
             return GetVolumeByLabel(VolumeName.MainOs);
         }
 
-        public override async Task<Disk> GetDeviceDisk() => deviceDisk ?? await GetDeviceDiskCore();
+        public override async Task<Disk> GetDeviceDisk() => await GetDeviceDiskCore();
 
         private  async Task<Disk> GetDeviceDiskCore()
         {
@@ -155,12 +152,7 @@ namespace Deployer.Lumia
             return true;
         }
 
-        public async Task<Volume> GetEfiespVolume()
-        {
-            return efiEspVolume ?? (efiEspVolume = await GetVolumeByLabel(VolumeName.EfiEsp));
-        }
-
-        public async Task<IBcdInvoker> GetBcdInvoker()
+        private async Task<IBcdInvoker> GetBcdInvoker()
         {
             if (bcdInvoker != null)
             {
@@ -168,16 +160,26 @@ namespace Deployer.Lumia
             }
 
             var volume = await GetMainOsVolume();
-            var bcdFullFilename = Path.Combine(volume.Root, "EFIESP", "EFI", "Microsoft", "Boot", "BCD");
+            var bcdFullFilename = Path.Combine(volume.Root, VolumeName.EfiEsp.CombineRelativeBcdPath());
             bcdInvoker = bcdInvokerFactory.Create(bcdFullFilename);
             return bcdInvoker;
         }
 
-        private async Task<bool> LookupStringInBcd(string str)
+        private async Task<bool> IsWindowsPhoneBcdEntryPresent()
         {
             var invoker = await GetBcdInvoker();
             var result = invoker.Invoke();
-            return CultureInfo.InvariantCulture.CompareInfo.IndexOf(result, str, CompareOptions.IgnoreCase) >= 0;
+
+
+            var contains1 = result.Contains(WindowsSystem32BootWinloadEfi, StringComparison.CurrentCultureIgnoreCase);
+            var contains2 = result.Contains(WinPhoneBcdGuid.ToString(), StringComparison.InvariantCultureIgnoreCase);
+            if (contains1 ||
+                contains2)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private async Task EnableDualBoot()
