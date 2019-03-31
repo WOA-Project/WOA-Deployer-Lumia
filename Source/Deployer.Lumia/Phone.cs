@@ -14,13 +14,13 @@ namespace Deployer.Lumia
     public class Phone : Device, IPhone
     {
         private const string WindowsSystem32BootWinloadEfi = @"windows\system32\boot\winload.efi";
+        private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
+
         private static readonly ByteSize MinimumPhoneDiskSize = ByteSize.FromGigaBytes(28);
         private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
 
-        private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
         private readonly BcdInvokerFactory bcdInvokerFactory;
         private readonly IPhoneModelReader phoneModelReader;
-        private IBcdInvoker bcdInvoker;
         private Disk deviceDisk;
 
         public Phone(IDiskApi diskApi, IPhoneModelReader phoneModelReader, BcdInvokerFactory bcdInvokerFactory) :
@@ -95,15 +95,24 @@ namespace Deployer.Lumia
 
         public Task<Volume> GetDataVolume()
         {
-            return GetVolumeByLabel(VolumeName.Data);
+            return GetVolumeByPartitionName(PartitionName.Data);
         }
 
         public Task<Volume> GetMainOsVolume()
         {
-            return GetVolumeByLabel(VolumeName.MainOs);
+            return GetVolumeByPartitionName(PartitionName.MainOs);
         }
 
-        public override async Task<Disk> GetDeviceDisk() => await GetDeviceDiskCore();
+        public override async Task<Disk> GetDeviceDisk()
+        {
+            var disk = await GetDeviceDiskCore();
+            if (disk.IsOffline)
+            {
+                throw new ApplicationException("The phone disk is offline. Please, set it online with Disk Management or DISKPART.");
+            }
+
+            return disk;
+        }
 
         private  async Task<Disk> GetDeviceDiskCore()
         {
@@ -114,7 +123,7 @@ namespace Deployer.Lumia
 
                 if (hasCorrectSize)
                 {
-                    var mainOs = await disk.GetVolumeByLabel(VolumeName.MainOs);
+                    var mainOs = await disk.GetPartition(PartitionName.MainOs);
                     if (mainOs != null)
                     {
                         return disk;
@@ -154,15 +163,9 @@ namespace Deployer.Lumia
 
         private async Task<IBcdInvoker> GetBcdInvoker()
         {
-            if (bcdInvoker != null)
-            {
-                return bcdInvoker;
-            }
-
             var volume = await GetMainOsVolume();
-            var bcdFullFilename = Path.Combine(volume.Root, VolumeName.EfiEsp.CombineRelativeBcdPath());
-            bcdInvoker = bcdInvokerFactory.Create(bcdFullFilename);
-            return bcdInvoker;
+            var bcdFullFilename = Path.Combine(volume.Root, PartitionName.EfiEsp.CombineRelativeBcdPath());
+            return bcdInvokerFactory.Create(bcdFullFilename);
         }
 
         private async Task<bool> IsWindowsPhoneBcdEntryPresent()
@@ -170,16 +173,10 @@ namespace Deployer.Lumia
             var invoker = await GetBcdInvoker();
             var result = invoker.Invoke();
 
+            var containsWinLoad = result.Contains(WindowsSystem32BootWinloadEfi, StringComparison.CurrentCultureIgnoreCase);
+            var containsWinPhoneBcdGuid = result.Contains(WinPhoneBcdGuid.ToString(), StringComparison.InvariantCultureIgnoreCase);
 
-            var contains1 = result.Contains(WindowsSystem32BootWinloadEfi, StringComparison.CurrentCultureIgnoreCase);
-            var contains2 = result.Contains(WinPhoneBcdGuid.ToString(), StringComparison.InvariantCultureIgnoreCase);
-            if (contains1 ||
-                contains2)
-            {
-                return true;
-            }
-
-            return false;
+            return containsWinLoad ||containsWinPhoneBcdGuid;
         }
 
         private async Task EnableDualBoot()
@@ -205,7 +202,7 @@ namespace Deployer.Lumia
             await systemPartition.SetGptType(PartitionType.Esp);
 
             var invoker = await GetBcdInvoker();
-            invoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /remove");
+            var result = invoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /remove");
 
             Log.Verbose("Dual Boot disabled");
         }

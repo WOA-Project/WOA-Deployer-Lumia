@@ -21,7 +21,7 @@ namespace Deployer.Lumia
             Log.Information("Performing partition cleanup");
 
             disk = await toClean.GetDeviceDisk();
-            dataPartition = await disk.GetPartitionByVolumeLabel(VolumeName.Data);
+            dataPartition = await disk.GetPartitionByName(PartitionName.Data);
 
             await RemoveAnyPartitionsAfterData();
             await EnsureDataIsLastPartition();
@@ -46,9 +46,9 @@ namespace Deployer.Lumia
                     throw new PartitioningException("Cannot get the volume of the last partition to check its label.");
                 }
 
-                if (!string.Equals(volume.Label, VolumeName.Data, StringComparison.InvariantCultureIgnoreCase))
+                if (!string.Equals(volume.Label, PartitionName.Data, StringComparison.InvariantCultureIgnoreCase))
                 {                   
-                    throw new PartitioningException($"The label of the last partition should be '{VolumeName.Data}' and it's '{volume.Label}'");
+                    throw new PartitioningException($"The label of the last partition should be '{PartitionName.Data}' and it's '{volume.Label}'");
                 }
             }
         }

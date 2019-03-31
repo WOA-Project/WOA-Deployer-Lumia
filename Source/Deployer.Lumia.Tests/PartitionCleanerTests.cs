@@ -23,7 +23,7 @@ namespace Deployer.Lumia.Tests
             var partitions = await disk.GetPartitions();
             var volume = await partitions.Last().GetVolume();
             volume.Should().NotBeNull();
-            volume.Label.Should().Be(VolumeName.Data);
+            volume.Label.Should().Be(PartitionName.Data);
         }
     }
 }

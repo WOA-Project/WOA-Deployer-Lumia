@@ -93,7 +93,7 @@ namespace Deployer.Lumia
             Log.Verbose("Patching boot");
 
             var mainOs = await phone.GetMainOsVolume();
-            await fileOperations.Copy("Core\\Boot\\bootaa64.efi", Path.Combine(mainOs.Root, VolumeName.EfiEsp, "EFI", "Boot\\"));
+            await fileOperations.Copy("Core\\Boot\\bootaa64.efi", Path.Combine(mainOs.Root, PartitionName.EfiEsp, "EFI", "Boot\\"));
         }
 
         private async Task FormatPartitions()

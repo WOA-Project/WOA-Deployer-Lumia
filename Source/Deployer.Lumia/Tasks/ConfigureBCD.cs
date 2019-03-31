@@ -22,7 +22,7 @@ namespace Deployer.Lumia.Tasks
         {
             var mainOs = await phone.GetMainOsVolume();
 
-            var bcdPath = Path.Combine(mainOs.Root, VolumeName.EfiEsp.CombineRelativeBcdPath());
+            var bcdPath = Path.Combine(mainOs.Root, PartitionName.EfiEsp.CombineRelativeBcdPath());
             var bcdInvoker = bcdInvokerFactory.Create(bcdPath);
             new BcdConfigurator(bcdInvoker, mainOs).SetupBcd();                       
         }

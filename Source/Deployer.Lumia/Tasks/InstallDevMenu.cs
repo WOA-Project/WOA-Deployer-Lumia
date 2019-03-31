@@ -25,7 +25,7 @@ namespace Deployer.Lumia.Tasks
         {
             var mainOsVolume = await phone.GetMainOsVolume();
             var rootDir = mainOsVolume.Root;
-            var bcdPath = Path.Combine(mainOsVolume.Root, VolumeName.EfiEsp.CombineRelativeBcdPath());
+            var bcdPath = Path.Combine(mainOsVolume.Root, PartitionName.EfiEsp.CombineRelativeBcdPath());
             var bcdInvoker = bcdInvokerFactory.Create(bcdPath);
 
             var destination = Path.Combine(rootDir, "Windows", "System32", "BOOT");

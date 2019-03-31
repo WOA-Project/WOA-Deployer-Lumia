@@ -1,6 +1,6 @@
 ﻿FechAzureDevOpsArtifact "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
 FetchGitHubLatestReleaseAsset "https://github.com/WOA-Project/Lumia950XLPkg" "MSM8992.UEFI.Lumia.950.zip"
-FetchGitHub "https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers"
+FetchGitHubBranch "https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers" "preview"
 Copy "Downloaded\MSM8992.UEFI.Lumia.950\ELF\UEFI.elf" "[MainOS]\EFIESP\"
 Copy "Downloaded\UEFI Loader for 8992 and 8994\ARM\Debug\BootShim.efi" "[MainOS]\EFIESP\EFI\boot\"
 ConfigureBCD
