@@ -104,7 +104,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Parts\DualBootPart.xaml">
+    <Page Include="Views\Parts\DualBoot\DualBootPart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Parts\DualBoot\NonCapablePart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -136,8 +140,11 @@
     <Compile Include="Views\Parts\DeploymentPart.xaml.cs">
       <DependentUpon>DeploymentPart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Parts\DualBootPart.xaml.cs">
+    <Compile Include="Views\Parts\DualBoot\DualBootPart.xaml.cs">
       <DependentUpon>DualBootPart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Parts\DualBoot\NonCapablePart.xaml.cs">
+      <DependentUpon>NonCapablePart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Parts\LogPart.xaml.cs">
       <DependentUpon>LogPart.xaml</DependentUpon>

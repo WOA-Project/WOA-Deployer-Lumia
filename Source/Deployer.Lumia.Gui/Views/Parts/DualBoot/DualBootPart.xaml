@@ -6,6 +6,7 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:gui="clr-namespace:Deployer.Gui;assembly=Deployer.Gui"
+             xmlns:dualBoot="clr-namespace:Deployer.Lumia.Gui.Views.Parts.DualBoot"
              mc:Ignorable="d"
              d:DesignHeight="561" d:DesignWidth="858.5" DataContext="{Binding Source={StaticResource Locator}, Path=DualBootViewModel}"
              mah:DialogParticipation.Register="{Binding}">
@@ -56,15 +57,7 @@
                 <TextBlock MaxWidth="280" Margin="20" TextWrapping="Wrap" TextAlignment="Center">Please, notice that while Dual Boot is enabled, <Bold>Windows Update will not work</Bold> inside Windows 10 ARM64. Please, disable Dual Boot to before using Windows Update.</TextBlock>
             </StackPanel>
 
-            <StackPanel Visibility="{Binding IsCapable, Converter={StaticResource CollapseOnTrue}}">
-
-                <TextBlock FontSize="18" Margin="20" TextWrapping="Wrap"
-                    Visibility="{Binding IsCapable, Converter={StaticResource CollapseOnTrue}}"
-                    IsHitTestVisible="False">
-                    <Bold>Dual Boot</Bold> cannot be enabled in this phone. Please, check that Windows 10 Phone (the original OS) and Windows 10 ARM64 are both present. Also, check that Windows 10 ARM Setup has been completed.
-                </TextBlock>
-
-            </StackPanel>
+            <dualBoot:NonCapablePart Visibility="{Binding IsCapable, Converter={StaticResource CollapseOnTrue}}" />
 
         </StackPanel>
     </Grid>

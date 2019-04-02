@@ -68,10 +68,11 @@ namespace Deployer.Lumia
             return await disk.GetPartitionByName(PartitionName.System);
         }
 
-        public async Task ToogleDualBoot(bool isEnabled)
+        public async Task ToogleDualBoot(bool isEnabled, bool force = false)
         {
             var status = await GetDualBootStatus();
-            if (!status.CanDualBoot)
+
+            if (!force && !status.CanDualBoot)
             {
                 throw new InvalidOperationException("Cannot enable Dual Boot");
             }

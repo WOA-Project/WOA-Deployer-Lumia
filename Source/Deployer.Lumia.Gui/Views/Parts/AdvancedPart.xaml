@@ -54,11 +54,24 @@
             </mah:MetroProgressBar>
         </Grid>
         <GroupBox Header="Misc" Padding="20" Margin="0,20,0,0">
-            <gui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding DeleteDownloadedWrapper.Command}" Content="Delete 'Downloaded' folder" IsBusy="{Binding DeleteDownloadedWrapper.IsExecuting}">
-                <gui:IconButton.Icon>
-                    <iconPacks:MaterialLight Kind="Delete" Height="30" />
-                </gui:IconButton.Icon>
-            </gui:IconButton>
+            <UniformGrid Rows="1">
+                <gui:IconButton HorizontalAlignment="Center" Height="50"
+                                Command="{Binding DeleteDownloadedWrapper.Command}"
+                                Content="Delete 'Downloaded' folder"
+                                IsBusy="{Binding DeleteDownloadedWrapper.IsExecuting}">
+                    <gui:IconButton.Icon>
+                        <iconPacks:MaterialLight Kind="Delete" Height="30" />
+                    </gui:IconButton.Icon>
+                </gui:IconButton>
+                <gui:IconButton HorizontalAlignment="Center" Height="50"
+                                Command="{Binding ForceDualBootWrapper.Command}"
+                                Content="Force Dual Boot"
+                                IsBusy="{Binding ForceDualBootWrapper.IsExecuting}">
+                    <gui:IconButton.Icon>
+                        <iconPacks:PackIconMaterial Kind="CellphoneSettingsVariant" Height="30" />
+                    </gui:IconButton.Icon>
+                </gui:IconButton>
+            </UniformGrid>
         </GroupBox>
     </StackPanel>
 </UserControl>

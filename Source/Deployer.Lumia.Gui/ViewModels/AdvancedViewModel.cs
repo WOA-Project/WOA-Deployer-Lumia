@@ -22,13 +22,14 @@ namespace Deployer.Lumia.Gui.ViewModels
         private readonly IWindowsOptionsProvider optionsProvider;
         private readonly IDeviceProvider deviceProvider;
         private readonly IDownloadProgress progress;
+        private readonly IPhone phone;
 
         private readonly ObservableAsPropertyHelper<ByteSize> sizeReservedForWindows;
 
         public AdvancedViewModel(ISettingsService settingsService, IFileSystemOperations fileSystemOperations,
             UIServices uiServices, IProviderBasedWindowsDeployer deployer, 
             IDiskLayoutPreparer preparer,
-            IWindowsOptionsProvider optionsProvider, IDeviceProvider deviceProvider, IDownloadProgress progress, StatusViewModel statusViewModel)
+            IWindowsOptionsProvider optionsProvider, IDeviceProvider deviceProvider, IDownloadProgress progress, StatusViewModel statusViewModel, IPhone phone)
         {
             StatusViewModel = statusViewModel;
             this.settingsService = settingsService;
@@ -38,12 +39,14 @@ namespace Deployer.Lumia.Gui.ViewModels
             this.optionsProvider = optionsProvider;
             this.deviceProvider = deviceProvider;
             this.progress = progress;
+            this.phone = phone;
 
             sizeReservedForWindows =
                 this.WhenAnyValue(x => x.GbsReservedForWindows, ByteSize.FromGigaBytes)
                     .ToProperty(this, x => x.SizeReservedForWindows);
 
             DeleteDownloadedWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), uiServices.Dialog);
+            ForceDualBootWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(ForceDualBoot), uiServices.Dialog);
 
             BackupCommandWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Backup), uiServices.Dialog);
             RestoreCommandWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Restore), uiServices.Dialog);
@@ -53,7 +56,15 @@ namespace Deployer.Lumia.Gui.ViewModels
                 DeleteDownloadedWrapper.Command.IsExecuting,
                 BackupCommandWrapper.Command.IsExecuting,
                 RestoreCommandWrapper.Command.IsExecuting,
+                ForceDualBootWrapper.Command.IsExecuting,
             });
+        }
+
+        private async Task ForceDualBoot()
+        {
+            await phone.ToogleDualBoot(true, true);
+
+            await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.DualBootEnabled);
         }
 
         public CommandWrapper<Unit, Unit> RestoreCommandWrapper { get; set; }
@@ -168,5 +179,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                     Resources.DownloadedFolderNotFound);
             }
         }
+
+        public CommandWrapper<Unit, Unit> ForceDualBootWrapper { get; }
     }
 }
