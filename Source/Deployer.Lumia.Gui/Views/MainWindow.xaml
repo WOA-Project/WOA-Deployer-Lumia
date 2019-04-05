@@ -5,12 +5,12 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:parts="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                 xmlns:Converters="http://metro.mahapps.com/winfx/xaml/shared"
+                 xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                  mc:Ignorable="d"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
                  mah:DialogParticipation.Register="{Binding}"
-                 Title="{Binding Title}" Width="720" Height="640"
+                 Title="{Binding Title}" Width="760" Height="640"
                  Icon="/Assets/appicon.png"
                  WindowStartupLocation="CenterScreen">
     <mah:MetroWindow.Resources>
@@ -19,7 +19,7 @@
             <Setter Property="TextElement.Foreground">
                 <Setter.Value>
 
-                        <MultiBinding Converter="{x:Static Converters:BackgroundToForegroundConverter.Instance}">
+                        <MultiBinding Converter="{x:Static converters:BackgroundToForegroundConverter.Instance}">
                             <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                             <Binding Mode="OneWay"
                                      Path="Background"

@@ -58,5 +58,17 @@ namespace Deployer.Lumia.Gui.Properties {
                 this["UseCompactDeployment"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CleanDownloadedBeforeDeployment {
+            get {
+                return ((bool)(this["CleanDownloadedBeforeDeployment"]));
+            }
+            set {
+                this["CleanDownloadedBeforeDeployment"] = value;
+            }
+        }
     }
 }

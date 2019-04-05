@@ -17,18 +17,22 @@ namespace Deployer.Lumia.Gui.ViewModels
         private readonly UIServices uiServices;
         private readonly AdvancedViewModel advancedViewModel;
         private readonly WimPickViewModel wimPickViewModel;
+        private readonly IFileSystemOperations fileSystemOperations;
+        private readonly ISettingsService settingsService;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
 
         public DeploymentViewModel(
             IWindowsOptionsProvider optionsProvider,
             IWoaDeployer deployer, UIServices uiServices, AdvancedViewModel advancedViewModel,
-            WimPickViewModel wimPickViewModel)
+            WimPickViewModel wimPickViewModel, IFileSystemOperations fileSystemOperations, ISettingsService settingsService)
         {
             this.optionsProvider = optionsProvider;
             this.deployer = deployer;
             this.uiServices = uiServices;
             this.advancedViewModel = advancedViewModel;
             this.wimPickViewModel = wimPickViewModel;
+            this.fileSystemOperations = fileSystemOperations;
+            this.settingsService = settingsService;
 
             var isSelectedWim = wimPickViewModel.WhenAnyObservable(x => x.WimMetadata.SelectedImageObs)
                 .Select(metadata => metadata != null);
@@ -55,6 +59,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             optionsProvider.Options = windowsDeploymentOptions;
 
+            await CleanDownloadedIfNeeded();
             await deployer.Deploy();
 
             Log.Information("Deployment successful");
@@ -63,6 +68,20 @@ namespace Deployer.Lumia.Gui.ViewModels
             {
                 new Option("Close")
             });
+        }
+
+        private async Task CleanDownloadedIfNeeded()
+        {
+            if (!settingsService.CleanDownloadedBeforeDeployment)
+            {
+                return;
+            }
+
+            if (fileSystemOperations.DirectoryExists(AppPaths.DownloadedFolderName))
+            {
+                Log.Information("Deleting previously downloaded deployment files");
+                await fileSystemOperations.DeleteDirectory(AppPaths.DownloadedFolderName);
+            }
         }
 
         public CommandWrapper<Unit, Unit> FullInstallWrapper { get; set; }

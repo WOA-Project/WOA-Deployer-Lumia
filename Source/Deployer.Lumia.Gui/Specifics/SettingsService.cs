@@ -23,6 +23,12 @@ namespace Deployer.Lumia.Gui.Specifics
             set => Settings.Default.UseCompactDeployment = value;
         }
 
+        public bool CleanDownloadedBeforeDeployment
+        {
+            get => Settings.Default.CleanDownloadedBeforeDeployment;
+            set => Settings.Default.CleanDownloadedBeforeDeployment = value;
+        }
+
         public void Save()
         {
             Settings.Default.Save();

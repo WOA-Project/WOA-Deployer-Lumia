@@ -14,7 +14,6 @@ namespace Deployer.Lumia.Gui.ViewModels
     public class AdvancedViewModel : ReactiveObject, IBusy
     {
         public StatusViewModel StatusViewModel { get; }
-        private const string DownloadedFolderName = "Downloaded";
         private readonly ISettingsService settingsService;
         private readonly UIServices uiServices;
         private readonly IProviderBasedWindowsDeployer deployer;
@@ -71,7 +70,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         public CommandWrapper<Unit, Unit> BackupCommandWrapper { get; set; }
 
-        public async Task Backup()
+        private async Task Backup()
         {
             uiServices.SaveFilePicker.DefaultExt = "*.wim";
             uiServices.SaveFilePicker.Filter = "Windows Images (.wim)|*.wim";
@@ -164,13 +163,24 @@ namespace Deployer.Lumia.Gui.ViewModels
             }
         }
 
+        public bool CleanDownloadedBeforeDeployment
+        {
+            get => settingsService.CleanDownloadedBeforeDeployment;
+            set
+            {
+                settingsService.CleanDownloadedBeforeDeployment = value;
+                settingsService.Save();
+                this.RaisePropertyChanged(nameof(CleanDownloadedBeforeDeployment));
+            }
+        }
+
         public IObservable<bool> IsBusyObservable { get; }
 
         private async Task DeleteDownloaded(IFileSystemOperations fileSystemOperations)
         {
-            if (fileSystemOperations.DirectoryExists(DownloadedFolderName))
+            if (fileSystemOperations.DirectoryExists(AppPaths.DownloadedFolderName))
             {
-                await fileSystemOperations.DeleteDirectory(DownloadedFolderName);
+                await fileSystemOperations.DeleteDirectory(AppPaths.DownloadedFolderName);
                 await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.DownloadedFolderDeleted);
             }
             else
