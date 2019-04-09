@@ -65,7 +65,7 @@ namespace Deployer.Lumia
         public override async Task<Partition> GetSystemPartition()
         {
             var disk = await GetDeviceDisk();
-            return await disk.GetPartitionByName(PartitionName.System);
+            return await disk.GetRequiredPartitionByName(PartitionName.System);
         }
 
         public async Task ToogleDualBoot(bool isEnabled, bool force = false)

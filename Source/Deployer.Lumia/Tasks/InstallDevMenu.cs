@@ -24,15 +24,24 @@ namespace Deployer.Lumia.Tasks
         public async Task Execute()
         {
             var mainOsVolume = await phone.GetMainOsVolume();
-            var rootDir = mainOsVolume.Root;
-            var bcdPath = Path.Combine(mainOsVolume.Root, PartitionName.EfiEsp.CombineRelativeBcdPath());
-            var bcdInvoker = bcdInvokerFactory.Create(bcdPath);
+            var mainOsPath = mainOsVolume.Root;
+            await CopyDevMenuFiles(mainOsPath);
+            ConfigureBcd(mainOsPath);
+        }
 
-            var destination = Path.Combine(rootDir, "Windows", "System32", "BOOT");
-            await fileSystemOperations.CopyDirectory(Path.Combine(rootFilesPath), destination);
+        private async Task CopyDevMenuFiles(string mainOsPath)
+        {
+            var destinationFolder = Path.Combine(mainOsPath, PartitionName.EfiEsp, "Windows", "System32", "BOOT");
+            await fileSystemOperations.CopyDirectory(Path.Combine(rootFilesPath), destinationFolder);
+        }
+
+        private void ConfigureBcd(string mainOsPath)
+        {
+            var bcdPath = Path.Combine(mainOsPath, PartitionName.EfiEsp.CombineRelativeBcdPath());
+            var bcdInvoker = bcdInvokerFactory.Create(bcdPath);
             var guid = FormattingUtils.GetGuid(bcdInvoker.Invoke(@"/create /d ""Developer Menu"" /application BOOTAPP"));
             bcdInvoker.Invoke($@"/set {{{guid}}} path \Windows\System32\BOOT\developermenu.efi");
-            bcdInvoker.Invoke($@"/set {{{guid}}} device partition={rootDir}");
+            bcdInvoker.Invoke($@"/set {{{guid}}} device partition={mainOsPath}");
             bcdInvoker.Invoke($@"/set {{{guid}}} testsigning on");
             bcdInvoker.Invoke($@"/set {{{guid}}} nointegritychecks on");
             bcdInvoker.Invoke($@"/displayorder {{{guid}}} /addlast");

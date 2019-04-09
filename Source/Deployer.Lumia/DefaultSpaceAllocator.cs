@@ -9,12 +9,13 @@ namespace Deployer.Lumia
     {
         public async Task<bool> TryAllocate(IPhone phone, ByteSize requiredSpace)
         {
-            Log.Verbose("Shrinking Data partition...");
+            Log.Verbose("Trying to shrinking Data partition...");
 
             var dataVolume = await phone.GetDataVolume();
 
             if (dataVolume == null)
             {
+                Log.Verbose("Data partition doesn't exist. Skipping.");
                 return false;
             }
 

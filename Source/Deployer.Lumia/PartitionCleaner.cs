@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,6 +22,12 @@ namespace Deployer.Lumia
             disk = await toClean.GetDeviceDisk();
             dataPartition = await disk.GetPartitionByName(PartitionName.Data);
 
+            if (dataPartition == null)
+            {
+                Log.Verbose("Data partition not found. Skipping cleanup.");
+                return;
+            }
+
             await RemoveAnyPartitionsAfterData();
             await EnsureDataIsLastPartition();
 
@@ -37,18 +42,10 @@ namespace Deployer.Lumia
             using (var c = await GptContextFactory.Create(disk.Number, FileAccess.Read))
             {
                 var last = c.Partitions.Last();
-
-                var asCommon = last.AsCommon(disk);
-                var volume = await asCommon.GetVolume();
-
-                if (volume == null)
-                {
-                    throw new PartitioningException("Cannot get the volume of the last partition to check its label.");
-                }
-
-                if (!string.Equals(volume.Label, PartitionName.Data, StringComparison.InvariantCultureIgnoreCase))
+             
+                if (!string.Equals(last.Name, PartitionName.Data, StringComparison.InvariantCultureIgnoreCase))
                 {                   
-                    throw new PartitioningException($"The label of the last partition should be '{PartitionName.Data}' and it's '{volume.Label}'");
+                    throw new PartitioningException($"The label of the last partition should be '{PartitionName.Data}' and it's '{last.Name}'");
                 }
             }
         }
@@ -56,13 +53,6 @@ namespace Deployer.Lumia
         private async Task RemoveAnyPartitionsAfterData()
         {
             Log.Verbose("Removing all the partitions after the Data partition");
-
-
-            if (dataPartition == null)
-            {
-                Log.Verbose("Data partition not found. The removal of partitions after Data won't be performed");
-                return;
-            }
 
             using (var c = await GptContextFactory.Create(disk.Number, FileAccess.ReadWrite))
             {
