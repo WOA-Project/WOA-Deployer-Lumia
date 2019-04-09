@@ -49,6 +49,24 @@ Then visit our projects website at https://www.woaproject.net/, the one-stop sol
 It's also recommended that you read the [FAQ 📘](https://www.woaproject.net/viewtopic.php?f=16&t=6)
 And, of course, don't hesitate to join our great [Telegram group 📱](https://t.me/joinchat/Ey6mehEPg0Fe4utQNZ9yjA)
 
+# Contribute
+
+This project use submodules for diferent parts of the software. If you want change some code in the `WOA-deployer-Lumia` you should fork this projekt.
+
+If you start working on this project make shure you of clone not only this repository. You need all submodules to open the solution file correct. To do this run the following git command:
+
+```bash
+git clone --recurse-submodules git://github.com/foo/bar.git
+```
+
+If you has worked in the `WOA-Deployer-Lumia` project make shure you update the submodules befor you start again coding. This is done with this command:
+
+```bash
+git submodule update --init --recursive
+```
+
+To merge your changes back create a pullrequest back to this repository. Thank you very much 👍 
+
 # Credits and Acknowledgements
 - [Ben Imbushuo](https://github.com/imbushuo) for his awesome work with UEFI and misc. stuff.
 - [Gustave M.](https://twitter.com/gus33000) for his HUGE load of work on drivers, testing, fixing... For his support, suggestions, for testing and those neat pieces of code!
