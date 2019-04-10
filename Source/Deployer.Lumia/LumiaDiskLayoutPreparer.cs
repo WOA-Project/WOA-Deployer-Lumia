@@ -93,6 +93,7 @@ namespace Deployer.Lumia
             Log.Verbose("Patching boot");
 
             var bootVol = await disk.GetVolumeByPartitionName(PartitionName.System);
+
             await fileOperations.Copy("Core\\Boot\\bootaa64.efi", Path.Combine(bootVol.Root, "EFI", "Boot\\"));
         }
 

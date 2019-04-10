@@ -20,7 +20,7 @@ namespace Deployer.Lumia
             Log.Information("Performing partition cleanup");
 
             disk = await toClean.GetDeviceDisk();
-            dataPartition = await disk.GetPartitionByName(PartitionName.Data);
+            dataPartition = await disk.GetPartition(PartitionName.Data);
 
             if (dataPartition == null)
             {

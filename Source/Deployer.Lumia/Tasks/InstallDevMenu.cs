@@ -38,10 +38,11 @@ namespace Deployer.Lumia.Tasks
         private void ConfigureBcd(string mainOsPath)
         {
             var bcdPath = Path.Combine(mainOsPath, PartitionName.EfiEsp.CombineRelativeBcdPath());
+            var efiEspPath = Path.Combine(mainOsPath, PartitionName.EfiEsp);
             var bcdInvoker = bcdInvokerFactory.Create(bcdPath);
             var guid = FormattingUtils.GetGuid(bcdInvoker.Invoke(@"/create /d ""Developer Menu"" /application BOOTAPP"));
             bcdInvoker.Invoke($@"/set {{{guid}}} path \Windows\System32\BOOT\developermenu.efi");
-            bcdInvoker.Invoke($@"/set {{{guid}}} device partition={mainOsPath}");
+            bcdInvoker.Invoke($@"/set {{{guid}}} device partition={efiEspPath}");
             bcdInvoker.Invoke($@"/set {{{guid}}} testsigning on");
             bcdInvoker.Invoke($@"/set {{{guid}}} nointegritychecks on");
             bcdInvoker.Invoke($@"/displayorder {{{guid}}} /addlast");
