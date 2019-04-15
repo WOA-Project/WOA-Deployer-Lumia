@@ -33,8 +33,18 @@ namespace Deployer.Lumia
             Log.Verbose("{Model} detected", phoneModel);
             var path = dict[phoneModel];
 
-            await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));            
+            await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));
+            await PreparePhoneDiskForSafeRemoval();
         }
+
+        private async Task PreparePhoneDiskForSafeRemoval()
+        {
+            Log.Information("# Preparing phone for safe removal");
+            Log.Information("Please wait...");
+            var disk = await phone.GetDeviceDisk();
+            await disk.Refresh();
+        }
+
         public Task ToggleDualBoot(bool isEnabled)
         {
             return tooling.ToogleDualBoot(isEnabled);

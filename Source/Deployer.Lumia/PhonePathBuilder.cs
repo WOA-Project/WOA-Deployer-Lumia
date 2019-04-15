@@ -28,6 +28,7 @@ namespace Deployer.Lumia
                 },
                 { @"\[Windows\]", async () => (await phone.GetWindowsVolume()).Root },
                 { @"\[MainOS\]", async () => (await phone.GetMainOsVolume()).Root },
+                { @"\[System\]", async () => (await phone.GetSystemVolume()).Root },
             };
 
             foreach (var mapping in mappings)

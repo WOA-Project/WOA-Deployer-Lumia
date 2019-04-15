@@ -7,7 +7,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:gui="clr-namespace:Deployer.Gui;assembly=Deployer.Gui"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800" Padding="8"
+             d:DesignHeight="546" d:DesignWidth="915" Padding="8"
              DataContext="{Binding Source={StaticResource Locator}, Path=AdvancedViewModel}" mah:DialogParticipation.Register="{Binding}">
     <StackPanel>
         <GroupBox Header="Deployment" Padding="20" Margin="0,20,0,0">
@@ -40,7 +40,7 @@
                             <TextBlock Text="Clean 'Downloaded' folder before deployment" TextWrapping="Wrap" />
                         </CheckBox.Content>
                     </CheckBox>
-                    </StackPanel>
+                </StackPanel>
             </UniformGrid>
         </GroupBox>
         <Grid>
@@ -78,14 +78,26 @@
                         <iconPacks:MaterialLight Kind="Delete" Height="30" />
                     </gui:IconButton.Icon>
                 </gui:IconButton>
-                <gui:IconButton HorizontalAlignment="Center" Height="50"
-                                Command="{Binding ForceDualBootWrapper.Command}"
-                                Content="Force Dual Boot"
-                                IsBusy="{Binding ForceDualBootWrapper.IsExecuting}">
-                    <gui:IconButton.Icon>
-                        <iconPacks:PackIconMaterial Kind="CellphoneSettingsVariant" Height="30" />
-                    </gui:IconButton.Icon>
-                </gui:IconButton>
+                <ContentControl>
+                    <UniformGrid Rows="1">
+                        <gui:IconButton HorizontalAlignment="Center" Height="50"
+                                        Command="{Binding ForceDualBootWrapper.Command}"
+                                        Content="Force Dual Boot"
+                                        IsBusy="{Binding ForceDualBootWrapper.IsExecuting}">
+                            <gui:IconButton.Icon>
+                                <iconPacks:PackIconMaterial Kind="CellphoneSettingsVariant" Height="30" />
+                            </gui:IconButton.Icon>
+                        </gui:IconButton>
+                        <gui:IconButton HorizontalAlignment="Center" Height="50"
+                                        Command="{Binding ForceDualBootWrapper.Command}"
+                                        Content="Force Single Boot"
+                                        IsBusy="{Binding ForceDualBootWrapper.IsExecuting}">
+                            <gui:IconButton.Icon>
+                                <iconPacks:PackIconMaterial Kind="CellphoneSettingsVariant" Height="30" />
+                            </gui:IconButton.Icon>
+                        </gui:IconButton>
+                    </UniformGrid>
+                </ContentControl>
             </UniformGrid>
         </GroupBox>
     </StackPanel>
