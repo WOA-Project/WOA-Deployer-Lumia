@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="PartitionCleanerTests.cs" />
     <Compile Include="LumiaDiskLayoutPreparerTests.cs" />
+    <Compile Include="PhoneInfoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

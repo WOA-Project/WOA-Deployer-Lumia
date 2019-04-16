@@ -23,15 +23,17 @@ namespace Deployer.Lumia
 
         public async Task Deploy()
         {
-            var dict = new Dictionary<PhoneModel, string>
+            var dict = new Dictionary<(PhoneModel, Variant), string>
             {
-                {PhoneModel.Talkman, Path.Combine("Scripts", "950.txt")},
-                {PhoneModel.Cityman, Path.Combine("Scripts", "950xl.txt")},
+                {(PhoneModel.Talkman, Variant.SingleSim), Path.Combine("Scripts", "Talkman", "Single-Sim.txt")},
+                {(PhoneModel.Cityman, Variant.SingleSim), Path.Combine("Scripts", "Cityman", "Single-Sim.txt")},
+                {(PhoneModel.Talkman, Variant.DualSim), Path.Combine("Scripts", "Talkman", "Double-Sim.txt")},
+                {(PhoneModel.Cityman, Variant.DualSim), Path.Combine("Scripts", "Cityman", "Double-Sim.txt")},
             };
 
             var phoneModel = await phone.GetModel();
             Log.Verbose("{Model} detected", phoneModel);
-            var path = dict[phoneModel];
+            var path = dict[(phoneModel.Model, phoneModel.Variant)];
 
             await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));
             await PreparePhoneDiskForSafeRemoval();

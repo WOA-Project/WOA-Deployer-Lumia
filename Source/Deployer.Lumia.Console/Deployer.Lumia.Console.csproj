@@ -136,19 +136,5 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Deployer.Lumia\Scripts\950.txt">
-      <Link>Scripts\950.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Deployer.Lumia\Scripts\950xl.txt">
-      <Link>Scripts\950xl.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Deployer.Lumia\Scripts\update-uefi-950xl.txt">
-      <Link>Scripts\update-uefi-950xl.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

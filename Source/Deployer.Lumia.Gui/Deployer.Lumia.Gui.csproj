@@ -247,20 +247,6 @@
     <Resource Include="Assets\windows-only.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Deployer.Lumia\Scripts\950.txt">
-      <Link>Scripts\950.txt</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Deployer.Lumia\Scripts\950xl.txt">
-      <Link>Scripts\950xl.txt</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Deployer.Lumia\Scripts\update-uefi-950xl.txt">
-      <Link>Scripts\update-uefi-950xl.txt</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\heart.png" />
   </ItemGroup>
   <ItemGroup>

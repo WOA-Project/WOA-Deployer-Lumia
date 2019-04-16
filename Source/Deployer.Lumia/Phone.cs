@@ -20,19 +20,18 @@ namespace Deployer.Lumia
         private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
 
         private readonly BcdInvokerFactory bcdInvokerFactory;
-        private readonly IPhoneModelReader phoneModelReader;
-        private Disk deviceDisk;
+        private readonly IPhoneModelInfoReader phoneModelInfoReader;
 
-        public Phone(IDiskApi diskApi, IPhoneModelReader phoneModelReader, BcdInvokerFactory bcdInvokerFactory) :
+        public Phone(IDiskApi diskApi, IPhoneModelInfoReader phoneModelInfoReader, BcdInvokerFactory bcdInvokerFactory) :
             base(diskApi)
         {
-            this.phoneModelReader = phoneModelReader;
+            this.phoneModelInfoReader = phoneModelInfoReader;
             this.bcdInvokerFactory = bcdInvokerFactory;
         }
 
-        public async Task<PhoneModel> GetModel()
+        public async Task<PhoneModelInfo> GetModel()
         {
-            return phoneModelReader.GetPhoneModel((await GetDeviceDisk()).Number);
+            return phoneModelInfoReader.GetPhoneModel((await GetDeviceDisk()).Number);
         }
 
         public async Task<DualBootStatus> GetDualBootStatus()

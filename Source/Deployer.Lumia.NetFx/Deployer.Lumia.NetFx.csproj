@@ -48,18 +48,18 @@
     <Compile Include="Properties\SharedAssemblyInfo.cs" />
     <Compile Include="TestImageService.cs" />
     <Compile Include="TestPhone.cs" />
-    <Compile Include="TestPhoneModelReader.cs" />
+    <Compile Include="TestPhoneModelInfoReader.cs" />
     <Compile Include="Tooling.cs" />
     <Compile Include="ContainerConfigurator.cs" />
-    <Compile Include="PhoneInfo\ByteOperations.cs" />
-    <Compile Include="PhoneInfo\Converter.cs" />
-    <Compile Include="PhoneInfo\PhoneModelReader.cs" />
-    <Compile Include="PhoneInfo\PhoneInfoReader.cs" />
-    <Compile Include="PhoneInfo\QualcommPartition.cs" />
-    <Compile Include="PhoneInfo\QualcommPartitionHeaderType.cs" />
-    <Compile Include="PhoneInfo\Streams\DeviceStream.cs" />
-    <Compile Include="PhoneInfo\Streams\GetDiskSize.cs" />
-    <Compile Include="PhoneInfo\Streams\PartialStream.cs" />
+    <Compile Include="PhoneMetadata\ByteOperations.cs" />
+    <Compile Include="PhoneMetadata\Converter.cs" />
+    <Compile Include="PhoneMetadata\PhoneModelInfoInfoReader.cs" />
+    <Compile Include="PhoneMetadata\PhoneInfoReader.cs" />
+    <Compile Include="PhoneMetadata\QualcommPartition.cs" />
+    <Compile Include="PhoneMetadata\QualcommPartitionHeaderType.cs" />
+    <Compile Include="PhoneMetadata\Streams\DeviceStream.cs" />
+    <Compile Include="PhoneMetadata\Streams\GetDiskSize.cs" />
+    <Compile Include="PhoneMetadata\Streams\PartialStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deployer.Lumia\Deployer.Lumia.csproj">

@@ -46,7 +46,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             DeleteDownloadedWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), uiServices.Dialog);
             ForceDualBootWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(ForceDualBoot), uiServices.Dialog);
-            ForceDisableDualBootWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(ForceDisableDualBoot), uiServices.Dialog);
+            ForceSingleBootWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(ForceDisableDualBoot), uiServices.Dialog);
 
             BackupCommandWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Backup), uiServices.Dialog);
             RestoreCommandWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Restore), uiServices.Dialog);
@@ -57,7 +57,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 BackupCommandWrapper.Command.IsExecuting,
                 RestoreCommandWrapper.Command.IsExecuting,
                 ForceDualBootWrapper.Command.IsExecuting,
-                ForceDisableDualBootWrapper.Command.IsExecuting,
+                ForceSingleBootWrapper.Command.IsExecuting,
             });
         }
 
@@ -201,7 +201,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         public CommandWrapper<Unit, Unit> ForceDualBootWrapper { get; }
 
-        public CommandWrapper<Unit, Unit> ForceDisableDualBootWrapper { get; }
+        public CommandWrapper<Unit, Unit> ForceSingleBootWrapper { get; }
 
     }
 }

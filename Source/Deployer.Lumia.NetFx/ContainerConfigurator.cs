@@ -6,7 +6,7 @@ using System.Reflection;
 using Deployer.DevOpsBuildClient;
 using Deployer.Execution;
 using Deployer.FileSystem;
-using Deployer.Lumia.NetFx.PhoneInfo;
+using Deployer.Lumia.NetFx.PhoneMetadata;
 using Deployer.NetFx;
 using Deployer.Services;
 using Deployer.Tasks;
@@ -68,7 +68,7 @@ namespace Deployer.Lumia.NetFx
 
         private static IExportRegistrationBlock WithRealPhone(this IExportRegistrationBlock block)
         {
-            block.Export<PhoneModelReader>().As<IPhoneModelReader>();
+            block.Export<PhoneModelInfoInfoReader>().As<IPhoneModelInfoReader>();
             block.Export<Phone>().As<IPhone>().As<IDevice>();
             block.Export<DismImageService>().As<IWindowsImageService>();
             return block;
@@ -76,7 +76,7 @@ namespace Deployer.Lumia.NetFx
 
         private static IExportRegistrationBlock WithTestingPhone(this IExportRegistrationBlock block)
         {
-            block.Export<TestPhoneModelReader>().As<IPhoneModelReader>();
+            block.Export<TestPhoneModelInfoReader>().As<IPhoneModelInfoReader>();
             block.Export<TestPhone>().As<IPhone>().As<IDevice>();
             block.Export<TestImageService>().As<IWindowsImageService>();
 

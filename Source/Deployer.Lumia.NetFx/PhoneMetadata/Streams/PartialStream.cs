@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Deployer.Lumia.NetFx.PhoneInfo.Streams
+namespace Deployer.Lumia.NetFx.PhoneMetadata.Streams
 {
     internal class PartialStream : Stream
     {

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 
-namespace Deployer.Lumia.NetFx.PhoneInfo.Streams
+namespace Deployer.Lumia.NetFx.PhoneMetadata.Streams
 {
     using LPSECURITY_ATTRIBUTES = IntPtr;
     using LPOVERLAPPED = IntPtr;
