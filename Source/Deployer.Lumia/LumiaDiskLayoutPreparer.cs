@@ -43,8 +43,7 @@ namespace Deployer.Lumia
                 await RemoveExistingPartitions();
                 await AllocateSpace(optionsProvider.Options.SizeReservedForWindows);
                 await CreatePartitions();
-                await FormatPartitions();
-                await PatchBoot();
+                await FormatPartitions();                
             }
             catch (Exception e)
             {
@@ -86,16 +85,6 @@ namespace Deployer.Lumia
         private async Task RemoveExistingPartitions()
         {
             await cleaner.Clean(phone);
-        }
-
-        private async Task PatchBoot()
-        {
-            Log.Verbose("Patching boot");
-
-            var bootVol = await disk.GetVolumeByPartitionName(PartitionName.System);
-            Log.Debug("Boot volume path={Path}", bootVol.Root);
-
-            await fileOperations.Copy("Core\\Boot\\bootaa64.efi", Path.Combine(bootVol.Root, "EFI", "Boot\\"));
         }
 
         private async Task FormatPartitions()
