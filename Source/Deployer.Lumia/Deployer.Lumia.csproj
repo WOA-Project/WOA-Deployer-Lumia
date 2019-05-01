@@ -28,16 +28,16 @@
     <None Update="Core\Developer Menu\ui\boot.ums.waiting.bmpx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Scripts\Cityman\Double-Sim.txt">
+    <None Update="Scripts\Cityman\DualSim.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Scripts\Talkman\Double-Sim.txt">
+    <None Update="Scripts\Talkman\DualSim.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Scripts\Talkman\Single-Sim.txt">
+    <None Update="Scripts\Talkman\SingleSim.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Scripts\Cityman\Single-Sim.txt">
+    <None Update="Scripts\Cityman\SingleSim.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

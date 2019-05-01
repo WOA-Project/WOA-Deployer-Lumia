@@ -1,0 +1,18 @@
+﻿# Downloading resources
+FetchAzureDevOpsArtifact "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
+FetchGitHubLatestReleaseAsset "https://github.com/WOA-Project/Lumia950XLPkg" "MSM8994.UEFI.Lumia.950.XL.zip"
+FetchGitHubBranch "https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers" "1905"
+# Configuring device
+Copy "Downloaded\MSM8994.UEFI.Lumia.950.XL\ELF\UEFI.elf" "[MainOS]\EFIESP\"
+Copy "Downloaded\UEFI Loader for 8992 and 8994\ARM\Debug\BootShim.efi" "[MainOS]\EFIESP\EFI\boot\"
+ConfigureBCD
+InstallDevMenu "Core\Developer Menu\"
+# Deploying Windows
+DeployWindows
+CopyDirectory "[MainOS]\DPP" "[Windows]\DPP"
+# Injecting Drivers
+InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\msm8994"
+InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\Device Specifics\MMO"
+InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\Device Specifics\Cityman\Common"
+InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\Device Specifics\Cityman\SingleSIM"
+DisplayMarkdown "Downloaded\MSM8994-8992-NT-ARM64-Drivers\README.md"
