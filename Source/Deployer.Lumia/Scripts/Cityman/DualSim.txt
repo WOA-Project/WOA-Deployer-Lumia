@@ -9,7 +9,6 @@ ConfigureBCD
 InstallDevMenu "Core\Developer Menu\"
 # Deploying Windows
 DeployWindows
-Copy "Core\Boot\bootaa64.efi" "[System]\EFI\Boot\"
 CopyDirectory "[MainOS]\DPP" "[Windows]\DPP"
 # Injecting Drivers
 InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\msm8994"
