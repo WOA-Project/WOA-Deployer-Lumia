@@ -15,6 +15,7 @@ namespace Deployer.Lumia
     {
         private const string WindowsSystem32BootWinloadEfi = @"windows\system32\boot\winload.efi";
         private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
+        private static readonly Guid WoaBcdGuid = Guid.Parse("7619dcca-fafe-11d9-b411-000476eba25f");
 
         private static readonly ByteSize MinimumPhoneDiskSize = ByteSize.FromGigaBytes(28);
         private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
@@ -176,7 +177,7 @@ namespace Deployer.Lumia
             var containsWinLoad = result.Contains(WindowsSystem32BootWinloadEfi, StringComparison.CurrentCultureIgnoreCase);
             var containsWinPhoneBcdGuid = result.Contains(WinPhoneBcdGuid.ToString(), StringComparison.InvariantCultureIgnoreCase);
 
-            return containsWinLoad ||containsWinPhoneBcdGuid;
+            return containsWinLoad && containsWinPhoneBcdGuid;
         }
 
         private async Task EnableDualBoot()
@@ -188,7 +189,7 @@ namespace Deployer.Lumia
 
             var invoker = await GetBcdInvoker();
             invoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} description ""Windows 10 Phone""");
-            invoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /addfirst");
+            invoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} path ""\windows\system32\boot\winload.efi""");
             invoker.Invoke($@"/default {{{WinPhoneBcdGuid}}}");
 
             Log.Verbose("Dual Boot enabled");
@@ -202,8 +203,9 @@ namespace Deployer.Lumia
             await systemPartition.SetGptType(PartitionType.Esp);
 
             var invoker = await GetBcdInvoker();
-            var result = invoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /remove");
-
+            invoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} description ""Dummy, please ignore""");
+            invoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} path ""dummy""");
+            invoker.Invoke($@"/default {{{WoaBcdGuid}}}");
             Log.Verbose("Dual Boot disabled");
         }
 
