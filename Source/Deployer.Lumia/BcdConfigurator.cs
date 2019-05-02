@@ -19,14 +19,17 @@ namespace Deployer.Lumia
         public void SetupBcd()
         {
             var bootShimEntry = CreateBootShim();
+            var dummyEntry = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");;
             SetupBootShim(bootShimEntry);
+            SetupDummyLoader(dummyEntry);
             SetupBootMgr();
-            SetDisplayOptions(bootShimEntry);
+            SetDisplayOptions(bootShimEntry, dummyEntry);
         }
 
-        private void SetDisplayOptions(Guid entry)
+        private void SetDisplayOptions(Guid entry, Guid dummy)
         {
             invoker.Invoke($@"/displayorder {{{entry}}}");
+            invoker.Invoke($@"/displayorder {{{dummy}}} /addfirst");
             invoker.Invoke($@"/default {{{entry}}}");
             invoker.Invoke($@"/timeout 30");
         }
@@ -38,7 +41,13 @@ namespace Deployer.Lumia
             invoker.Invoke($@"/set {{{guid}}} testsigning on");
             invoker.Invoke($@"/set {{{guid}}} nointegritychecks on");
         }
-
+        
+        private void SetupDummyLoader(Guid guid)
+        {
+            invoker.Invoke($@"/set {{{guid}}} path dummy");
+            invoker.Invoke($@"/set {{{guid}}} description ""Dummy, please ignore""");
+        }
+        
         private void SetupBootMgr()
         {
             invoker.Invoke($@"/set {{bootmgr}} displaybootmenu on");
