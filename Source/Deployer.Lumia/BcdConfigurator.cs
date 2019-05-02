@@ -59,7 +59,7 @@ namespace Deployer.Lumia
         
         private Guid CreateBootShim()
         {
-            var invokeText = invoker.Invoke(@"/create /d ""Windows 10"" /application BOOTAPP");
+            var invokeText = invoker.Invoke($@"/create {{7619dcca-fafe-11d9-b411-000476eba25f}} /d ""Windows 10"" /application BOOTAPP");
             return FormattingUtils.GetGuid(invokeText);
         }
     }
