@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Deployer.Lumia.NetFx.PhoneInfo.Streams;
+using Deployer.Lumia.NetFx.PhoneMetadata.Streams;
 using DiscUtils.Complete;
 using DiscUtils.Fat;
 using Serilog;
 
-namespace Deployer.Lumia.NetFx.PhoneInfo
+namespace Deployer.Lumia.NetFx.PhoneMetadata
 {
     public class PhoneInfoReader : IPhoneInfoReader
     {
-        public Lumia.PhoneInfo GetPhoneInfo(uint diskNumber)
+        public PhoneInfo GetPhoneInfo(uint diskNumber)
         {
             var time = DateTime.Now;
 
@@ -168,7 +168,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
 
             Log.Debug(BitConverter.ToString(part.RootKeyHash));
 
-            return new Lumia.PhoneInfo(ddp, plat, part.RootKeyHash);
+            return new PhoneInfo(ddp, plat, part.RootKeyHash);
         }
 
         private static DppInfo ParseDpp(string str)

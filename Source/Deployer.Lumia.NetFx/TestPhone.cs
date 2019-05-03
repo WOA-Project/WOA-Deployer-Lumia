@@ -8,7 +8,7 @@ namespace Deployer.Lumia.NetFx
 {
     public class TestPhone : Phone
     {
-        public TestPhone(IDiskApi diskApi, IPhoneModelReader phoneModelReader, BcdInvokerFactory bcdInvokerFactory) : base(diskApi, phoneModelReader, bcdInvokerFactory)
+        public TestPhone(IDiskApi diskApi, IPhoneModelInfoReader phoneModelInfoReader, BcdInvokerFactory bcdInvokerFactory) : base(diskApi, phoneModelInfoReader, bcdInvokerFactory)
         {
         }
 
@@ -19,7 +19,7 @@ namespace Deployer.Lumia.NetFx
             {
                 if (true)
                 {
-                    var mainOs = await disk.GetPartition(PartitionName.MainOs);
+                    var mainOs = await disk.GetRequiredPartition(PartitionName.MainOs);
                     if (mainOs != null)
                     {
                         return disk;

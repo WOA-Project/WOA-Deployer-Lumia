@@ -183,15 +183,13 @@ namespace Deployer.Lumia.Gui {
         
         /// <summary>
         ///   Looks up a localized string similar to # Done!
-        ///
         ///Now, follow these directions:
         ///
         ///1. **Eject the phone safely** to avoid data corruption issues
         ///2. Reboot the phone by pressing the **[Power]** and holding it until it vibrates
         ///3. The phone will reboot
-        ///4. Inside the Boot Menu, choose **&quot;Windows 10&quot;** by using the **[Camera]** button to start the Windows 10 ARM Setup
-        ///  - If you don&apos;t see any boot menu and the screen is completely black, press the **[Camera]** button to continue. It&apos;s a known issue. 
-        ///5. **Wait patiently** until the Windows Setu [rest of string was truncated]&quot;;.
+        ///4. Inside the Boot Menu, choose **&quot;Windows 10&quot;** by using the **[Camera]** button to start the Windows 10 ARM Setup  
+        ///5. **Wait patiently** until the Windows Setup starts. While you wait, the screen will likely become completely black for some minutes. Don&apos;t worry, let it continue. If touchscreen  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WindowsDeployedSuccessfully {
             get {

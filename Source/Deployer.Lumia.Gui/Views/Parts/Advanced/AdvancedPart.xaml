@@ -6,26 +6,15 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:gui="clr-namespace:Deployer.Gui;assembly=Deployer.Gui"
+             xmlns:advanced="clr-namespace:Deployer.Lumia.Gui.Views.Parts.Advanced"
              mc:Ignorable="d"
-             d:DesignHeight="546" d:DesignWidth="915" Padding="8"
+             d:DesignHeight="546" d:DesignWidth="781" Padding="8"
              DataContext="{Binding Source={StaticResource Locator}, Path=AdvancedViewModel}" mah:DialogParticipation.Register="{Binding}">
-    <StackPanel>
-        <GroupBox Header="Deployment" Padding="20" Margin="0,20,0,0">
-            <UniformGrid Rows="1">
-                <HeaderedContentControl
-                    HorizontalContentAlignment="Stretch">
-                    <HeaderedContentControl.Header>
-                        <TextBlock TextWrapping="Wrap">Size to reserve for Windows (taken from the Data partition as needed)</TextBlock>
-                    </HeaderedContentControl.Header>
-                    <DockPanel Margin="10">
-                        <TextBlock Padding="10" MinWidth="80" Text="{Binding SizeReservedForWindows}"
-                                   DockPanel.Dock="Right" />
-                        <Slider Minimum="10" IsSnapToTickEnabled="True" Maximum="24" SmallChange="0.5" LargeChange="1" TickFrequency="0.25"
-                                Value="{Binding GbsReservedForWindows, Mode=TwoWay}"
-                                Height="30" />
-                    </DockPanel>
-                </HeaderedContentControl>
-                <StackPanel Margin="20 0 0 0">
+    
+    <StackPanel>       
+        <GroupBox Header="Deployment" Padding="10" Margin="0,20,0,0">
+            <DockPanel>                
+                <StackPanel DockPanel.Dock="Left" >
                     <CheckBox IsChecked="{Binding UseCompactDeployment, Mode=TwoWay}" 
                               Margin="10"
                               ToolTip="Checking this will reduce the size of the Windows installation. However, the deployment process will take longer. It will help you save space on your device">
@@ -41,8 +30,18 @@
                         </CheckBox.Content>
                     </CheckBox>
                 </StackPanel>
-            </UniformGrid>
+                <GroupBox Header="Space Allocation" Padding="10"  VerticalAlignment="Stretch">
+                    <GroupBox.Style>
+                        <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource {x:Type GroupBox}}">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Background" Value="Transparent"></Setter>
+                        </Style>
+                    </GroupBox.Style>
+                    <advanced:SpaceAllocationPart />
+                </GroupBox>
+            </DockPanel>
         </GroupBox>
+        
         <Grid>
             <GroupBox Header="WOA Partition Maintenance" Padding="20" Margin="0,20,0,0">
                 <UniformGrid Rows="1">
@@ -68,37 +67,45 @@
                                   IsIndeterminate="{Binding StatusViewModel.IsProgressIndeterminate}">
             </mah:MetroProgressBar>
         </Grid>
-        <GroupBox Header="Misc" Padding="20" Margin="0,20,0,0">
-            <UniformGrid Rows="1">
+        <GroupBox Header="Misc" Padding="10" Margin="0 20 0 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
                 <gui:IconButton HorizontalAlignment="Center" Height="50"
                                 Command="{Binding DeleteDownloadedWrapper.Command}"
-                                Content="Delete 'Downloaded' folder"
+                                Content="Delete 'Downloaded' folder" 
                                 IsBusy="{Binding DeleteDownloadedWrapper.IsExecuting}">
                     <gui:IconButton.Icon>
                         <iconPacks:MaterialLight Kind="Delete" Height="30" />
                     </gui:IconButton.Icon>
                 </gui:IconButton>
-                <ContentControl>
-                    <UniformGrid Rows="1">
-                        <gui:IconButton HorizontalAlignment="Center" Height="50"
-                                        Command="{Binding ForceDualBootWrapper.Command}"
-                                        Content="Force Dual Boot"
-                                        IsBusy="{Binding ForceDualBootWrapper.IsExecuting}">
-                            <gui:IconButton.Icon>
-                                <iconPacks:PackIconMaterial Kind="CellphoneSettingsVariant" Height="30" />
-                            </gui:IconButton.Icon>
-                        </gui:IconButton>
-                        <gui:IconButton HorizontalAlignment="Center" Height="50"
-                                        Command="{Binding ForceDualBootWrapper.Command}"
-                                        Content="Force Single Boot"
-                                        IsBusy="{Binding ForceDualBootWrapper.IsExecuting}">
-                            <gui:IconButton.Icon>
-                                <iconPacks:PackIconMaterial Kind="CellphoneSettingsVariant" Height="30" />
-                            </gui:IconButton.Icon>
-                        </gui:IconButton>
-                    </UniformGrid>
-                </ContentControl>
-            </UniformGrid>
+                <WrapPanel Grid.Column="1" HorizontalAlignment="Center"  Margin="15 0 0 0">
+                    <gui:IconButton Height="50"
+                                    Margin="4,0"
+                                    Command="{Binding ForceDualBootWrapper.Command}"
+                                    IsBusy="{Binding ForceDualBootWrapper.IsExecuting}">
+                        <gui:IconButton.Content>
+                            <TextBlock>Force Dual Boot</TextBlock>
+                        </gui:IconButton.Content>
+                        <gui:IconButton.Icon>
+                            <iconPacks:PackIconMaterial Kind="Cogs" Height="30" />
+                        </gui:IconButton.Icon>
+                    </gui:IconButton>
+                    <gui:IconButton HorizontalAlignment="Center" Height="50"
+                                    Margin="4,0"
+                                    Command="{Binding ForceSingleBootWrapper.Command}"
+                                    IsBusy="{Binding ForceSingleBootWrapper.IsExecuting}">
+                        <gui:IconButton.Content>
+                            <TextBlock TextWrapping="Wrap">Force Single Boot</TextBlock>
+                        </gui:IconButton.Content>
+                        <gui:IconButton.Icon>
+                            <iconPacks:PackIconFontAwesome Kind="CogSolid" Height="30" />
+                        </gui:IconButton.Icon>
+                    </gui:IconButton>
+                </WrapPanel>
+            </Grid>
         </GroupBox>
     </StackPanel>
 </UserControl>

@@ -7,7 +7,7 @@ namespace Deployer.Lumia.NetFx
     public class TestImageService : IWindowsImageService
     {
         public Task ApplyImage(Volume windowsVolume, string imagePath, int imageIndex = 1, bool useCompact = false,
-            IDownloadProgress progressObserver = null)
+            IOperationProgress progressObserver = null)
         {
             return Task.Delay(5000);
         }
@@ -22,7 +22,7 @@ namespace Deployer.Lumia.NetFx
             return Task.Delay(5000);
         }
 
-        public Task CaptureImage(Volume windowsVolume, string destination, IDownloadProgress progressObserver = null)
+        public Task CaptureImage(Volume windowsVolume, string destination, IOperationProgress progressObserver = null)
         {
             return Task.Delay(5000);
         }

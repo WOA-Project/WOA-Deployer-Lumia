@@ -5,9 +5,11 @@ using Deployer.Gui.ViewModels;
 using Deployer.Lumia.Gui.Specifics;
 using Deployer.Lumia.Gui.ViewModels;
 using Deployer.Lumia.NetFx;
+using Deployer.NetFx;
 using Deployer.Tasks;
 using Grace.DependencyInjection;
 using MahApps.Metro.Controls.Dialogs;
+using ReactiveUI;
 using Serilog;
 using Serilog.Events;
 
@@ -29,27 +31,26 @@ namespace Deployer.Lumia.Gui
 
             Log.Verbose($"Started {AppProperties.AppTitle}");
 
-            var optionsProvider = new WindowsDeploymentOptionsProvider();
-
             container.Configure(x =>
             {
-                x.Configure(optionsProvider);
-                x.ExportFactory(() => new DownloadProgress())
-                    .As<IDownloadProgress>()
+                x.Configure();
+                x.ExportFactory(() => new OperationProgress()).As<IOperationProgress>().Lifestyle.Singleton();
+                x.ExportFactory(() => logEvents).As<IObservable<LogEvent>>().Lifestyle.Singleton();
+                x.Export<WimPickViewModel>().As<WimPickViewModel>().Lifestyle.Singleton();
+                x.Export<UIServices>().Lifestyle.Singleton();
+                x.Export<Dialog>().ByInterfaces().Lifestyle.Singleton();
+                x.Export<OpenFilePicker>().As<IOpenFilePicker>().Lifestyle.Singleton();
+                x.Export<SaveFilePicker>().As<ISaveFilePicker>().Lifestyle.Singleton();
+                x.Export<SettingsService>().As<ISettingsService>().Lifestyle.Singleton();
+                x.Export<SaveFilePicker>().As<ISaveFilePicker>().Lifestyle.Singleton();
+                x.Export<ViewService>().As<IViewService>().Lifestyle.Singleton();
+                x.ExportFactory(() => DialogCoordinator.Instance).As<IDialogCoordinator>().Lifestyle.Singleton();     
+                x.ExportAssemblies(Assemblies.AppDomainAssemblies)
+                    .Where(y => typeof(ISection).IsAssignableFrom(y))
+                    .ByInterface<ISection>()
+                    .ByType()
+                    .ExportAttributedTypes()
                     .Lifestyle.Singleton();
-                x.ExportFactory(() => logEvents).As<IObservable<LogEvent>>();
-                x.Export<WimPickViewModel>().ByInterfaces().As<WimPickViewModel>().Lifestyle.Singleton();
-                x.Export<DualBootViewModel>().ByInterfaces().As<DualBootViewModel>().Lifestyle.Singleton();
-                x.Export<AdvancedViewModel>().ByInterfaces().As<AdvancedViewModel>().Lifestyle.Singleton();
-                x.Export<DeploymentViewModel>().ByInterfaces().As<DeploymentViewModel>().Lifestyle.Singleton();
-                x.Export<UIServices>();
-                x.Export<Dialog>().ByInterfaces();
-                x.Export<OpenFilePicker>().As<IOpenFilePicker>();
-                x.Export<SaveFilePicker>().As<ISaveFilePicker>();
-                x.Export<SettingsService>().As<ISettingsService>();
-                x.Export<SaveFilePicker>().As<ISaveFilePicker>();
-                x.Export<ViewService>().As<IViewService>();
-                x.ExportFactory(() => DialogCoordinator.Instance).As<IDialogCoordinator>();                
             });
 
             return container;

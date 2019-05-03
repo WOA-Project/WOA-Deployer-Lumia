@@ -9,5 +9,6 @@
         public const string Reserved = "MSR";
         public const string Data = "Data";
         public const string Recovery = "Recovery";
+        public const string Dpp = "DPP";
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ByteSizeLib;
-using Deployer.Exceptions;
 using Deployer.FileSystem;
 using Deployer.FileSystem.Gpt;
 using Deployer.Tasks;
@@ -12,26 +9,19 @@ using Serilog;
 
 namespace Deployer.Lumia
 {
-    public class LumiaDiskLayoutPreparer : IDiskLayoutPreparer
+    public abstract class LumiaDiskLayoutPreparer : IDiskLayoutPreparer
     {
-        private readonly IWindowsOptionsProvider optionsProvider;
-        private readonly IFileSystemOperations fileOperations;
-        private readonly IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators;
+        private readonly IDeploymentContext context;
         private readonly IPartitionCleaner cleaner;
-        private readonly IPhone phone;
         private Disk disk;
 
         private readonly ByteSize reservedSize = ByteSize.FromMegaBytes(16);
         private readonly ByteSize systemSize = ByteSize.FromMegaBytes(100);
 
-        public LumiaDiskLayoutPreparer(IWindowsOptionsProvider optionsProvider, IFileSystemOperations fileOperations,
-            IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IPartitionCleaner cleaner, IPhone phone)
+        protected LumiaDiskLayoutPreparer(IDeploymentContext context, IPartitionCleaner cleaner)
         {
-            this.optionsProvider = optionsProvider;
-            this.fileOperations = fileOperations;
-            this.spaceAllocators = spaceAllocators;
+            this.context = context;
             this.cleaner = cleaner;
-            this.phone = phone;
         }
 
         public async Task Prepare(Disk diskToPrepare)
@@ -41,9 +31,9 @@ namespace Deployer.Lumia
             try
             {
                 await RemoveExistingPartitions();
-                await AllocateSpace(optionsProvider.Options.SizeReservedForWindows);
+                await AllocateSpace();
                 await CreatePartitions();
-                await FormatPartitions();                
+                await FormatPartitions();
             }
             catch (Exception e)
             {
@@ -52,39 +42,13 @@ namespace Deployer.Lumia
             }
         }
 
-        private async Task AllocateSpace(ByteSize requiredSize)
-        {
-            Log.Information("Verifying available space");
-            Log.Verbose("Verifying the available space...");
-            Log.Verbose("We will need {Size} of free space for Windows", requiredSize);
+        protected abstract Task AllocateSpace();
 
-            var hasEnoughSpace = await phone.HasEnoughSpace(requiredSize);
-            if (!hasEnoughSpace)
-            {
-                Log.Verbose("There's not enough space in the phone. We will try to allocate it automatically");
-
-                var success = await spaceAllocators.ToObservable()
-                    .Select(x => Observable.FromAsync(() => x.TryAllocate(phone, requiredSize)))
-                    .Merge(1)
-                    .Any(successful => successful);
-
-                if (!success)
-                {
-                    Log.Verbose("Allocation attempt failed");
-                    throw new NotEnoughSpaceException($"Could not allocate {requiredSize} on the phone. Please, try to allocate the necessary space manually and retry.");
-                }
-                
-                Log.Verbose("Space allocated correctly");
-            }
-            else
-            {
-                Log.Verbose("We have enough available space to deploy Windows");
-            }
-        }
+        protected IPhone Phone => (IPhone) context.Device;
 
         private async Task RemoveExistingPartitions()
         {
-            await cleaner.Clean(phone);
+            await cleaner.Clean(Phone);
         }
 
         private async Task FormatPartitions()
@@ -94,7 +58,7 @@ namespace Deployer.Lumia
             using (var transaction = await GptContextFactory.Create(disk.Number, FileAccess.Read))
             {
                 await transaction.Get(PartitionName.System).AsCommon(disk).Format(FileSystemFormat.Fat32, PartitionName.System);
-                await transaction.Get(PartitionName.Windows).AsCommon(disk).Format(FileSystemFormat.Ntfs, PartitionName.Windows);                
+                await transaction.Get(PartitionName.Windows).AsCommon(disk).Format(FileSystemFormat.Ntfs, PartitionName.Windows);
             }
 
             await disk.Refresh();

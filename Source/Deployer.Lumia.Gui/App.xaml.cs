@@ -1,8 +1,6 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using Deployer.Gui;
-using Deployer.Lumia.Console;
 using Deployer.Lumia.Gui.Views;
 
 namespace Deployer.Lumia.Gui
@@ -38,8 +36,8 @@ namespace Deployer.Lumia.Gui
 
         private void LaunchConsole(string[] args)
         {
-            ConsoleEmbedder.ExecuteInsideConsole(() => Task.Run(() => Program.Main(args)).Wait());
-            Shutdown();
+            //ConsoleEmbedder.ExecuteInsideConsole(() => Task.Run(() => Program.Main(args)).Wait());
+            //Shutdown();
         }
     }
 }

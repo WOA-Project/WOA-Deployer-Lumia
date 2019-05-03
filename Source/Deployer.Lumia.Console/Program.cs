@@ -17,7 +17,7 @@ namespace Deployer.Lumia.Console
         {
             ConfigureLogger();
 
-            var progress = new DownloadProgress();
+            var progress = new OperationProgress();
             using (new ConsoleDisplayUpdater(progress))
             {
                 try
@@ -35,7 +35,7 @@ namespace Deployer.Lumia.Console
             }
         }
         
-        private static async Task Execute(IEnumerable<string> args, IDownloadProgress progress)
+        private static async Task Execute(IEnumerable<string> args, IOperationProgress progress)
         {
             var optionsProvider = new WindowsDeploymentOptionsProvider();
             
@@ -66,7 +66,7 @@ namespace Deployer.Lumia.Console
                     HandleErrors);
         }
 
-        private static IWoaDeployer GetDeployer(WindowsDeploymentOptionsProvider op, IDownloadProgress progress)
+        private static IWoaDeployer GetDeployer(WindowsDeploymentOptionsProvider op, IOperationProgress progress)
         {
             var container = CompositionRoot.CreateContainer(op, progress);
 

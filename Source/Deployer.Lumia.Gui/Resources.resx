@@ -119,14 +119,12 @@
   </resheader>
   <data name="WindowsDeployedSuccessfully" xml:space="preserve">
     <value># Done!
-
 Now, follow these directions:
 
 1. **Eject the phone safely** to avoid data corruption issues
 2. Reboot the phone by pressing the **[Power]** and holding it until it vibrates
 3. The phone will reboot
-4. Inside the Boot Menu, choose **"Windows 10"** by using the **[Camera]** button to start the Windows 10 ARM Setup
-  - If you don't see any boot menu and the screen is completely black, press the **[Camera]** button to continue. It's a known issue. 
+4. Inside the Boot Menu, choose **"Windows 10"** by using the **[Camera]** button to start the Windows 10 ARM Setup  
 5. **Wait patiently** until the Windows Setup starts. While you wait, the screen will likely become completely black for some minutes. Don't worry, let it continue. If touchscreen doesn't work, reboot until it works (known issue).
   - If a red warning screen pops up during the installation related to unsigned drivers, choose to **install** them.
 7. Once the Windows Setup is loaded, proceed as usual.
@@ -145,13 +143,13 @@ By clicking "OK" you accept the aforementioned risks.</value>
   </data>
   <data name="TermsOfUseTitle" xml:space="preserve">
     <value>Disclaimer Notice and Terms of Use</value>
-  </data>  
+  </data>
   <data name="CannotInstallGpu" xml:space="preserve">
     <value>Unable to install the GPU. Please, ensure that WOA is installed.</value>
   </data>
   <data name="DeploymentFinished" xml:space="preserve">
     <value>Finished</value>
-  </data>     
+  </data>
   <data name="DualBootEnabled" xml:space="preserve">
     <value>Dual Boot Enabled!</value>
   </data>

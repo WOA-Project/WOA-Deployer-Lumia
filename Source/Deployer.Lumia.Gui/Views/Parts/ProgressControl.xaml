@@ -15,13 +15,16 @@
                 </Grid.ColumnDefinitions>
                 <mah:MetroProgressBar Minimum="0"
                                       Width="300"
-                                      Height="20"
+                                      Height="25"
                                       Maximum="1"
                                       Margin="0"
-                                      ToolTip="{Binding ElementName=PercentProgressBar, Path=Value, StringFormat={}{0:P0}}"
                                       IsIndeterminate="{Binding IsProgressIndeterminate}"
-                                      Value="{Binding Progress, Mode=OneWay}" x:Name="PercentProgressBar"
-                                      VerticalAlignment="Stretch" />
+                                      Value="{Binding Progress, Mode=OneWay}"
+                                      VerticalAlignment="Stretch">
+                    <mah:MetroProgressBar.ToolTip>
+                        <TextBlock Text="{Binding Path=Progress, StringFormat='P0'}" />
+                    </mah:MetroProgressBar.ToolTip>
+                </mah:MetroProgressBar>
             </Grid>
         </Border>
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Deployer.Lumia.NetFx.PhoneInfo
+namespace Deployer.Lumia.NetFx.PhoneMetadata
 {
     public static class Converter
     {

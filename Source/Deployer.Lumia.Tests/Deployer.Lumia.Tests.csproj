@@ -43,11 +43,17 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DependencyChecker.cs" />
     <Compile Include="PartitionCleanerTests.cs" />
     <Compile Include="LumiaDiskLayoutPreparerTests.cs" />
+    <Compile Include="PhoneInfoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Deployer.Lumia.Gui\Deployer.Lumia.Gui.csproj">
+      <Project>{76DCD56D-98E7-4EA1-B04B-FA063B953FD7}</Project>
+      <Name>Deployer.Lumia.Gui</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Deployer.Lumia.NetFx\Deployer.Lumia.NetFx.csproj">
       <Project>{CFA21504-2CFD-468B-8458-BD9BD05BCF19}</Project>
       <Name>Deployer.Lumia.NetFx</Name>

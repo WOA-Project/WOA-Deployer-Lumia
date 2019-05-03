@@ -24,14 +24,9 @@
                 </TextBlock>
             </StackPanel>
 
-            <Grid Grid.Row="1">
+            <UniformGrid Grid.Row="1" Columns="1">
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <parts:WimOptionsPart Margin="8,10,0,10" />
+                <parts:WimOptionsPart Margin="10,0" />
 
                 <gui:IconButton Grid.Row="1" VerticalAlignment="Center" Command="{Binding FullInstallWrapper.Command}"
                                 IsBusy="{Binding FullInstallWrapper.IsExecuting}" Content="Deploy"
@@ -44,10 +39,8 @@
                     </gui:IconButton.Icon>
                 </gui:IconButton>
 
-            </Grid>
+            </UniformGrid>
         </Grid>
-        <Grid Visibility="{Binding FullInstallWrapper.IsExecuting, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <parts:ProgressPart VerticalAlignment="Center" />
-        </Grid>
+       
     </Grid>
 </UserControl>

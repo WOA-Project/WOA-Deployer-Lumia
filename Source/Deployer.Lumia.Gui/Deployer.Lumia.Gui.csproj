@@ -68,6 +68,10 @@
     </Compile>
     <Compile Include="AppProperties.cs" />
     <Compile Include="CompositionRoot.cs" />
+    <Compile Include="DiskPreparerSelector.cs" />
+    <Compile Include="GbsToByteSizeConverter.cs" />
+    <Compile Include="MetaConverter.cs" />
+    <Compile Include="SectionConverter.cs" />
     <Compile Include="ViewModels\AdvancedViewModel.cs" />
     <Compile Include="ViewModels\DualBootViewModel.cs" />
     <Compile Include="ViewModels\DeploymentViewModel.cs" />
@@ -93,11 +97,16 @@
     <Compile Include="Locator.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\AppPaths.cs" />
+    <Compile Include="ViewModels\DiskLayoutPreparerViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Parts\AdvancedPart.xaml">
+    <Page Include="Views\Parts\Advanced\AdvancedPart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Parts\Advanced\SpaceAllocationPart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -135,8 +144,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\Parts\AdvancedPart.xaml.cs">
+    <Compile Include="Views\Parts\Advanced\AdvancedPart.xaml.cs">
       <DependentUpon>AdvancedPart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Parts\Advanced\SpaceAllocationPart.xaml.cs">
+      <DependentUpon>SpaceAllocationPart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Parts\DeploymentPart.xaml.cs">
       <DependentUpon>DeploymentPart.xaml</DependentUpon>
@@ -247,27 +259,9 @@
     <Resource Include="Assets\windows-only.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Deployer.Lumia\Scripts\950.txt">
-      <Link>Scripts\950.txt</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Deployer.Lumia\Scripts\950xl.txt">
-      <Link>Scripts\950xl.txt</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Deployer.Lumia\Scripts\update-uefi-950xl.txt">
-      <Link>Scripts\update-uefi-950xl.txt</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\heart.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Deployer.Lumia.Console\Deployer.Lumia.Console.csproj">
-      <Project>{b29156bb-b183-4b55-bb04-7b9b926ec926}</Project>
-      <Name>Deployer.Lumia.Console</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Deployer.Lumia.NetFx\Deployer.Lumia.NetFx.csproj">
       <Project>{cfa21504-2cfd-468b-8458-bd9bd05bcf19}</Project>
       <Name>Deployer.Lumia.NetFx</Name>
@@ -279,6 +273,10 @@
     <ProjectReference Include="..\DeployerPlatform\Deployer.Gui\Deployer.Gui.csproj">
       <Project>{ad8ea86c-af60-4ccf-9caa-07bbf5e039ec}</Project>
       <Name>Deployer.Gui</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeployerPlatform\Deployer.NetFx\Deployer.NetFx.csproj">
+      <Project>{FBEDAF0E-E2ED-4005-8D83-F980FA67FEB2}</Project>
+      <Name>Deployer.NetFx</Name>
     </ProjectReference>
     <ProjectReference Include="..\DeployerPlatform\Deployer\Deployer.csproj">
       <Project>{20d40dc1-0237-47a0-b169-b420159e341c}</Project>

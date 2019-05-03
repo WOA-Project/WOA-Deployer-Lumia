@@ -22,7 +22,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace Deployer.Lumia.NetFx.PhoneInfo
+namespace Deployer.Lumia.NetFx.PhoneMetadata
 {
     internal class QualcommPartition
     {

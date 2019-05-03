@@ -23,7 +23,7 @@
 using System;
 using System.IO;
 
-namespace Deployer.Lumia.NetFx.PhoneInfo
+namespace Deployer.Lumia.NetFx.PhoneMetadata
 {
     internal static class ByteOperations
     {
@@ -46,7 +46,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
             if (MaxBufferLength != null)
                 Array.Clear(ByteArray, (int)Offset, (int)MaxBufferLength);
 
-            byte[] TextBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(Text);
+            byte[] TextBytes = System.Text.Encoding.ASCII.GetBytes(Text);
             int WriteLength = TextBytes.Length;
             if (WriteLength > MaxBufferLength)
                 WriteLength = (int)MaxBufferLength;
@@ -59,7 +59,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
             if (MaxBufferLength != null)
                 Array.Clear(ByteArray, (int)Offset, (int)MaxBufferLength);
 
-            byte[] TextBytes = System.Text.UnicodeEncoding.Unicode.GetBytes(Text);
+            byte[] TextBytes = System.Text.Encoding.Unicode.GetBytes(Text);
             int WriteLength = TextBytes.Length;
             if (WriteLength > MaxBufferLength)
                 WriteLength = (int)MaxBufferLength;
@@ -74,7 +74,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
 
         internal static void WriteUInt32(byte[] ByteArray, UInt32 Offset, UInt32 Value)
         {
-            System.Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 4);
         }
 
         internal static Int32 ReadInt32(byte[] ByteArray, UInt32 Offset)
@@ -84,7 +84,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
 
         internal static void WriteInt32(byte[] ByteArray, UInt32 Offset, Int32 Value)
         {
-            System.Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 4);
         }
 
         internal static UInt16 ReadUInt16(byte[] ByteArray, UInt32 Offset)
@@ -94,7 +94,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
 
         internal static void WriteUInt16(byte[] ByteArray, UInt32 Offset, UInt16 Value)
         {
-            System.Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 2);
+            Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 2);
         }
 
         internal static Int16 ReadInt16(byte[] ByteArray, UInt32 Offset)
@@ -104,7 +104,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
 
         internal static void WriteInt16(byte[] ByteArray, UInt32 Offset, Int16 Value)
         {
-            System.Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 2);
+            Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 2);
         }
 
         internal static byte ReadUInt8(byte[] ByteArray, UInt32 Offset)
@@ -124,7 +124,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
 
         internal static void WriteUInt24(byte[] ByteArray, UInt32 Offset, UInt32 Value)
         {
-            System.Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 3);
+            Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 3);
         }
 
         internal static UInt64 ReadUInt64(byte[] ByteArray, UInt32 Offset)
@@ -134,7 +134,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
 
         internal static void WriteUInt64(byte[] ByteArray, UInt32 Offset, UInt64 Value)
         {
-            System.Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 8);
+            Buffer.BlockCopy(BitConverter.GetBytes(Value), 0, ByteArray, (int)Offset, 8);
         }
 
         internal static Guid ReadGuid(byte[] ByteArray, UInt32 Offset)
@@ -227,12 +227,12 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
 
         internal static UInt32? FindAscii(byte[] SourceBuffer, string Pattern)
         {
-            return FindPattern(SourceBuffer, System.Text.ASCIIEncoding.ASCII.GetBytes((string)Pattern), null, null);
+            return FindPattern(SourceBuffer, System.Text.Encoding.ASCII.GetBytes((string)Pattern), null, null);
         }
 
         internal static UInt32? FindUnicode(byte[] SourceBuffer, string Pattern)
         {
-            return FindPattern(SourceBuffer, System.Text.UnicodeEncoding.Unicode.GetBytes((string)Pattern), null, null);
+            return FindPattern(SourceBuffer, System.Text.Encoding.Unicode.GetBytes((string)Pattern), null, null);
         }
 
         internal static UInt32? FindUint(byte[] SourceBuffer, UInt32 Pattern)
@@ -279,7 +279,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo
                     Result = SearchPosition;
 
                     if (OutPattern != null)
-                        System.Buffer.BlockCopy(SourceBuffer, (int)SearchPosition, OutPattern, 0, Pattern.Length);
+                        Buffer.BlockCopy(SourceBuffer, (int)SearchPosition, OutPattern, 0, Pattern.Length);
                     break;
                 }
 

@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deployer.Lumia", "Deployer.Lumia\Deployer.Lumia.csproj", "{20501832-13F5-4673-9D86-9E7E0C562027}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deployer.Lumia.Console", "Deployer.Lumia.Console\Deployer.Lumia.Console.csproj", "{B29156BB-B183-4B55-BB04-7B9B926EC926}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deployer.Lumia.NetFx", "Deployer.Lumia.NetFx\Deployer.Lumia.NetFx.csproj", "{CFA21504-2CFD-468B-8458-BD9BD05BCF19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deployer.Lumia.Gui", "Deployer.Lumia.Gui\Deployer.Lumia.Gui.csproj", "{76DCD56D-98E7-4EA1-B04B-FA063B953FD7}"
@@ -37,10 +35,6 @@ Global
 		{20501832-13F5-4673-9D86-9E7E0C562027}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20501832-13F5-4673-9D86-9E7E0C562027}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20501832-13F5-4673-9D86-9E7E0C562027}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B29156BB-B183-4B55-BB04-7B9B926EC926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B29156BB-B183-4B55-BB04-7B9B926EC926}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B29156BB-B183-4B55-BB04-7B9B926EC926}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B29156BB-B183-4B55-BB04-7B9B926EC926}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CFA21504-2CFD-468B-8458-BD9BD05BCF19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CFA21504-2CFD-468B-8458-BD9BD05BCF19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFA21504-2CFD-468B-8458-BD9BD05BCF19}.Release|Any CPU.ActiveCfg = Release|Any CPU

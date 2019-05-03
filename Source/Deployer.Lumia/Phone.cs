@@ -1,38 +1,39 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ByteSizeLib;
 using Deployer.Exceptions;
 using Deployer.FileSystem;
+using Deployer.FileSystem.Gpt;
 using Deployer.Services;
 using Serilog;
+using Zafiro.Core;
+using Partition = Deployer.FileSystem.Partition;
 
 namespace Deployer.Lumia
 {
     public class Phone : Device, IPhone
     {
         private const string WindowsSystem32BootWinloadEfi = @"windows\system32\boot\winload.efi";
-        private static readonly Guid WinPhoneBcdGuid = Guid.Parse("7619dcc9-fafe-11d9-b411-000476eba25f");
 
         private static readonly ByteSize MinimumPhoneDiskSize = ByteSize.FromGigaBytes(28);
         private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
 
         private readonly BcdInvokerFactory bcdInvokerFactory;
-        private readonly IPhoneModelReader phoneModelReader;
-        private Disk deviceDisk;
+        private readonly IPhoneModelInfoReader phoneModelInfoReader;
 
-        public Phone(IDiskApi diskApi, IPhoneModelReader phoneModelReader, BcdInvokerFactory bcdInvokerFactory) :
+        public Phone(IDiskApi diskApi, IPhoneModelInfoReader phoneModelInfoReader, BcdInvokerFactory bcdInvokerFactory) :
             base(diskApi)
         {
-            this.phoneModelReader = phoneModelReader;
+            this.phoneModelInfoReader = phoneModelInfoReader;
             this.bcdInvokerFactory = bcdInvokerFactory;
         }
 
-        public async Task<PhoneModel> GetModel()
+        public async Task<PhoneModelInfo> GetModel()
         {
-            return phoneModelReader.GetPhoneModel((await GetDeviceDisk()).Number);
+            return phoneModelInfoReader.GetPhoneModel((await GetDeviceDisk()).Number);
         }
 
         public async Task<DualBootStatus> GetDualBootStatus()
@@ -52,7 +53,7 @@ namespace Deployer.Lumia
             var isCapable = isWoaPresent && isWPhonePresent && isOobeFinished;
             var status = new DualBootStatus(isCapable, isEnabled);
 
-            Log.Verbose("WoA Present: {Value}", isWoaPresent);
+            Log.Verbose("WOA Present: {Value}", isWoaPresent);
             Log.Verbose("Windows 10 Mobile Present: {Value}", isWPhonePresent);
             Log.Verbose("OOBE Finished: {Value}", isOobeFinished);
 
@@ -65,7 +66,7 @@ namespace Deployer.Lumia
         public override async Task<Partition> GetSystemPartition()
         {
             var disk = await GetDeviceDisk();
-            return await disk.GetPartition(PartitionName.System);
+            return await disk.GetRequiredPartition(PartitionName.System);
         }
 
         public async Task ToogleDualBoot(bool isEnabled, bool force = false)
@@ -94,16 +95,6 @@ namespace Deployer.Lumia
             }
         }
 
-        public Task<Volume> GetDataVolume()
-        {
-            return GetVolumeByPartitionName(PartitionName.Data);
-        }
-
-        public Task<Volume> GetMainOsVolume()
-        {
-            return GetVolumeByPartitionName(PartitionName.MainOs);
-        }
-
         public override async Task<Disk> GetDeviceDisk()
         {
             var disk = await GetDeviceDiskCore();
@@ -118,54 +109,79 @@ namespace Deployer.Lumia
         private  async Task<Disk> GetDeviceDiskCore()
         {
             var disks = await DiskApi.GetDisks();
-            foreach (var disk in disks.Where(x => x.Number != 0))
-            {
-                var hasCorrectSize = HasCorrectSize(disk);
 
-                if (hasCorrectSize)
-                {
-                    var mainOs = await disk.GetPartition(PartitionName.MainOs);
-                    if (mainOs != null)
-                    {
-                        return disk;
-                    }
-                }
+            var disk = await disks
+                .ToObservable()
+                .SelectMany(async x => new { IsDevice = await IsDeviceDisk(x), Disk = x})
+                .Where(x => x.IsDevice)
+                .Select(x => x.Disk)
+                .FirstOrDefaultAsync();
+
+            if (disk != null)
+            {
+                return disk;
             }
 
             throw new PhoneDiskNotFoundException(
                 "Cannot get the Phone Disk. Please, verify that the Phone is in Mass Storage Mode.");
         }
 
+        private static async Task<bool> IsDeviceDisk(Disk disk)
+        {           
+            var hasCorrectSize = HasCorrectSize(disk);
+
+            if (!hasCorrectSize)
+            {
+                return false;
+            }
+
+            var diskNames = new[] {"VEN_QUALCOMM&PROD_MMC_STORAGE", "VEN_MSFT&PROD_PHONE_MMC_STOR"};
+            var hasCorrectDiskName = diskNames.Any(name => disk.UniqueId.Contains(name));
+
+            if (hasCorrectDiskName)
+            {
+                return true;
+            }
+
+            var partitions = await disk.GetPartitions();
+            var names = partitions.Select(x => x.Name);
+            var lookup = new[] {"EFIESP", "TZAPPS", "DPP"};
+
+            return lookup.IsSubsetOf(names);
+        }
+
         public override Task<Volume> GetWindowsVolume()
         {
-            return GetVolumeByPartitionName(PartitionName.Windows);
+            return this.GetVolumeByPartitionName(PartitionName.Windows);
+        }
+
+        protected override async Task<bool> IsWoAPresent()
+        {
+            var disk = await GetDeviceDisk();
+            using (var context = await GptContextFactory.Create(disk.Number, FileAccess.Read))
+            {
+                return context.Get(PartitionName.Data) != null && context.Get(PartitionName.System) != null;
+            }
         }
 
         public override async Task<Volume> GetSystemVolume()
         {
-            return await GetVolumeByPartitionName(PartitionName.System);
+            return await (await GetDeviceDisk()).GetVolumeByPartitionName(PartitionName.System);
         }
 
-        private async Task<bool> IsWindowsPhonePresent()
+        public async Task<bool> IsWindowsPhonePresent()
         {
-            try
+            var disk = await GetDeviceDisk();
+            using (var context = await GptContextFactory.Create(disk.Number, FileAccess.Read))
             {
-                await GetWindowsVolume();
-                await GetDataVolume();
+                return context.Get(PartitionName.MainOs) != null && context.Get(PartitionName.Data) != null;
             }
-            catch (Exception e)
-            {
-                Log.Error(e, "Failed to get Windows Phone's volumes");
-                return false;
-            }
-
-            return true;
         }
 
         private async Task<IBcdInvoker> GetBcdInvoker()
         {
-            var volume = await GetMainOsVolume();
-            var bcdFullFilename = Path.Combine(volume.Root, PartitionName.EfiEsp.CombineRelativeBcdPath());
+            var volume = await this.GetVolumeByPartitionName(PartitionName.EfiEsp);
+            var bcdFullFilename = volume.Root.CombineRelativeBcdPath();
             return bcdInvokerFactory.Create(bcdFullFilename);
         }
 
@@ -175,9 +191,10 @@ namespace Deployer.Lumia
             var result = invoker.Invoke();
 
             var containsWinLoad = result.Contains(WindowsSystem32BootWinloadEfi, StringComparison.CurrentCultureIgnoreCase);
-            var containsWinPhoneBcdGuid = result.Contains(WinPhoneBcdGuid.ToString(), StringComparison.InvariantCultureIgnoreCase);
+            var containsWinPhoneBcdGuid = result.Contains(BcdGuids.WinMobile.ToString(), StringComparison.InvariantCultureIgnoreCase);
 
-            return containsWinLoad ||containsWinPhoneBcdGuid;
+            return containsWinLoad && containsWinPhoneBcdGuid;
+
         }
 
         private async Task EnableDualBoot()
@@ -188,9 +205,9 @@ namespace Deployer.Lumia
             await systemPartition.SetGptType(PartitionType.Basic);
 
             var invoker = await GetBcdInvoker();
-            invoker.Invoke($@"/set {{{WinPhoneBcdGuid}}} description ""Windows 10 Phone""");
-            invoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /addfirst");
-            invoker.Invoke($@"/default {{{WinPhoneBcdGuid}}}");
+            invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Windows 10 Phone""");
+            invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} path ""\windows\system32\boot\winload.efi""");
+            invoker.Invoke($@"/default {{{BcdGuids.WinMobile}}}");
 
             Log.Verbose("Dual Boot enabled");
         }
@@ -203,8 +220,9 @@ namespace Deployer.Lumia
             await systemPartition.SetGptType(PartitionType.Esp);
 
             var invoker = await GetBcdInvoker();
-            var result = invoker.Invoke($@"/displayorder {{{WinPhoneBcdGuid}}} /remove");
-
+            invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Dummy, please ignore""");
+            invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} path ""dummy""");
+            invoker.Invoke($@"/default {{{BcdGuids.Woa}}}");
             Log.Verbose("Dual Boot disabled");
         }
 

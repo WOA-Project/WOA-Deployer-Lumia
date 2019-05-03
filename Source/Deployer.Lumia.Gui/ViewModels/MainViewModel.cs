@@ -4,26 +4,33 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using Deployer.Gui;
+using Grace.DependencyInjection;
 using ReactiveUI;
 
 namespace Deployer.Lumia.Gui.ViewModels
 {
     public class MainViewModel : ReactiveObject
     {
-        private readonly IFileSystemOperations fileSystemOperations;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
+        private Meta<ISection> selectedItem;
+        private readonly ObservableAsPropertyHelper<bool> isBigProgressVisible;
         private const string DonationLink = "https://github.com/WoA-project/WOA-Deployer/blob/master/Docs/Donations.md";
         private const string HelpLink = "https://github.com/WOA-Project/WOA-Deployer-Lumia#need-help";
 
-        public MainViewModel(IFileSystemOperations fileSystemOperations, IEnumerable<IBusy> busies)
+        public MainViewModel(IList<Meta<ISection>> sections)
         {
-            this.fileSystemOperations = fileSystemOperations;
-            var isBusyObs = busies.Select(x => x.IsBusyObservable).Merge();
+            var isBusyObs = sections.Select(x => x.Value.IsBusyObservable).Merge();
 
             DonateCommand = ReactiveCommand.Create(() => { Process.Start(DonationLink); });
             HelpCommand = ReactiveCommand.Create(() => { Process.Start(HelpLink); });
             isBusyHelper = isBusyObs.ToProperty(this, model => model.IsBusy);
+            Sections = sections.OrderBy(meta => (int)meta.Metadata["Order"]).ToList();
+            isBigProgressVisible = this.WhenAnyValue(x => x.SelectedItem)
+                .CombineLatest(isBusyObs, (section, busy) => section != null && (int)section.Metadata["Order"] == 0 && busy)
+                .ToProperty(this, x => x.IsBigProgressVisible);
         }
+
+        public IList<Meta<ISection>> Sections { get; set; }
 
         public bool IsBusy => isBusyHelper.Value;
 
@@ -32,5 +39,13 @@ namespace Deployer.Lumia.Gui.ViewModels
         public string Title => AppProperties.AppTitle;
 
         public ReactiveCommand<Unit, Unit> HelpCommand { get; set; }
+
+        public bool IsBigProgressVisible => isBigProgressVisible.Value;
+
+        public Meta<ISection> SelectedItem
+        {
+            get => selectedItem;
+            set => this.RaiseAndSetIfChanged(ref selectedItem, value);
+        }
     }
 }

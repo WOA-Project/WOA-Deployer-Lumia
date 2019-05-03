@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 
-namespace Deployer.Lumia.NetFx.PhoneInfo.Streams
+namespace Deployer.Lumia.NetFx.PhoneMetadata.Streams
 {
     public class DeviceStream : Stream
     {
@@ -229,7 +229,7 @@ namespace Deployer.Lumia.NetFx.PhoneInfo.Streams
         private new void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!this.disposed)
+            if (!disposed)
             {
                 if (disposing)
                 {

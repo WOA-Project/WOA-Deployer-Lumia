@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Deployer.Lumia.Gui.Views.Parts.DualBoot
+namespace Deployer.Lumia.Gui.Views.Parts.Advanced
 {
     /// <summary>
-    /// Interaction logic for NonCapable.xaml
+    /// Interaction logic for SpaceAllocationPart.xaml
     /// </summary>
-    public partial class NonCapablePart : UserControl
+    public partial class SpaceAllocationPart : UserControl
     {
-        public NonCapablePart()
+        public SpaceAllocationPart()
         {
             InitializeComponent();
         }

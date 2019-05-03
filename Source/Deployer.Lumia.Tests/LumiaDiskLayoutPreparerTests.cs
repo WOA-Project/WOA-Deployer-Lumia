@@ -12,23 +12,23 @@ namespace Deployer.Lumia.Tests
         [Trait("Category", "Real")]
         public async Task Prepare()
         {
-            var api = new DiskApi();
+            //var api = new DiskApi();
 
-            var allocators = new []{ new DefaultSpaceAllocator()};
-            var operations = new FileSystemOperations();
-            var optionsProvider = new WindowsDeploymentOptionsProvider
-            {
-                Options = new WindowsDeploymentOptions
-                {
-                    SizeReservedForWindows = ByteSize.FromMegaBytes(200),
-                }
-            };
+            //var allocators = new []{ new DefaultSpaceAllocator()};
+            //var operations = new FileSystemOperations();
+            //var optionsProvider = new WindowsDeploymentOptionsProvider
+            //{
+            //    Options = new WindowsDeploymentOptions
+            //    {
+            //        SizeReservedForWindows = ByteSize.FromMegaBytes(200),
+            //    }
+            //};
 
-            var phone = new TestPhone(api, null, null);
-            var preparer = new LumiaDiskLayoutPreparer(optionsProvider, operations, allocators, new PartitionCleaner(), phone);
+            //var phone = new TestPhone(api, null, null);
+            //var preparer = new LumiaDiskLayoutPreparer(optionsProvider, operations, allocators, new PartitionCleaner(), phone);
 
-            var disk = await api.GetDisk(3);
-            await preparer.Prepare(disk);
+            //var disk = await api.GetDisk(3);
+            //await preparer.Prepare(disk);
         }       
     }
 }
