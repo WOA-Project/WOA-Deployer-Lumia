@@ -64,7 +64,7 @@ namespace Deployer.Lumia
                     if (buildNumber == 17763)
                     {
                         Log.Verbose("Build 17763 detected. Patching Boot Manager.");
-                        var dest = Path.Combine((await phone.GetSystemVolume()).Root, "EFI", "Boot") + Path.PathSeparator;
+                        var dest = Path.Combine((await phone.GetSystemVolume()).Root, "EFI", "Boot") + Path.DirectorySeparatorChar;
                         await fileSystemOperations.Copy(@"Core\Boot\bootaa64.efi", dest);
                         Log.Verbose("Boot Manager Patched.");
                     }
