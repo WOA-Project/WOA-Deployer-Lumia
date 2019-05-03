@@ -60,7 +60,7 @@ namespace Deployer.Lumia.Gui.Specifics
             get
             {
                 return diskPreparers
-                    .OrderByDescending(x => (int) x.Metadata["Order"])
+                    .OrderBy(x => (int) x.Metadata["Order"])
                     .First();
             }
         }
