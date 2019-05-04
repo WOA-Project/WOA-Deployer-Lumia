@@ -70,8 +70,7 @@
     <Compile Include="CompositionRoot.cs" />
     <Compile Include="DiskPreparerSelector.cs" />
     <Compile Include="GbsToByteSizeConverter.cs" />
-    <Compile Include="MetaConverter.cs" />
-    <Compile Include="SectionConverter.cs" />
+    <Compile Include="MetadataConverter.cs" />
     <Compile Include="ViewModels\AdvancedViewModel.cs" />
     <Compile Include="ViewModels\DualBootViewModel.cs" />
     <Compile Include="ViewModels\DeploymentViewModel.cs" />
@@ -97,7 +96,6 @@
     <Compile Include="Locator.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\AppPaths.cs" />
-    <Compile Include="ViewModels\DiskLayoutPreparerViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

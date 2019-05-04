@@ -24,11 +24,11 @@ namespace Deployer.Lumia.Gui.ViewModels
         private readonly ILumiaSettingsService lumiaSettingsService;
         private readonly UIServices uiServices;
 
-        private DiskLayoutPreparerViewModel selectedPreparer;
+        private Meta<IDiskLayoutPreparer> selectedPreparer;
 
         public AdvancedViewModel(ILumiaSettingsService lumiaSettingsService, IFileSystemOperations fileSystemOperations,
             UIServices uiServices, IDeploymentContext context,
-            IEnumerable<Meta<IDiskLayoutPreparer>> diskPreparers,
+            IList<Meta<IDiskLayoutPreparer>> diskPreparers,
             IWindowsDeployer deployer,
             IOperationProgress progress)
         {
@@ -38,10 +38,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             this.deployer = deployer;
             this.progress = progress;
 
-            DiskPreparers = diskPreparers
-                .Where(x => !x.Metadata.Keys.Contains("IsNull"))
-                .Select(x => new DiskLayoutPreparerViewModel((string) x.Metadata["Name"], x.Value))
-                .ToList();
+            DiskPreparers = diskPreparers;
 
             DeleteDownloadedWrapper = new CommandWrapper<Unit, Unit>(this,
                 ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), uiServices.Dialog);
@@ -63,14 +60,30 @@ namespace Deployer.Lumia.Gui.ViewModels
                 .Where(x => x != null)
                 .Subscribe(x =>
                 {
-                    context.DiskLayoutPreparer = x.Preparer;
-                    lumiaSettingsService.DiskPreparer = x.Name;
+                    context.DiskLayoutPreparer = x.Value;
+                    lumiaSettingsService.DiskPreparer = (string)x.Metadata["Name"];
                 });
 
-            SelectedPreparer = DiskPreparers.First(x => x.Name == lumiaSettingsService.DiskPreparer);
+            SelectedPreparer = GetInitialDiskPreparer();
         }
 
-        public DiskLayoutPreparerViewModel SelectedPreparer
+        private Meta<IDiskLayoutPreparer> GetInitialDiskPreparer()
+        {
+            var fromSettings = DiskPreparers.FirstOrDefault(x => (string)x.Metadata["Name"] == lumiaSettingsService.DiskPreparer);
+            return fromSettings ?? Default;
+        }
+
+        private Meta<IDiskLayoutPreparer> Default
+        {
+            get
+            {
+                return DiskPreparers
+                    .OrderBy(x => (int) x.Metadata["Order"])
+                    .First();
+            }
+        }
+
+        public Meta<IDiskLayoutPreparer> SelectedPreparer
         {
             get => selectedPreparer;
             set => this.RaiseAndSetIfChanged(ref selectedPreparer, value);
@@ -106,7 +119,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         public CommandWrapper<Unit, Unit> ForceSingleBootWrapper { get; }
 
-        public IEnumerable<DiskLayoutPreparerViewModel> DiskPreparers { get; set; }
+        public IEnumerable<Meta<IDiskLayoutPreparer>> DiskPreparers { get; set; }
 
         public void Dispose()
         {

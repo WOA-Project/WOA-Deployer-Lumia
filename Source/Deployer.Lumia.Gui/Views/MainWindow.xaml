@@ -59,7 +59,7 @@
                     IsHitTestVisible="{Binding IsBusy, Converter={StaticResource BoolNegationConverter}}">
             <TabControl.ItemContainerStyle>
                 <Style TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
-                    <Setter Property="Header" Value="{Binding Converter={StaticResource MetaConverter}, ConverterParameter='Name'}" />
+                    <Setter Property="Header" Value="{Binding Converter={StaticResource MetadataConverter}, ConverterParameter='Name'}" />
                     <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                     <Setter Property="Content" Value="{Binding Value}" />
                 </Style>

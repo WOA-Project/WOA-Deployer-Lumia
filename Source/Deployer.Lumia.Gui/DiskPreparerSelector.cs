@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Deployer.Lumia.DiskPreparers;
-using Deployer.Lumia.Gui.ViewModels;
+using Grace.DependencyInjection;
 
 namespace Deployer.Lumia.Gui
 {
@@ -12,9 +12,17 @@ namespace Deployer.Lumia.Gui
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is DiskLayoutPreparerViewModel vm)
+            if (item != null && item.GetType().GetGenericTypeDefinition() == typeof(Meta<>))
             {
-                switch (vm.Preparer)
+                var propertyInfo = item.GetType().GetProperty("Value");
+                if (propertyInfo == null)
+                {
+                    return base.SelectTemplate(item, container);
+                }
+
+                var value = propertyInfo.GetValue(item);
+
+                switch (value)
                 {
                     case KeepMobileOSDiskLayoutPreparer _:
                         return KeepW10MTemplate;

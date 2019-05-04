@@ -32,8 +32,7 @@
             <valueConverters:BoolToVisibilityConverter x:Key="HideOnTrue" TrueValue="Hidden" FalseValue="Visible" />
 
             <local:Locator x:Key="Locator" />
-            <local:MetaConverter x:Key="MetaConverter" />
-            <local:SectionConverter x:Key="SectionConverter" />
+            <local:MetadataConverter x:Key="MetadataConverter" />
 
         </ResourceDictionary>
 

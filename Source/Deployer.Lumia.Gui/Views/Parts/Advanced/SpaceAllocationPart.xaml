@@ -13,8 +13,9 @@
         <gui:GbsToByteSizeConverter x:Key="GbsToByteSizeConverter" />
         <gui:DiskPreparerSelector x:Key="DeployerSelector">
             <gui:DiskPreparerSelector.KeepW10MTemplate>
-                <DataTemplate DataType="viewModels:DiskLayoutPreparerViewModel">
-                    <HeaderedContentControl DataContext="{Binding Preparer}"
+                <DataTemplate>
+                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                    <HeaderedContentControl DataContext="{Binding Value}"
                         HorizontalContentAlignment="Stretch">
                         <HeaderedContentControl.Header>
                             <TextBlock TextWrapping="Wrap">Size to reserve for Windows (taken from the Data partition as needed)</TextBlock>
@@ -35,7 +36,13 @@
         </gui:DiskPreparerSelector>
     </UserControl.Resources>
     <DockPanel>
-        <ComboBox HorizontalAlignment="Left" MinWidth="250" DockPanel.Dock="Top" Margin="10" VerticalAlignment="Top" ItemsSource="{Binding DiskPreparers}" SelectedItem="{Binding SelectedPreparer, Mode=TwoWay}" DisplayMemberPath="Name" />
+        <ComboBox HorizontalAlignment="Left" MinWidth="250" DockPanel.Dock="Top" Margin="10" VerticalAlignment="Top" ItemsSource="{Binding DiskPreparers}" SelectedItem="{Binding SelectedPreparer, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={StaticResource MetadataConverter}, ConverterParameter='Name'}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <HeaderedContentControl Margin="10" Content="{Binding SelectedPreparer}" ContentTemplateSelector="{StaticResource DeployerSelector}" />
     </DockPanel>
 </UserControl>
