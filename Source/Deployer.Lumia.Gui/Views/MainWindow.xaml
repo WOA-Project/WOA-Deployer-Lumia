@@ -53,7 +53,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TabControl Margin="20" Grid.Row="1"
+        <TabControl Margin="20" Grid.Row="1" Focusable="False"
                     ItemsSource="{Binding Sections}"
                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                     IsHitTestVisible="{Binding IsBusy, Converter={StaticResource BoolNegationConverter}}">
