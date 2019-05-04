@@ -7,12 +7,13 @@
              xmlns:viewModels="clr-namespace:Deployer.Lumia.Gui.ViewModels"
              xmlns:lumia="clr-namespace:Deployer.Lumia;assembly=Deployer.Lumia"
              xmlns:diskPreparers="clr-namespace:Deployer.Lumia.DiskPreparers;assembly=Deployer.Lumia"
+             xmlns:transformation="clr-namespace:Deployer.Lumia.Gui.Views.Transformation"
              mc:Ignorable="d" 
              d:DesignHeight="166.5" d:DesignWidth="485" d:DataContext="{d:DesignInstance viewModels:AdvancedViewModel}">
     <UserControl.Resources>
-        <gui:GbsToByteSizeConverter x:Key="GbsToByteSizeConverter" />
-        <gui:DiskPreparerSelector x:Key="DeployerSelector">
-            <gui:DiskPreparerSelector.KeepW10MTemplate>
+        <transformation:GbsToByteSizeConverter x:Key="GbsToByteSizeConverter" />
+        <transformation:DiskPreparerSelector x:Key="DeployerSelector">
+            <transformation:DiskPreparerSelector.KeepW10MTemplate>
                 <DataTemplate>
                     <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                     <HeaderedContentControl DataContext="{Binding Value}"
@@ -29,11 +30,11 @@
                         </DockPanel>
                     </HeaderedContentControl>
                 </DataTemplate>
-            </gui:DiskPreparerSelector.KeepW10MTemplate>
-            <gui:DiskPreparerSelector.OverwriteW10PTemplate>
+            </transformation:DiskPreparerSelector.KeepW10MTemplate>
+            <transformation:DiskPreparerSelector.OverwriteW10PTemplate>
                 <DataTemplate />
-            </gui:DiskPreparerSelector.OverwriteW10PTemplate>
-        </gui:DiskPreparerSelector>
+            </transformation:DiskPreparerSelector.OverwriteW10PTemplate>
+        </transformation:DiskPreparerSelector>
     </UserControl.Resources>
     <DockPanel>
         <ComboBox HorizontalAlignment="Left" MinWidth="250" DockPanel.Dock="Top" Margin="10" VerticalAlignment="Top" ItemsSource="{Binding DiskPreparers}" SelectedItem="{Binding SelectedPreparer, Mode=TwoWay}">

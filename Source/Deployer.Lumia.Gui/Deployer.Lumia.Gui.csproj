@@ -68,9 +68,10 @@
     </Compile>
     <Compile Include="AppProperties.cs" />
     <Compile Include="CompositionRoot.cs" />
-    <Compile Include="DiskPreparerSelector.cs" />
-    <Compile Include="GbsToByteSizeConverter.cs" />
-    <Compile Include="MetadataConverter.cs" />
+    <Compile Include="Views\Transformation\DiskPreparerSelector.cs" />
+    <Compile Include="Views\Transformation\GbsToByteSizeConverter.cs" />
+    <Compile Include="ViewModels\LogViewModel.cs" />
+    <Compile Include="Views\Transformation\MetadataConverter.cs" />
     <Compile Include="ViewModels\AdvancedViewModel.cs" />
     <Compile Include="ViewModels\DualBootViewModel.cs" />
     <Compile Include="ViewModels\DeploymentViewModel.cs" />
@@ -93,7 +94,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Locator.cs" />
+    <Compile Include="ViewModels\Locator.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\AppPaths.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

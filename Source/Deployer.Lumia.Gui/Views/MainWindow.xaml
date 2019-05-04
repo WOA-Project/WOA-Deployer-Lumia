@@ -7,6 +7,8 @@
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                  xmlns:viewModels="clr-namespace:Deployer.Lumia.Gui.ViewModels"
+                 xmlns:dualBoot="clr-namespace:Deployer.Lumia.Gui.Views.Parts.DualBoot"
+                 xmlns:advanced="clr-namespace:Deployer.Lumia.Gui.Views.Parts.Advanced"
                  mc:Ignorable="d"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
                  mah:DialogParticipation.Register="{Binding}"
@@ -18,10 +20,10 @@
             <parts:DeploymentPart />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:DualBootViewModel}">
-            <parts:DualBootPart />
+            <dualBoot:DualBootPart />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:AdvancedViewModel}">
-            <parts:AdvancedPart />
+            <advanced:AdvancedPart />
         </DataTemplate>
     </Window.Resources>    
     <mah:MetroWindow.RightWindowCommands>

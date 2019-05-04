@@ -1,10 +1,9 @@
 using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 using ByteSizeLib;
 
-namespace Deployer.Lumia.Gui
+namespace Deployer.Lumia.Gui.Views.Transformation
 {
     public class GbsToByteSizeConverter : IValueConverter
     {

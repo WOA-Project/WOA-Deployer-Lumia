@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using Grace.DependencyInjection;
 
-namespace Deployer.Lumia.Gui
+namespace Deployer.Lumia.Gui.Views.Transformation
 {
     public class MetadataConverter : IValueConverter
     {

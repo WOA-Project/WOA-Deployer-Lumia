@@ -1,11 +1,7 @@
-using System.Diagnostics;
-using System.Reactive;
 using Deployer.Gui.ViewModels;
-using Deployer.Lumia.Gui.ViewModels;
 using Grace.DependencyInjection;
-using ReactiveUI;
 
-namespace Deployer.Lumia.Gui
+namespace Deployer.Lumia.Gui.ViewModels
 {
     public class Locator
     {
@@ -29,25 +25,5 @@ namespace Deployer.Lumia.Gui
         public LogViewModel LogViewModel => container.Locate<LogViewModel>();
 
         public OngoingOperationViewModel OngoingOperationViewModel => container.Locate<OngoingOperationViewModel>();
-    }
-
-    public class LogViewModel : ReactiveObject
-    {
-        private readonly IFileSystemOperations fileSystemOperations;
-
-        public LogViewModel(IFileSystemOperations fileSystemOperations)
-        {
-            this.fileSystemOperations = fileSystemOperations;
-            OpenLogFolder = ReactiveCommand.Create(OpenLogs);
-        }
-
-        public ReactiveCommand<Unit, Unit> OpenLogFolder { get; set; }
-
-        private void OpenLogs()
-        {
-            fileSystemOperations.EnsureDirectoryExists("Logs");
-            Process.Start("Logs");
-        }
-
     }
 }
