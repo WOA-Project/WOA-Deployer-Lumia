@@ -23,13 +23,13 @@ namespace Deployer.Lumia.Gui.ViewModels
         private readonly AdvancedViewModel advancedViewModel;
         private readonly WimPickViewModel wimPickViewModel;
         private readonly IFileSystemOperations fileSystemOperations;
-        private readonly ISettingsService settingsService;
+        private readonly ILumiaSettingsService lumiaSettingsService;
         private readonly ObservableAsPropertyHelper<bool> isBusyHelper;
 
         public DeploymentViewModel(
             IDeploymentContext context,
             IWoaDeployer deployer, UIServices uiServices, AdvancedViewModel advancedViewModel,
-            WimPickViewModel wimPickViewModel, IFileSystemOperations fileSystemOperations, ISettingsService settingsService)
+            WimPickViewModel wimPickViewModel, IFileSystemOperations fileSystemOperations, ILumiaSettingsService lumiaSettingsService)
         {
             this.context = context;
             this.deployer = deployer;
@@ -37,7 +37,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             this.advancedViewModel = advancedViewModel;
             this.wimPickViewModel = wimPickViewModel;
             this.fileSystemOperations = fileSystemOperations;
-            this.settingsService = settingsService;
+            this.lumiaSettingsService = lumiaSettingsService;
 
             var isSelectedWim = wimPickViewModel.WhenAnyObservable(x => x.WimMetadata.SelectedImageObs)
                 .Select(metadata => metadata != null);
@@ -76,7 +76,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private async Task CleanDownloadedIfNeeded()
         {
-            if (!settingsService.CleanDownloadedBeforeDeployment)
+            if (!lumiaSettingsService.CleanDownloadedBeforeDeployment)
             {
                 return;
             }

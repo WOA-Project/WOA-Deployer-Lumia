@@ -2,9 +2,8 @@ using ByteSizeLib;
 
 namespace Deployer.Lumia
 {
-    public interface ISettingsService
+    public interface ILumiaSettingsService : ISettingsService
     {
-        string WimFolder { get; set; }
         ByteSize SizeReservedForWindows { get; set; }
         bool UseCompactDeployment { get; set; }
         bool CleanDownloadedBeforeDeployment { get; set; }

@@ -21,18 +21,18 @@ namespace Deployer.Lumia.Gui.ViewModels
         private readonly IWindowsDeployer deployer;
         private readonly IDisposable preparerUpdater;
         private readonly IOperationProgress progress;
-        private readonly ISettingsService settingsService;
+        private readonly ILumiaSettingsService lumiaSettingsService;
         private readonly UIServices uiServices;
 
         private DiskLayoutPreparerViewModel selectedPreparer;
 
-        public AdvancedViewModel(ISettingsService settingsService, IFileSystemOperations fileSystemOperations,
+        public AdvancedViewModel(ILumiaSettingsService lumiaSettingsService, IFileSystemOperations fileSystemOperations,
             UIServices uiServices, IDeploymentContext context,
             IEnumerable<Meta<IDiskLayoutPreparer>> diskPreparers,
             IWindowsDeployer deployer,
             IOperationProgress progress)
         {
-            this.settingsService = settingsService;
+            this.lumiaSettingsService = lumiaSettingsService;
             this.uiServices = uiServices;
             this.context = context;
             this.deployer = deployer;
@@ -64,10 +64,10 @@ namespace Deployer.Lumia.Gui.ViewModels
                 .Subscribe(x =>
                 {
                     context.DiskLayoutPreparer = x.Preparer;
-                    settingsService.DiskPreparer = x.Name;
+                    lumiaSettingsService.DiskPreparer = x.Name;
                 });
 
-            SelectedPreparer = DiskPreparers.First(x => x.Name == settingsService.DiskPreparer);
+            SelectedPreparer = DiskPreparers.First(x => x.Name == lumiaSettingsService.DiskPreparer);
         }
 
         public DiskLayoutPreparerViewModel SelectedPreparer
@@ -84,20 +84,20 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         public bool UseCompactDeployment
         {
-            get => settingsService.UseCompactDeployment;
+            get => lumiaSettingsService.UseCompactDeployment;
             set
             {
-                settingsService.UseCompactDeployment = value;
+                lumiaSettingsService.UseCompactDeployment = value;
                 this.RaisePropertyChanged(nameof(UseCompactDeployment));
             }
         }
 
         public bool CleanDownloadedBeforeDeployment
         {
-            get => settingsService.CleanDownloadedBeforeDeployment;
+            get => lumiaSettingsService.CleanDownloadedBeforeDeployment;
             set
             {
-                settingsService.CleanDownloadedBeforeDeployment = value;
+                lumiaSettingsService.CleanDownloadedBeforeDeployment = value;
                 this.RaisePropertyChanged(nameof(CleanDownloadedBeforeDeployment));
             }
         }
@@ -143,7 +143,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             {
                 ImageIndex = 1,
                 ImagePath = imagePath,
-                UseCompact = settingsService.UseCompactDeployment
+                UseCompact = lumiaSettingsService.UseCompactDeployment
             };
 
             await deployer.Backup(await context.Device.GetWindowsVolume(), imagePath, progress);
@@ -170,8 +170,8 @@ namespace Deployer.Lumia.Gui.ViewModels
                 })
             };
 
-            var fileName = uiServices.OpenFilePicker.Pick(filters, () => settingsService.WimFolder,
-                x => { settingsService.WimFolder = x; });
+            var fileName = uiServices.OpenFilePicker.Pick(filters, () => lumiaSettingsService.WimFolder,
+                x => { lumiaSettingsService.WimFolder = x; });
 
             if (fileName == null)
             {
@@ -182,7 +182,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             {
                 ImageIndex = 1,
                 ImagePath = fileName,
-                UseCompact = settingsService.UseCompactDeployment
+                UseCompact = lumiaSettingsService.UseCompactDeployment
             };
 
             await context.DiskLayoutPreparer.Prepare(await context.Device.GetDeviceDisk());

@@ -3,7 +3,7 @@ using Deployer.Lumia.Gui.Properties;
 
 namespace Deployer.Lumia.Gui.Specifics
 {
-    public class SettingsService : ISettingsService
+    public class LumiaSettingsService : ILumiaSettingsService
     {
         private readonly Settings settings = Settings.Default;
 

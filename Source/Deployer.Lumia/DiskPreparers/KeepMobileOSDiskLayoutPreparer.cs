@@ -13,21 +13,21 @@ namespace Deployer.Lumia.DiskPreparers
     [Metadata("Order", 0)]
     public class KeepMobileOSDiskLayoutPreparer : LumiaDiskLayoutPreparer
     {
-        public KeepMobileOSDiskLayoutPreparer(IDeploymentContext context, IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IExistingDeploymentCleaner cleaner, ISettingsService settingsService) : base(context, cleaner)
+        public KeepMobileOSDiskLayoutPreparer(IDeploymentContext context, IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IExistingDeploymentCleaner cleaner, ILumiaSettingsService lumiaSettingsService) : base(context, cleaner)
         {
             this.spaceAllocators = spaceAllocators;
-            this.settingsService = settingsService;
+            this.lumiaSettingsService = lumiaSettingsService;
         }
 
         private readonly IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators;
-        private readonly ISettingsService settingsService;
+        private readonly ILumiaSettingsService lumiaSettingsService;
 
         public ByteSize SizeReservedForWindows
         {
-            get => settingsService.SizeReservedForWindows;
+            get => lumiaSettingsService.SizeReservedForWindows;
             set
             {
-                settingsService.SizeReservedForWindows = value;
+                lumiaSettingsService.SizeReservedForWindows = value;
             }
         }
 

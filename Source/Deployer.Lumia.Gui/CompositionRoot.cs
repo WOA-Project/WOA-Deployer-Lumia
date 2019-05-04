@@ -41,7 +41,7 @@ namespace Deployer.Lumia.Gui
                 x.Export<Dialog>().ByInterfaces().Lifestyle.Singleton();
                 x.Export<OpenFilePicker>().As<IOpenFilePicker>().Lifestyle.Singleton();
                 x.Export<SaveFilePicker>().As<ISaveFilePicker>().Lifestyle.Singleton();
-                x.Export<SettingsService>().As<ISettingsService>().Lifestyle.Singleton();
+                x.Export<LumiaSettingsService>().ByInterfaces().Lifestyle.Singleton();
                 x.Export<SaveFilePicker>().As<ISaveFilePicker>().Lifestyle.Singleton();
                 x.Export<ViewService>().As<IViewService>().Lifestyle.Singleton();
                 x.ExportFactory(() => DialogCoordinator.Instance).As<IDialogCoordinator>().Lifestyle.Singleton();     
