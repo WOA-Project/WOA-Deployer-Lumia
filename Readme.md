@@ -1,5 +1,5 @@
 # WOA Deployer for Lumia
-The application to install Full Windows 10 into your phone!
+The application to install Full Windows 10 into your Lumia 950s!
 
 ![image](Docs/Screenshot.png)
  
