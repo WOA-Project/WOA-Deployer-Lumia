@@ -4,9 +4,8 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using ByteSizeLib;
 using Deployer.Gui;
-using Deployer.Gui.ViewModels;
+using Deployer.Lumia.Gui.Properties;
 using Deployer.Tasks;
 using Grace.DependencyInjection;
 using Grace.DependencyInjection.Attributes;
@@ -18,50 +17,57 @@ namespace Deployer.Lumia.Gui.ViewModels
     [Metadata("Order", 2)]
     public class AdvancedViewModel : ReactiveObject, ISection, IDisposable
     {
-        public StatusViewModel StatusViewModel { get; }
+        private readonly IDeploymentContext context;
+        private readonly IWindowsDeployer deployer;
+        private readonly IDisposable preparerUpdater;
+        private readonly IOperationProgress progress;
         private readonly ISettingsService settingsService;
         private readonly UIServices uiServices;
-        private readonly IDeploymentContext context;
 
         private DiskLayoutPreparerViewModel selectedPreparer;
-        private readonly IDisposable settingsUpdater;
 
         public AdvancedViewModel(ISettingsService settingsService, IFileSystemOperations fileSystemOperations,
-            UIServices uiServices, StatusViewModel statusViewModel, IDeploymentContext context,
-                IEnumerable<Meta<IDiskLayoutPreparer>> diskPreparers)
+            UIServices uiServices, IDeploymentContext context,
+            IEnumerable<Meta<IDiskLayoutPreparer>> diskPreparers,
+            IWindowsDeployer deployer,
+            IOperationProgress progress)
         {
-            StatusViewModel = statusViewModel;
             this.settingsService = settingsService;
             this.uiServices = uiServices;
             this.context = context;
+            this.deployer = deployer;
+            this.progress = progress;
 
             DiskPreparers = diskPreparers
                 .Where(x => !x.Metadata.Keys.Contains("IsNull"))
                 .Select(x => new DiskLayoutPreparerViewModel((string) x.Metadata["Name"], x.Value))
                 .ToList();
 
-            DeleteDownloadedWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), uiServices.Dialog);
-            ForceDualBootWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(ForceDualBoot), uiServices.Dialog);
-            ForceSingleBootWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(ForceDisableDualBoot), uiServices.Dialog);
+            DeleteDownloadedWrapper = new CommandWrapper<Unit, Unit>(this,
+                ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), uiServices.Dialog);
+            ForceDualBootWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(ForceDualBoot),
+                uiServices.Dialog);
+            ForceSingleBootWrapper = new CommandWrapper<Unit, Unit>(this,
+                ReactiveCommand.CreateFromTask(ForceDisableDualBoot), uiServices.Dialog);
 
-            BackupCommandWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Backup), uiServices.Dialog);
-            RestoreCommandWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Restore), uiServices.Dialog);
+            BackupCommandWrapper =
+                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Backup), uiServices.Dialog);
+            RestoreCommandWrapper =
+                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Restore), uiServices.Dialog);
 
-            IsBusyObservable = Observable.Merge(new []
-            {
-                DeleteDownloadedWrapper.Command.IsExecuting,
-                BackupCommandWrapper.Command.IsExecuting,
-                RestoreCommandWrapper.Command.IsExecuting,
-                ForceDualBootWrapper.Command.IsExecuting,
-                ForceSingleBootWrapper.Command.IsExecuting,
-            });
+            IsBusyObservable = Observable.Merge(DeleteDownloadedWrapper.Command.IsExecuting,
+                BackupCommandWrapper.Command.IsExecuting, RestoreCommandWrapper.Command.IsExecuting,
+                ForceDualBootWrapper.Command.IsExecuting, ForceSingleBootWrapper.Command.IsExecuting);
 
-            SelectedPreparer = DiskPreparers.First(x => x.Preparer == settingsService.DiskPreparer);
-            settingsUpdater = this.WhenAnyValue(x => x.SelectedPreparer).Subscribe(x =>
-            {
-                settingsService.DiskPreparer = x.Preparer;
-                settingsService.Save();
-            });
+            preparerUpdater = this.WhenAnyValue(x => x.SelectedPreparer)
+                .Where(x => x != null)
+                .Subscribe(x =>
+                {
+                    context.DiskLayoutPreparer = x.Preparer;
+                    settingsService.DiskPreparer = x.Name;
+                });
+
+            SelectedPreparer = DiskPreparers.First(x => x.Name == settingsService.DiskPreparer);
         }
 
         public DiskLayoutPreparerViewModel SelectedPreparer
@@ -70,23 +76,58 @@ namespace Deployer.Lumia.Gui.ViewModels
             set => this.RaiseAndSetIfChanged(ref selectedPreparer, value);
         }
 
+        public CommandWrapper<Unit, Unit> RestoreCommandWrapper { get; set; }
+
+        public CommandWrapper<Unit, Unit> BackupCommandWrapper { get; set; }
+
+        public CommandWrapper<Unit, Unit> DeleteDownloadedWrapper { get; }
+
+        public bool UseCompactDeployment
+        {
+            get => settingsService.UseCompactDeployment;
+            set
+            {
+                settingsService.UseCompactDeployment = value;
+                this.RaisePropertyChanged(nameof(UseCompactDeployment));
+            }
+        }
+
+        public bool CleanDownloadedBeforeDeployment
+        {
+            get => settingsService.CleanDownloadedBeforeDeployment;
+            set
+            {
+                settingsService.CleanDownloadedBeforeDeployment = value;
+                this.RaisePropertyChanged(nameof(CleanDownloadedBeforeDeployment));
+            }
+        }
+
+        public CommandWrapper<Unit, Unit> ForceDualBootWrapper { get; }
+
+        public CommandWrapper<Unit, Unit> ForceSingleBootWrapper { get; }
+
+        public IEnumerable<DiskLayoutPreparerViewModel> DiskPreparers { get; set; }
+
+        public void Dispose()
+        {
+            preparerUpdater?.Dispose();
+        }
+
+        public IObservable<bool> IsBusyObservable { get; }
+
         private async Task ForceDualBoot()
         {
-            await ((IPhone)context.Device).ToogleDualBoot(true, true);
+            await ((IPhone) context.Device).ToogleDualBoot(true, true);
 
             await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.DualBootEnabled);
         }
 
         private async Task ForceDisableDualBoot()
         {
-            await ((IPhone)context.Device).ToogleDualBoot(false, true);
+            await ((IPhone) context.Device).ToogleDualBoot(false, true);
 
             await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.DualBootDisabled);
         }
-
-        public CommandWrapper<Unit, Unit> RestoreCommandWrapper { get; set; }
-
-        public CommandWrapper<Unit, Unit> BackupCommandWrapper { get; set; }
 
         private async Task Backup()
         {
@@ -98,14 +139,14 @@ namespace Deployer.Lumia.Gui.ViewModels
                 return;
             }
 
-            context.DeploymentOptions = new WindowsDeploymentOptions()
+            context.DeploymentOptions = new WindowsDeploymentOptions
             {
                 ImageIndex = 1,
                 ImagePath = imagePath,
-                UseCompact = settingsService.UseCompactDeployment,
+                UseCompact = settingsService.UseCompactDeployment
             };
 
-            //await deployer.Capture(imagePath, progress);
+            await deployer.Backup(await context.Device.GetWindowsVolume(), imagePath, progress);
 
             await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.ImageCaptured);
         }
@@ -116,7 +157,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             {
                 ("install.wim", new[]
                 {
-                    "install.wim",
+                    "install.wim"
                 }),
                 ("Windows Images", new[]
                 {
@@ -125,15 +166,12 @@ namespace Deployer.Lumia.Gui.ViewModels
                 }),
                 ("All files", new[]
                 {
-                    "*.*",
-                }),
+                    "*.*"
+                })
             };
 
-            var fileName = uiServices.OpenFilePicker.Pick(filters, () => settingsService.WimFolder, x =>
-            {
-                settingsService.WimFolder = x;
-                settingsService.Save();
-            });
+            var fileName = uiServices.OpenFilePicker.Pick(filters, () => settingsService.WimFolder,
+                x => { settingsService.WimFolder = x; });
 
             if (fileName == null)
             {
@@ -144,41 +182,14 @@ namespace Deployer.Lumia.Gui.ViewModels
             {
                 ImageIndex = 1,
                 ImagePath = fileName,
-                UseCompact = settingsService.UseCompactDeployment,
+                UseCompact = settingsService.UseCompactDeployment
             };
 
-            //await preparer.Prepare(await deviceProvider.Device.GetDeviceDisk());
-            //await deployer.Deploy(progress);
+            await context.DiskLayoutPreparer.Prepare(await context.Device.GetDeviceDisk());
+            await deployer.Deploy(context.DeploymentOptions, context.Device, progress);
 
             await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.ImageRestored);
         }
-        
-        public CommandWrapper<Unit, Unit> DeleteDownloadedWrapper { get; }
-
-        public bool UseCompactDeployment
-        {
-            get => settingsService.UseCompactDeployment;
-            set
-            {
-                settingsService.UseCompactDeployment = value;
-                settingsService.Save();
-                this.RaisePropertyChanged(nameof(UseCompactDeployment));
-            }
-        }
-
-        public bool CleanDownloadedBeforeDeployment
-        {
-            get => settingsService.CleanDownloadedBeforeDeployment;
-            set
-            {
-                settingsService.CleanDownloadedBeforeDeployment = value;
-                settingsService.Save();
-                this.RaisePropertyChanged(nameof(CleanDownloadedBeforeDeployment));
-            }
-        }
-
-        public IObservable<bool> IsBusyObservable { get; }
-        public string Name => "Advanced";
 
         private async Task DeleteDownloaded(IFileSystemOperations fileSystemOperations)
         {
@@ -192,18 +203,6 @@ namespace Deployer.Lumia.Gui.ViewModels
                 await uiServices.Dialog.ShowAlert(this, Resources.DownloadedFolderNotFoundTitle,
                     Resources.DownloadedFolderNotFound);
             }
-        }
-
-        public CommandWrapper<Unit, Unit> ForceDualBootWrapper { get; }
-
-        public CommandWrapper<Unit, Unit> ForceSingleBootWrapper { get; }
-
-        public IEnumerable<DiskLayoutPreparerViewModel> DiskPreparers { get; set; }
-
-        public void Dispose()
-        {
-            settingsUpdater?.Dispose();
-            StatusViewModel?.Dispose();
         }
     }
 }

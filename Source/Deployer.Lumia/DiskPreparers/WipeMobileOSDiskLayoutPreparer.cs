@@ -10,7 +10,7 @@ namespace Deployer.Lumia.DiskPreparers
     [Metadata("Order", 1)]
     public class WipeMobileOSDiskLayoutPreparer : LumiaDiskLayoutPreparer
     {
-        public WipeMobileOSDiskLayoutPreparer(IDeploymentContext context, IPartitionCleaner cleaner) : base(context, cleaner)
+        public WipeMobileOSDiskLayoutPreparer(IDeploymentContext context, IExistingDeploymentCleaner cleaner) : base(context, cleaner)
         {
         }
 

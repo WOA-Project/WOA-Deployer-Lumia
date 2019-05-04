@@ -10,38 +10,42 @@
              mc:Ignorable="d"
              d:DesignHeight="546" d:DesignWidth="781" Padding="8"
              DataContext="{Binding Source={StaticResource Locator}, Path=AdvancedViewModel}" mah:DialogParticipation.Register="{Binding}">
-    
-    <StackPanel>       
+
+    <StackPanel>
         <GroupBox Header="Deployment" Padding="10" Margin="0,20,0,0">
-            <DockPanel>                
-                <StackPanel DockPanel.Dock="Left" >
-                    <CheckBox IsChecked="{Binding UseCompactDeployment, Mode=TwoWay}" 
-                              Margin="10"
-                              ToolTip="Checking this will reduce the size of the Windows installation. However, the deployment process will take longer. It will help you save space on your device">
-                        <CheckBox.Content>
-                            <TextBlock Text="Use Compact Deployment" />
-                        </CheckBox.Content>
-                    </CheckBox>
-                    <CheckBox IsChecked="{Binding CleanDownloadedBeforeDeployment, Mode=TwoWay}" 
-                              Margin="10"
-                              ToolTip="This will delete the files needed for deployment. Use this if you always want to get a fresh copy. Otherwise, the existing files will be used.">
-                        <CheckBox.Content>
-                            <TextBlock Text="Clean 'Downloaded' folder before deployment" TextWrapping="Wrap" />
-                        </CheckBox.Content>
-                    </CheckBox>
-                </StackPanel>
-                <GroupBox Header="Space Allocation" Padding="10"  VerticalAlignment="Stretch">
-                    <GroupBox.Style>
-                        <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource {x:Type GroupBox}}">
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="Background" Value="Transparent"></Setter>
-                        </Style>
-                    </GroupBox.Style>
+            <DockPanel>
+                <DockPanel.Resources>
+                    <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource {x:Type GroupBox}}">
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </DockPanel.Resources>
+
+                <GroupBox Header="General">
+                    <StackPanel DockPanel.Dock="Left" >
+                        <CheckBox IsChecked="{Binding UseCompactDeployment, Mode=TwoWay}"
+                                  Margin="10"
+                                  ToolTip="Checking this will reduce the size of the Windows installation. However, the deployment process will take longer. It will help you save space on your device">
+                            <CheckBox.Content>
+                                <TextBlock Text="Use Compact Deployment" />
+                            </CheckBox.Content>
+                        </CheckBox>
+                        <CheckBox IsChecked="{Binding CleanDownloadedBeforeDeployment, Mode=TwoWay}"
+                                  Margin="10"
+                                  ToolTip="This will delete the files needed for deployment. Use this if you always want to get a fresh copy. Otherwise, the existing files will be used.">
+                            <CheckBox.Content>
+                                <TextBlock Text="Clean 'Downloaded' folder before deployment" TextWrapping="Wrap" />
+                            </CheckBox.Content>
+                        </CheckBox>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Space Allocation" VerticalAlignment="Stretch">
                     <advanced:SpaceAllocationPart />
                 </GroupBox>
             </DockPanel>
         </GroupBox>
-        
+
         <Grid>
             <GroupBox Header="WOA Partition Maintenance" Padding="20" Margin="0,20,0,0">
                 <UniformGrid Rows="1">
@@ -56,15 +60,13 @@
                         </gui:IconButton.Icon>
                     </gui:IconButton>
                 </UniformGrid>
-
-
             </GroupBox>
-            <mah:MetroProgressBar VerticalAlignment="Bottom"
+            <mah:MetroProgressBar DataContext="{Binding Source={StaticResource Locator}, Path=OngoingOperationViewModel}" VerticalAlignment="Bottom"
                                   Maximum="1"
-                                  Value="{Binding StatusViewModel.Progress, Mode=OneWay}"
-                                  Visibility="{Binding StatusViewModel.IsProgressVisible, Converter={StaticResource CollapseOnFalse}}"
+                                  Value="{Binding Progress, Mode=OneWay}"
+                                  Visibility="{Binding IsProgressVisible, Converter={StaticResource CollapseOnFalse}}"
                                   Grid.Column="0"
-                                  IsIndeterminate="{Binding StatusViewModel.IsProgressIndeterminate}">
+                                  IsIndeterminate="{Binding IsProgressIndeterminate}">
             </mah:MetroProgressBar>
         </Grid>
         <GroupBox Header="Misc" Padding="10" Margin="0 20 0 0">

@@ -1,73 +1,60 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Deployer.Gui;
+﻿using ByteSizeLib;
 using Deployer.Lumia.Gui.Properties;
-using Deployer.Tasks;
-using Grace.DependencyInjection;
 
 namespace Deployer.Lumia.Gui.Specifics
 {
     public class SettingsService : ISettingsService
     {
-        private readonly IEnumerable<Meta<IDiskLayoutPreparer>> diskPreparers;
-
-        public SettingsService(IEnumerable<Meta<IDiskLayoutPreparer>> diskPreparers)
-        {
-            this.diskPreparers = diskPreparers;
-        }
+        private readonly Settings settings = Settings.Default;
 
         public string WimFolder
         {
-            get => Settings.Default.WimFolder;
-            set => Settings.Default.WimFolder = value;
+            get => settings.WimFolder;
+            set
+            {
+                settings.WimFolder = value;
+                settings.Save();
+            }
         }
 
-        public double SizeReservedForWindows
+        public ByteSize SizeReservedForWindows
         {
-            get => Settings.Default.SizeReservedForWindows;
-            set => Settings.Default.SizeReservedForWindows = value;
+            get => ByteSize.FromGigaBytes(settings.SizeReservedForWindows);
+            set
+            {
+                settings.SizeReservedForWindows = value.GigaBytes;
+                settings.Save();
+            }
         }
 
         public bool UseCompactDeployment
         {
-            get => Settings.Default.UseCompactDeployment;
-            set => Settings.Default.UseCompactDeployment = value;
+            get => settings.UseCompactDeployment;
+            set
+            {
+                settings.UseCompactDeployment = value;
+                settings.Save();
+            }
         }
 
         public bool CleanDownloadedBeforeDeployment
         {
-            get => Settings.Default.CleanDownloadedBeforeDeployment;
-            set => Settings.Default.CleanDownloadedBeforeDeployment = value;
-        }
-
-        public IDiskLayoutPreparer DiskPreparer
-        {
-            get
-            {
-                var key = Settings.Default.DiskPreparer;
-                var entry = diskPreparers
-                                .FirstOrDefault(x => (string)x.Metadata["Name"] == key) ?? Default;
-                return entry.Value;
-            }
+            get => settings.CleanDownloadedBeforeDeployment;
             set
             {
-                Settings.Default.DiskPreparer = (string) diskPreparers.FirstOrDefault(meta => meta.Value == value)?.Metadata["Name"];                
+                settings.CleanDownloadedBeforeDeployment = value;
+                settings.Save();
             }
         }
 
-        private Meta<IDiskLayoutPreparer> Default
+        public string DiskPreparer
         {
-            get
+            get => settings.DiskPreparer;
+            set
             {
-                return diskPreparers
-                    .OrderBy(x => (int) x.Metadata["Order"])
-                    .First();
+                settings.DiskPreparer = value;
+                settings.Save();
             }
-        }
-
-        public void Save()
-        {
-            Settings.Default.Save();
         }
     }
 }

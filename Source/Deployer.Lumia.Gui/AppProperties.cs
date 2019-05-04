@@ -1,3 +1,5 @@
+using Deployer.Lumia.Gui.Properties;
+
 namespace Deployer.Lumia.Gui
 {
     public static class AppProperties

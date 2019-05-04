@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Deployer.Lumia.Gui.Views.Parts"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="161" d:DesignWidth="202" DataContext="{Binding Source={StaticResource Locator}, Path=StatusViewModel}">
+             d:DesignHeight="161" d:DesignWidth="202" DataContext="{Binding Source={StaticResource Locator}, Path=OngoingOperationViewModel}">
     <UserControl.Resources>
 
     </UserControl.Resources>

@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Deployer.Gui;
 using Deployer.Gui.ViewModels;
+using Deployer.Lumia.Gui.Properties;
 using Deployer.Tasks;
 using Grace.DependencyInjection.Attributes;
 using ReactiveUI;
@@ -61,8 +62,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             };
 
             context.DeploymentOptions = windowsDeploymentOptions;
-            context.DiskLayoutPreparer = settingsService.DiskPreparer;
-
+            
             await CleanDownloadedIfNeeded();
             await deployer.Deploy();
 

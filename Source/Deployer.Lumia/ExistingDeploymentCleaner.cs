@@ -6,13 +6,13 @@ using Serilog;
 
 namespace Deployer.Lumia
 {
-    public class PartitionCleaner : IPartitionCleaner
+    public class ExistingDeploymentCleaner : IExistingDeploymentCleaner
     {
         private Disk disk;
 
         public async Task Clean(IPhone toClean)
         {
-            Log.Information("Performing partition cleanup");
+            Log.Information("Performing cleanup of possible existing deployments");
 
             disk = await toClean.GetDeviceDisk();
 

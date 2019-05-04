@@ -2,7 +2,7 @@
 
 namespace Deployer.Lumia
 {
-    public interface IPartitionCleaner
+    public interface IExistingDeploymentCleaner
     {
         Task Clean(IPhone toClean);
     }

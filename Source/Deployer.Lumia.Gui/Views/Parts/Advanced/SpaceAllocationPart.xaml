@@ -30,9 +30,7 @@
                 </DataTemplate>
             </gui:DiskPreparerSelector.KeepW10MTemplate>
             <gui:DiskPreparerSelector.OverwriteW10PTemplate>
-                <DataTemplate>
-                    <TextBlock>This preparer doesn't have any configurable options</TextBlock>
-                </DataTemplate>
+                <DataTemplate />
             </gui:DiskPreparerSelector.OverwriteW10PTemplate>
         </gui:DiskPreparerSelector>
     </UserControl.Resources>

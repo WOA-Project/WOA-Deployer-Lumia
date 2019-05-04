@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Deployer.Execution;
 using Deployer.FileSystem;
+using Deployer.Lumia.Properties;
 using Deployer.Services;
 using Deployer.Utils;
 

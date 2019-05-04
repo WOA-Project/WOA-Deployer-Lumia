@@ -12,13 +12,13 @@ namespace Deployer.Lumia
     public abstract class LumiaDiskLayoutPreparer : IDiskLayoutPreparer
     {
         private readonly IDeploymentContext context;
-        private readonly IPartitionCleaner cleaner;
+        private readonly IExistingDeploymentCleaner cleaner;
         private Disk disk;
 
         private readonly ByteSize reservedSize = ByteSize.FromMegaBytes(16);
         private readonly ByteSize systemSize = ByteSize.FromMegaBytes(100);
 
-        protected LumiaDiskLayoutPreparer(IDeploymentContext context, IPartitionCleaner cleaner)
+        protected LumiaDiskLayoutPreparer(IDeploymentContext context, IExistingDeploymentCleaner cleaner)
         {
             this.context = context;
             this.cleaner = cleaner;

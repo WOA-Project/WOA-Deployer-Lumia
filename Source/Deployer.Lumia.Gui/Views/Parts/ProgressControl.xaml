@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="35" d:DesignWidth="153.75" DataContext="{Binding Source={StaticResource Locator}, Path=StatusViewModel}">
+             d:DesignHeight="35" d:DesignWidth="153.75" DataContext="{Binding Source={StaticResource Locator}, Path=OngoingOperationViewModel}">
     <Grid>
         <Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1" Visibility="{Binding IsProgressIndeterminate, Converter={StaticResource CollapseOnTrue}}">
             <Grid >

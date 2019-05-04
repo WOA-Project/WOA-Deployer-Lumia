@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Deployer.Gui;
+using Deployer.Lumia.Gui.Properties;
 using Deployer.Tasks;
 using Grace.DependencyInjection.Attributes;
 using ReactiveUI;
@@ -26,7 +27,8 @@ namespace Deployer.Lumia.Gui.ViewModels
             var isChangingDualBoot = new Subject<bool>();
 
             UpdateStatusWrapper =
-                new CommandWrapper<Unit, DualBootStatus>(this, ReactiveCommand.CreateFromTask(GetStatus, isChangingDualBoot),
+                new CommandWrapper<Unit, DualBootStatus>(this,
+                    ReactiveCommand.CreateFromTask(GetStatus, isChangingDualBoot),
                     dialogService);
 
             UpdateStatusWrapper.Command.Subscribe(x =>
@@ -61,7 +63,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 IsEnabled = !IsEnabled;
             });
 
-            
+
             DisableDualBootWrapper.Command.IsExecuting.Select(x => !x).Subscribe(isChangingDualBoot);
             EnableDualBootWrapper.Command.IsExecuting.Select(x => !x).Subscribe(isChangingDualBoot);
 
@@ -93,13 +95,15 @@ namespace Deployer.Lumia.Gui.ViewModels
             set => this.RaiseAndSetIfChanged(ref isUpdated, value);
         }
 
+        private IPhone Phone => (IPhone) context.Device;
+
+        public IObservable<bool> IsBusyObservable { get; }
+
         private async Task EnableDualBoot()
         {
             await Phone.ToogleDualBoot(true);
             Log.Information("Dual Boot enabled");
         }
-
-        private IPhone Phone => (IPhone) context.Device;
 
         private async Task DisableDualBoot()
         {
@@ -110,10 +114,8 @@ namespace Deployer.Lumia.Gui.ViewModels
         private async Task<DualBootStatus> GetStatus()
         {
             var status = await Phone.GetDualBootStatus();
-         
+
             return status;
         }
-
-        public IObservable<bool> IsBusyObservable { get; }
     }
 }

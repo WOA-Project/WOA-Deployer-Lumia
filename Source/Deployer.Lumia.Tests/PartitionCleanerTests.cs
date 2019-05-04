@@ -16,7 +16,7 @@ namespace Deployer.Lumia.Tests
         {
             var phone = new TestPhone(new DiskApi(), null, null);
 
-            var partitionCleaner = new PartitionCleaner();
+            var partitionCleaner = new ExistingDeploymentCleaner();
             await partitionCleaner.Clean(phone);
 
             var disk = await phone.GetDeviceDisk();

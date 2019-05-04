@@ -9,18 +9,27 @@ using Serilog;
 
 namespace Deployer.Lumia.DiskPreparers
 {
-    [Metadata("Name", "Keep Windows 10 Phone")]
+    [Metadata("Name", "Keep Windows 10 Mobile")]
     [Metadata("Order", 0)]
     public class KeepMobileOSDiskLayoutPreparer : LumiaDiskLayoutPreparer
     {
-        public KeepMobileOSDiskLayoutPreparer(IDeploymentContext context, IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IPartitionCleaner cleaner) : base(context, cleaner)
+        public KeepMobileOSDiskLayoutPreparer(IDeploymentContext context, IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators, IExistingDeploymentCleaner cleaner, ISettingsService settingsService) : base(context, cleaner)
         {
             this.spaceAllocators = spaceAllocators;
+            this.settingsService = settingsService;
         }
 
         private readonly IEnumerable<ISpaceAllocator<IPhone>> spaceAllocators;
+        private readonly ISettingsService settingsService;
 
-        public ByteSize SizeReservedForWindows { get; set; } = ByteSize.FromGigaBytes(18);
+        public ByteSize SizeReservedForWindows
+        {
+            get => settingsService.SizeReservedForWindows;
+            set
+            {
+                settingsService.SizeReservedForWindows = value;
+            }
+        }
 
         private async Task AllocateSpace(ByteSize requiredSize)
         {
