@@ -195,7 +195,7 @@ namespace Deployer.Lumia
             var containsWinPhoneBcdGuid =
                 result.Contains(BcdGuids.WinMobile.ToString(), StringComparison.InvariantCultureIgnoreCase);
 
-            return containsWinLoad && containsWinPhoneBcdGuid;
+            return containsWinLoad || containsWinPhoneBcdGuid;
         }
 
         private async Task EnableDualBoot()
@@ -209,6 +209,7 @@ namespace Deployer.Lumia
             invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Windows 10 Phone""");
             invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} path ""\windows\system32\boot\winload.efi""");
             invoker.Invoke($@"/default {{{BcdGuids.WinMobile}}}");
+            invoker.Invoke($@"/displayorder {{{BcdGuids.WinMobile}}} /addfirst");
 
             Log.Verbose("Dual Boot enabled");
         }
