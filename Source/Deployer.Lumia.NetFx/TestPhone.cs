@@ -19,7 +19,7 @@ namespace Deployer.Lumia.NetFx
             {
                 if (true)
                 {
-                    var mainOs = await disk.GetRequiredPartition(PartitionName.MainOs);
+                    var mainOs = await disk.GetPartition(PartitionName.MainOs);
                     if (mainOs != null)
                     {
                         return disk;

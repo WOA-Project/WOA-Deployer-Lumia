@@ -24,8 +24,8 @@ namespace Deployer.Lumia
         private readonly BcdInvokerFactory bcdInvokerFactory;
         private readonly IPhoneModelInfoReader phoneModelInfoReader;
 
-        public Phone(IDiskApi diskApi, IPhoneModelInfoReader phoneModelInfoReader, BcdInvokerFactory bcdInvokerFactory) :
-            base(diskApi)
+        public Phone(IDiskApi diskApi, IPhoneModelInfoReader phoneModelInfoReader,
+            BcdInvokerFactory bcdInvokerFactory) : base(diskApi)
         {
             this.phoneModelInfoReader = phoneModelInfoReader;
             this.bcdInvokerFactory = bcdInvokerFactory;
@@ -63,12 +63,6 @@ namespace Deployer.Lumia
             return status;
         }
 
-        public override async Task<Partition> GetSystemPartition()
-        {
-            var disk = await GetDeviceDisk();
-            return await disk.GetRequiredPartition(PartitionName.System);
-        }
-
         public async Task ToogleDualBoot(bool isEnabled, bool force = false)
         {
             var status = await GetDualBootStatus();
@@ -100,19 +94,36 @@ namespace Deployer.Lumia
             var disk = await GetDeviceDiskCore();
             if (disk.IsOffline)
             {
-                throw new ApplicationException("The phone disk is offline. Please, set it online with Disk Management or DISKPART.");
+                throw new ApplicationException(
+                    "The phone disk is offline. Please, set it online with Disk Management or DISKPART.");
             }
 
             return disk;
         }
 
-        private  async Task<Disk> GetDeviceDiskCore()
+        public override Task<Volume> GetWindowsVolume()
+        {
+            return this.GetOptionalVolumeByPartitionName(PartitionName.Windows);
+        }
+
+        public override async Task<Volume> GetSystemVolume()
+        {
+            return await (await GetDeviceDisk()).GetVolumeByPartitionName(PartitionName.System);
+        }
+
+        public override async Task<Partition> GetSystemPartition()
+        {
+            var disk = await GetDeviceDisk();
+            return await disk.GetOptionalPartition(PartitionName.System);
+        }
+
+        private async Task<Disk> GetDeviceDiskCore()
         {
             var disks = await DiskApi.GetDisks();
 
             var disk = await disks
                 .ToObservable()
-                .SelectMany(async x => new { IsDevice = await IsDeviceDisk(x), Disk = x})
+                .SelectMany(async x => new {IsDevice = await IsDeviceDisk(x), Disk = x})
                 .Where(x => x.IsDevice)
                 .Select(x => x.Disk)
                 .FirstOrDefaultAsync();
@@ -127,7 +138,7 @@ namespace Deployer.Lumia
         }
 
         private static async Task<bool> IsDeviceDisk(Disk disk)
-        {           
+        {
             var hasCorrectSize = HasCorrectSize(disk);
 
             if (!hasCorrectSize)
@@ -150,11 +161,6 @@ namespace Deployer.Lumia
             return lookup.IsSubsetOf(names);
         }
 
-        public override Task<Volume> GetWindowsVolume()
-        {
-            return this.GetVolumeByPartitionName(PartitionName.Windows);
-        }
-
         protected override async Task<bool> IsWoAPresent()
         {
             var disk = await GetDeviceDisk();
@@ -164,12 +170,7 @@ namespace Deployer.Lumia
             }
         }
 
-        public override async Task<Volume> GetSystemVolume()
-        {
-            return await (await GetDeviceDisk()).GetVolumeByPartitionName(PartitionName.System);
-        }
-
-        public async Task<bool> IsWindowsPhonePresent()
+        private async Task<bool> IsWindowsPhonePresent()
         {
             var disk = await GetDeviceDisk();
             using (var context = await GptContextFactory.Create(disk.Number, FileAccess.Read))
@@ -191,10 +192,10 @@ namespace Deployer.Lumia
             var result = invoker.Invoke();
 
             var containsWinLoad = result.Contains(WindowsSystem32BootWinloadEfi, StringComparison.CurrentCultureIgnoreCase);
-            var containsWinPhoneBcdGuid = result.Contains(BcdGuids.WinMobile.ToString(), StringComparison.InvariantCultureIgnoreCase);
+            var containsWinPhoneBcdGuid =
+                result.Contains(BcdGuids.WinMobile.ToString(), StringComparison.InvariantCultureIgnoreCase);
 
             return containsWinLoad && containsWinPhoneBcdGuid;
-
         }
 
         private async Task EnableDualBoot()
