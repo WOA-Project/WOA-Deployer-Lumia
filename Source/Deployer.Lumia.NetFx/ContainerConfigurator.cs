@@ -51,7 +51,7 @@ namespace Deployer.Lumia.NetFx
             block.Export<Downloader>().As<IDownloader>().Lifestyle.Singleton();
             block.Export<ExistingDeploymentCleaner>().As<IExistingDeploymentCleaner>().Lifestyle.Singleton();
             block.ExportFactory((IPhone phone) => new DeploymentContext { Device = phone } ).As<IDeploymentContext>().Lifestyle.Singleton();
-            block.ExportFactory(() => AzureDevOpsClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>().Lifestyle.Singleton();
+            block.ExportFactory(() => AzureDevOpsBuildClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>().Lifestyle.Singleton();
 
             return block;
         }

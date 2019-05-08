@@ -55,7 +55,7 @@ namespace Deployer.Lumia.Tasks
             {
                 await prompt.PickOptions(Resources.DeveloperMenuInstalled, new List<Option>()
                 {
-                    new Option("Continue", DialogValue.OK),
+                    new Option("Continue", OptionValue.OK),
                 });
             }
         }
