@@ -69,7 +69,7 @@
         </TabControl>
 
         <Grid Grid.Row="1" Visibility="{Binding IsBigProgressVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <parts:ProgressPart VerticalAlignment="Center" />
+            <parts:ProgressPart VerticalAlignment="Center" Margin="0 80 0 0" />
         </Grid>
         
         <Expander Grid.Row="2" Header="Log" IsExpanded="False" MaxHeight="400">
