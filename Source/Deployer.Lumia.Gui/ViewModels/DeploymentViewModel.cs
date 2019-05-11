@@ -81,10 +81,10 @@ namespace Deployer.Lumia.Gui.ViewModels
                 return;
             }
 
-            if (fileSystemOperations.DirectoryExists(AppPaths.DownloadedFolderName))
+            if (fileSystemOperations.DirectoryExists(AppPaths.ArtifactDownload))
             {
                 Log.Information("Deleting previously downloaded deployment files");
-                await fileSystemOperations.DeleteDirectory(AppPaths.DownloadedFolderName);
+                await fileSystemOperations.DeleteDirectory(AppPaths.ArtifactDownload);
             }
         }
 

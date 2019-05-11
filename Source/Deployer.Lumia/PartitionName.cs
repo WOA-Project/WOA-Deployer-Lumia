@@ -10,5 +10,6 @@
         public const string Data = "Data";
         public const string Recovery = "Recovery";
         public const string Dpp = "DPP";
+        public const string BackupEfiesp = "BACKUP_EFIESP";
     }
 }

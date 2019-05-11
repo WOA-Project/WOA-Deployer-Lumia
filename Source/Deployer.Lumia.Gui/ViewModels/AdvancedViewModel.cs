@@ -206,9 +206,9 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private async Task DeleteDownloaded(IFileSystemOperations fileSystemOperations)
         {
-            if (fileSystemOperations.DirectoryExists(AppPaths.DownloadedFolderName))
+            if (fileSystemOperations.DirectoryExists(AppPaths.ArtifactDownload))
             {
-                await fileSystemOperations.DeleteDirectory(AppPaths.DownloadedFolderName);
+                await fileSystemOperations.DeleteDirectory(AppPaths.ArtifactDownload);
                 await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.DownloadedFolderDeleted);
             }
             else
