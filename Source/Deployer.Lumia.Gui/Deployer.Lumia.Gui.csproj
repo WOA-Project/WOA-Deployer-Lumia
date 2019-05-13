@@ -251,13 +251,13 @@
       <Project>{f78af625-5811-4d00-b95d-0b2a331152fd}</Project>
       <Name>Deployer.Lumia</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DeployerPlatform\Deployer.Gui\Deployer.Gui.csproj">
-      <Project>{ad8ea86c-af60-4ccf-9caa-07bbf5e039ec}</Project>
-      <Name>Deployer.Gui</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DeployerPlatform\Deployer.NetFx\Deployer.NetFx.csproj">
       <Project>{FBEDAF0E-E2ED-4005-8D83-F980FA67FEB2}</Project>
       <Name>Deployer.NetFx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeployerPlatform\Deployer.UI\Deployer.UI.csproj">
+      <Project>{AD8EA86C-AF60-4CCF-9CAA-07BBF5E039EC}</Project>
+      <Name>Deployer.UI</Name>
     </ProjectReference>
     <ProjectReference Include="..\DeployerPlatform\Deployer\Deployer.csproj">
       <Project>{20d40dc1-0237-47a0-b169-b420159e341c}</Project>

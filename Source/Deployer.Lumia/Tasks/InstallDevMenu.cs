@@ -7,7 +7,7 @@ using Deployer.Execution;
 using Deployer.FileSystem;
 using Deployer.Lumia.Properties;
 using Deployer.Services;
-using Deployer.Utils;
+using Deployer.UI;
 
 namespace Deployer.Lumia.Tasks
 {
@@ -19,19 +19,19 @@ namespace Deployer.Lumia.Tasks
         private readonly IPhone phone;
         private readonly IBcdInvokerFactory bcdInvokerFactory;
         private readonly IFileSystemOperations fileSystemOperations;
-        private readonly IPrompt prompt;
+        private readonly IDialog dialog;
         private string destinationFolder;
         private string bcdPath;
         private string efiEspPath;
         private IBcdInvoker bcdInvoker;
 
-        public InstallDevMenu(string rootFilesPath, IPhone phone, IBcdInvokerFactory bcdInvokerFactory, IFileSystemOperations fileSystemOperations, IPrompt prompt)
+        public InstallDevMenu(string rootFilesPath, IPhone phone, IBcdInvokerFactory bcdInvokerFactory, IFileSystemOperations fileSystemOperations, IDialog dialog)
         {
             this.rootFilesPath = rootFilesPath;
             this.phone = phone;
             this.bcdInvokerFactory = bcdInvokerFactory;
             this.fileSystemOperations = fileSystemOperations;
-            this.prompt = prompt;
+            this.dialog = dialog;
         }
 
         public async Task Execute()
@@ -53,7 +53,7 @@ namespace Deployer.Lumia.Tasks
 
             if (shouldInstall)
             {
-                await prompt.PickOptions(Resources.DeveloperMenuInstalled, new List<Option>()
+                await dialog.PickOptions(Resources.DeveloperMenuInstalled, new List<Option>()
                 {
                     new Option("Continue", OptionValue.OK),
                 });

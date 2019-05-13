@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:gui="clr-namespace:Deployer.Gui;assembly=Deployer.Gui"
              xmlns:dualBoot="clr-namespace:Deployer.Lumia.Gui.Views.Parts.DualBoot"
+             xmlns:ui="clr-namespace:Deployer.UI;assembly=Deployer.UI"
              mc:Ignorable="d"
              d:DesignHeight="561" d:DesignWidth="858.5" DataContext="{Binding Source={StaticResource Locator}, Path=DualBootViewModel}"
              mah:DialogParticipation.Register="{Binding}">
@@ -19,16 +19,16 @@
             <TextBlock Margin="20" FontSize="20" TextWrapping="Wrap" Visibility="{Binding IsUpdated, Converter={StaticResource CollapseOnTrue}}">
                 Please, check the current status in order to see the available options regarding <Bold>Dual Boot</Bold>.
             </TextBlock>
-            <gui:IconButton Margin="18" Height="50" HorizontalAlignment="Center"
+            <ui:IconButton Margin="18" Height="50" HorizontalAlignment="Center"
                                Command="{Binding UpdateStatusWrapper.Command}"
                             IsBusy="{Binding UpdateStatusWrapper.IsExecuting}">
-                <gui:IconButton.Content>
+                <ui:IconButton.Content>
                     Check Status
-                </gui:IconButton.Content>
-                <gui:IconButton.Icon>
+                </ui:IconButton.Content>
+                <ui:IconButton.Icon>
                     <iconPacks:PackIconMaterial Kind="Sync" Style="{StaticResource ButtonIconStyle}" />
-                </gui:IconButton.Icon>
-            </gui:IconButton>
+                </ui:IconButton.Icon>
+            </ui:IconButton>
         </StackPanel>
         <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsUpdated, Converter={StaticResource BooleanToVisibilityConverter}}">
 
@@ -43,11 +43,11 @@
 
                 <Grid>
                     <StackPanel Visibility="{Binding IsEnabled, Converter={StaticResource CollapseOnTrue}}">
-                        <gui:BusyButton Content="Enable Dual Boot" Width="180"
+                        <ui:BusyButton Content="Enable Dual Boot" Width="180"
                                         Command="{Binding EnableDualBootWrapper.Command}"
                                         IsBusy="{Binding EnableDualBootWrapper.IsExecuting}" Image="/Assets/dual.png" />
                     </StackPanel>
-                    <gui:BusyButton Content="Disable Dual Boot"
+                    <ui:BusyButton Content="Disable Dual Boot"
                                     Width="180"
                                     Command="{Binding DisableDualBootWrapper.Command}"
                                     Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"

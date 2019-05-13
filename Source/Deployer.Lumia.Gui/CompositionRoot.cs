@@ -1,15 +1,11 @@
 using System;
-using Deployer.Gui;
-using Deployer.Gui.Services;
-using Deployer.Gui.ViewModels;
 using Deployer.Lumia.Gui.Specifics;
-using Deployer.Lumia.Gui.ViewModels;
 using Deployer.Lumia.NetFx;
 using Deployer.NetFx;
-using Deployer.Tasks;
+using Deployer.UI;
+using Deployer.UI.ViewModels;
 using Grace.DependencyInjection;
 using MahApps.Metro.Controls.Dialogs;
-using ReactiveUI;
 using Serilog;
 using Serilog.Events;
 
@@ -39,6 +35,7 @@ namespace Deployer.Lumia.Gui
                 x.Export<WimPickViewModel>().As<WimPickViewModel>().Lifestyle.Singleton();
                 x.Export<UIServices>().Lifestyle.Singleton();
                 x.Export<Dialog>().ByInterfaces().Lifestyle.Singleton();
+                x.Export<ContextDialog>().ByInterfaces().Lifestyle.Singleton();
                 x.Export<OpenFilePicker>().As<IOpenFilePicker>().Lifestyle.Singleton();
                 x.Export<SaveFilePicker>().As<ISaveFilePicker>().Lifestyle.Singleton();
                 x.Export<LumiaSettingsService>().ByInterfaces().Lifestyle.Singleton();

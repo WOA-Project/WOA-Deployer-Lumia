@@ -4,9 +4,9 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Deployer.Gui;
 using Deployer.Lumia.Gui.Properties;
 using Deployer.Tasks;
+using Deployer.UI;
 using Grace.DependencyInjection;
 using Grace.DependencyInjection.Attributes;
 using ReactiveUI;
@@ -41,16 +41,16 @@ namespace Deployer.Lumia.Gui.ViewModels
             DiskPreparers = diskPreparers;
 
             DeleteDownloadedWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), uiServices.Dialog);
+                ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), uiServices.ContextDialog, context);
             ForceDualBootWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(ForceDualBoot),
-                uiServices.Dialog);
+                uiServices.ContextDialog, context);
             ForceSingleBootWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(ForceDisableDualBoot), uiServices.Dialog);
+                ReactiveCommand.CreateFromTask(ForceDisableDualBoot), uiServices.ContextDialog, context);
 
             BackupCommandWrapper =
-                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Backup), uiServices.Dialog);
+                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Backup), uiServices.ContextDialog, context);
             RestoreCommandWrapper =
-                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Restore), uiServices.Dialog);
+                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Restore), uiServices.ContextDialog, context);
 
             IsBusyObservable = Observable.Merge(DeleteDownloadedWrapper.Command.IsExecuting,
                 BackupCommandWrapper.Command.IsExecuting, RestoreCommandWrapper.Command.IsExecuting,
@@ -132,14 +132,14 @@ namespace Deployer.Lumia.Gui.ViewModels
         {
             await ((IPhone) context.Device).ToogleDualBoot(true, true);
 
-            await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.DualBootEnabled);
+            await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.DualBootEnabled);
         }
 
         private async Task ForceDisableDualBoot()
         {
             await ((IPhone) context.Device).ToogleDualBoot(false, true);
 
-            await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.DualBootDisabled);
+            await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.DualBootDisabled);
         }
 
         private async Task Backup()
@@ -161,7 +161,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             await deployer.Backup(await context.Device.GetWindowsVolume(), imagePath, progress);
 
-            await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.ImageCaptured);
+            await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.ImageCaptured);
         }
 
         private async Task Restore()
@@ -201,7 +201,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             await context.DiskLayoutPreparer.Prepare(await context.Device.GetDeviceDisk());
             await deployer.Deploy(context.DeploymentOptions, context.Device, progress);
 
-            await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.ImageRestored);
+            await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.ImageRestored);
         }
 
         private async Task DeleteDownloaded(IFileSystemOperations fileSystemOperations)
@@ -209,11 +209,11 @@ namespace Deployer.Lumia.Gui.ViewModels
             if (fileSystemOperations.DirectoryExists(AppPaths.ArtifactDownload))
             {
                 await fileSystemOperations.DeleteDirectory(AppPaths.ArtifactDownload);
-                await uiServices.Dialog.ShowAlert(this, Resources.Done, Resources.DownloadedFolderDeleted);
+                await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.DownloadedFolderDeleted);
             }
             else
             {
-                await uiServices.Dialog.ShowAlert(this, Resources.DownloadedFolderNotFoundTitle,
+                await uiServices.ContextDialog.ShowAlert(this, Resources.DownloadedFolderNotFoundTitle,
                     Resources.DownloadedFolderNotFound);
             }
         }

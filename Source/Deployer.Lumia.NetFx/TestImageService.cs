@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Deployer.FileSystem;
 using Deployer.Services;
 
@@ -7,7 +8,7 @@ namespace Deployer.Lumia.NetFx
     public class TestImageService : IWindowsImageService
     {
         public Task ApplyImage(Volume windowsVolume, string imagePath, int imageIndex = 1, bool useCompact = false,
-            IOperationProgress progressObserver = null)
+            IOperationProgress progressObserver = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.Delay(5000);
         }
@@ -22,7 +23,7 @@ namespace Deployer.Lumia.NetFx
             return Task.Delay(5000);
         }
 
-        public Task CaptureImage(Volume windowsVolume, string destination, IOperationProgress progressObserver = null)
+        public Task CaptureImage(Volume windowsVolume, string destination, IOperationProgress progressObserver = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.Delay(5000);
         }

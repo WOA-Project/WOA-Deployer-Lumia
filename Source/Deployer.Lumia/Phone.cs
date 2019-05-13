@@ -189,7 +189,7 @@ namespace Deployer.Lumia
         private async Task<bool> IsWindowsPhoneBcdEntryPresent()
         {
             var invoker = await GetBcdInvoker();
-            var result = invoker.Invoke();
+            var result = await invoker.Invoke();
 
             var containsWinLoad = result.Contains(WindowsSystem32BootWinloadEfi, StringComparison.CurrentCultureIgnoreCase);
             var containsWinPhoneBcdGuid =
@@ -206,10 +206,10 @@ namespace Deployer.Lumia
             await systemPartition.SetGptType(PartitionType.Basic);
 
             var invoker = await GetBcdInvoker();
-            invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Windows 10 Phone""");
-            invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} path ""\windows\system32\boot\winload.efi""");
-            invoker.Invoke($@"/default {{{BcdGuids.WinMobile}}}");
-            invoker.Invoke($@"/displayorder {{{BcdGuids.WinMobile}}} /addfirst");
+            await invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Windows 10 Phone""");
+            await invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} path ""\windows\system32\boot\winload.efi""");
+            await invoker.Invoke($@"/default {{{BcdGuids.WinMobile}}}");
+            await invoker.Invoke($@"/displayorder {{{BcdGuids.WinMobile}}} /addfirst");
 
             Log.Verbose("Dual Boot enabled");
         }
@@ -222,9 +222,9 @@ namespace Deployer.Lumia
             await systemPartition.SetGptType(PartitionType.Esp);
 
             var invoker = await GetBcdInvoker();
-            invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Dummy, please ignore""");
-            invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} path ""dummy""");
-            invoker.Invoke($@"/default {{{BcdGuids.Woa}}}");
+            await invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Dummy, please ignore""");
+            await invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} path ""dummy""");
+            await invoker.Invoke($@"/default {{{BcdGuids.Woa}}}");
             Log.Verbose("Dual Boot disabled");
         }
 

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Deployer.Gui;
-using Deployer.Gui.ViewModels;
 using Deployer.Lumia.Gui.Properties;
 using Deployer.Tasks;
+using Deployer.UI;
+using Deployer.UI.ViewModels;
 using Grace.DependencyInjection.Attributes;
 using ReactiveUI;
 using Serilog;
@@ -43,7 +43,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 .Select(metadata => metadata != null);
 
             FullInstallWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.Dialog);
+                ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.ContextDialog, context);
             IsBusyObservable = FullInstallWrapper.Command.IsExecuting;
             isBusyHelper = IsBusyObservable.ToProperty(this, model => model.IsBusy);
         }

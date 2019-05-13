@@ -3,9 +3,9 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using Deployer.Gui;
 using Deployer.Lumia.Gui.Properties;
 using Deployer.Tasks;
+using Deployer.UI;
 using Grace.DependencyInjection.Attributes;
 using ReactiveUI;
 using Serilog;
@@ -21,7 +21,7 @@ namespace Deployer.Lumia.Gui.ViewModels
         private bool isEnabled;
         private bool isUpdated;
 
-        public DualBootViewModel(IDeploymentContext context, IDialog dialogService)
+        public DualBootViewModel(IDeploymentContext context, IContextDialog dialogService)
         {
             this.context = context;
             var isChangingDualBoot = new Subject<bool>();
@@ -29,7 +29,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             UpdateStatusWrapper =
                 new CommandWrapper<Unit, DualBootStatus>(this,
                     ReactiveCommand.CreateFromTask(GetStatus, isChangingDualBoot),
-                    dialogService);
+                    dialogService, context);
 
             UpdateStatusWrapper.Command.Subscribe(x =>
             {
@@ -44,7 +44,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 ReactiveCommand.CreateFromTask(EnableDualBoot,
                     this.WhenAnyValue(x => x.IsCapable, x => x.IsEnabled,
                             (isCapable, isEnabled) => isCapable && !isEnabled)
-                        .Merge(canChangeDualBoot)), dialogService);
+                        .Merge(canChangeDualBoot)), dialogService, context);
             EnableDualBootWrapper.Command.Subscribe(async _ =>
             {
                 await dialogService.ShowAlert(this, Resources.Done, Resources.DualBootEnabled);
@@ -55,7 +55,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 ReactiveCommand.CreateFromTask(DisableDualBoot,
                     this.WhenAnyValue(x => x.IsCapable, x => x.IsEnabled,
                             (isCapable, isEnabled) => isCapable && isEnabled)
-                        .Merge(canChangeDualBoot)), dialogService);
+                        .Merge(canChangeDualBoot)), dialogService, context);
 
             DisableDualBootWrapper.Command.Subscribe(async _ =>
             {

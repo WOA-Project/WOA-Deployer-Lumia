@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:gui="clr-namespace:Deployer.Gui;assembly=Deployer.Gui"
              xmlns:advanced="clr-namespace:Deployer.Lumia.Gui.Views.Parts.Advanced"
+             xmlns:ui="clr-namespace:Deployer.UI;assembly=Deployer.UI"
              mc:Ignorable="d"
              d:DesignHeight="546" d:DesignWidth="781" Padding="8"
              DataContext="{Binding Source={StaticResource Locator}, Path=AdvancedViewModel}" mah:DialogParticipation.Register="{Binding}">
@@ -49,16 +49,16 @@
         <Grid>
             <GroupBox Header="WOA Partition Maintenance" Padding="20" Margin="0,20,0,0">
                 <UniformGrid Rows="1">
-                    <gui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding BackupCommandWrapper.Command}" Content="Backup" IsBusy="{Binding BackupCommandWrapper.IsExecuting}">
-                        <gui:IconButton.Icon>
+                    <ui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding BackupCommandWrapper.Command}" Content="Backup" IsBusy="{Binding BackupCommandWrapper.IsExecuting}">
+                        <ui:IconButton.Icon>
                             <iconPacks:PackIconModern Kind="Download" Height="30" />
-                        </gui:IconButton.Icon>
-                    </gui:IconButton>
-                    <gui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding RestoreCommandWrapper.Command}" Content="Restore" IsBusy="{Binding RestoreCommandWrapper.IsExecuting}">
-                        <gui:IconButton.Icon>
+                        </ui:IconButton.Icon>
+                    </ui:IconButton>
+                    <ui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding RestoreCommandWrapper.Command}" Content="Restore" IsBusy="{Binding RestoreCommandWrapper.IsExecuting}">
+                        <ui:IconButton.Icon>
                             <iconPacks:PackIconModern Kind="Upload" Height="30" />
-                        </gui:IconButton.Icon>
-                    </gui:IconButton>
+                        </ui:IconButton.Icon>
+                    </ui:IconButton>
                 </UniformGrid>
             </GroupBox>
             <mah:MetroProgressBar DataContext="{Binding Source={StaticResource Locator}, Path=OngoingOperationViewModel}" VerticalAlignment="Bottom"
@@ -75,37 +75,37 @@
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
-                <gui:IconButton HorizontalAlignment="Center" Height="50"
+                <ui:IconButton HorizontalAlignment="Center" Height="50"
                                 Command="{Binding DeleteDownloadedWrapper.Command}"
                                 Content="Delete 'Downloaded' folder" 
                                 IsBusy="{Binding DeleteDownloadedWrapper.IsExecuting}">
-                    <gui:IconButton.Icon>
+                    <ui:IconButton.Icon>
                         <iconPacks:MaterialLight Kind="Delete" Height="30" />
-                    </gui:IconButton.Icon>
-                </gui:IconButton>
+                    </ui:IconButton.Icon>
+                </ui:IconButton>
                 <WrapPanel Grid.Column="1" HorizontalAlignment="Center"  Margin="15 0 0 0">
-                    <gui:IconButton Height="50"
+                    <ui:IconButton Height="50"
                                     Margin="4,0"
                                     Command="{Binding ForceDualBootWrapper.Command}"
                                     IsBusy="{Binding ForceDualBootWrapper.IsExecuting}">
-                        <gui:IconButton.Content>
+                        <ui:IconButton.Content>
                             <TextBlock>Force Dual Boot</TextBlock>
-                        </gui:IconButton.Content>
-                        <gui:IconButton.Icon>
+                        </ui:IconButton.Content>
+                        <ui:IconButton.Icon>
                             <iconPacks:PackIconMaterial Kind="Cogs" Height="30" />
-                        </gui:IconButton.Icon>
-                    </gui:IconButton>
-                    <gui:IconButton HorizontalAlignment="Center" Height="50"
+                        </ui:IconButton.Icon>
+                    </ui:IconButton>
+                    <ui:IconButton HorizontalAlignment="Center" Height="50"
                                     Margin="4,0"
                                     Command="{Binding ForceSingleBootWrapper.Command}"
                                     IsBusy="{Binding ForceSingleBootWrapper.IsExecuting}">
-                        <gui:IconButton.Content>
+                        <ui:IconButton.Content>
                             <TextBlock TextWrapping="Wrap">Force Single Boot</TextBlock>
-                        </gui:IconButton.Content>
-                        <gui:IconButton.Icon>
+                        </ui:IconButton.Content>
+                        <ui:IconButton.Icon>
                             <iconPacks:PackIconFontAwesome Kind="CogSolid" Height="30" />
-                        </gui:IconButton.Icon>
-                    </gui:IconButton>
+                        </ui:IconButton.Icon>
+                    </ui:IconButton>
                 </WrapPanel>
             </Grid>
         </GroupBox>

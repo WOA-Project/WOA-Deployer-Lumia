@@ -1,4 +1,4 @@
-using Deployer.Gui.ViewModels;
+using Deployer.UI.ViewModels;
 using Grace.DependencyInjection;
 
 namespace Deployer.Lumia.Gui.ViewModels

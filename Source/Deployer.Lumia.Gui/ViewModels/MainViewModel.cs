@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using Deployer.Gui;
+using Deployer.UI;
 using Grace.DependencyInjection;
 using ReactiveUI;
 

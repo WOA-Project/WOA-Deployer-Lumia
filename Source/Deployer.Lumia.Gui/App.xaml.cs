@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
-using Deployer.Gui;
 using Deployer.Lumia.Gui.Views;
+using Deployer.UI;
 
 namespace Deployer.Lumia.Gui
 {
