@@ -7,7 +7,6 @@ using Deployer.Execution;
 using Deployer.FileSystem;
 using Deployer.Lumia.Properties;
 using Deployer.Services;
-using Deployer.UI;
 
 namespace Deployer.Lumia.Tasks
 {
@@ -49,7 +48,7 @@ namespace Deployer.Lumia.Tasks
                 await CopyDevMenuFiles();                
             }
 
-            ConfigureBcd();
+            await ConfigureBcd();
 
             if (shouldInstall)
             {
@@ -77,14 +76,14 @@ namespace Deployer.Lumia.Tasks
             await fileSystemOperations.CopyDirectory(Path.Combine(rootFilesPath), destinationFolder);
         }
 
-        private void ConfigureBcd()
+        private async Task ConfigureBcd()
         {
-            bcdInvoker.SafeCreate(BcdGuids.DevMenu,@"/d ""Developer Menu"" /application BOOTAPP");
-            bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} path \Windows\System32\BOOT\developermenu.efi");
-            bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} device partition={efiEspPath}");
-            bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} testsigning on");
-            bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} nointegritychecks on");
-            bcdInvoker.Invoke($@"/displayorder {{{BcdGuids.DevMenu}}} /addlast");
+            await bcdInvoker.SafeCreate(BcdGuids.DevMenu,@"/d ""Developer Menu"" /application BOOTAPP");
+            await bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} path \Windows\System32\BOOT\developermenu.efi");
+            await bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} device partition={efiEspPath}");
+            await bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} testsigning on");
+            await bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} nointegritychecks on");
+            await bcdInvoker.Invoke($@"/displayorder {{{BcdGuids.DevMenu}}} /addlast");
         }
 
         private static string Checksum(string file)

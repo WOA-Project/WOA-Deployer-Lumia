@@ -24,7 +24,7 @@ namespace Deployer.Lumia.Tasks
 
             var bcdPath = efiEsp.Root.CombineRelativeBcdPath();
             var bcdInvoker = bcdInvokerFactory.Create(bcdPath);
-            new BcdConfigurator(bcdInvoker, efiEsp).SetupBcd();                       
+            await new BcdConfigurator(bcdInvoker, efiEsp).SetupBcd();                       
         }
     }
 }

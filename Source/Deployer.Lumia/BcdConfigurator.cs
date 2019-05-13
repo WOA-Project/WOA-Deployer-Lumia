@@ -1,4 +1,5 @@
-﻿using Deployer.FileSystem;
+﻿using System.Threading.Tasks;
+using Deployer.FileSystem;
 using Deployer.Services;
 
 namespace Deployer.Lumia
@@ -15,9 +16,9 @@ namespace Deployer.Lumia
             this.efiEspVolume = efiEspVolume;
         }
 
-        public void SetupBcd()
+        public async Task SetupBcd()
         {
-            SetupBootShim();
+            await SetupBootShim();
             SetupDummy();
             SetupBootMgr();
             SetDisplayOptions();
@@ -37,14 +38,14 @@ namespace Deployer.Lumia
             invoker.Invoke($@"/timeout 30");
         }
 
-        private void SetupBootShim()
+        private async Task SetupBootShim()
         {
-            EnsureBootShim();
+            await EnsureBootShim();
 
-            invoker.Invoke($@"/set {{{BcdGuids.Woa}}} path \EFI\boot\BootShim.efi");
-            invoker.Invoke($@"/set {{{BcdGuids.Woa}}} device partition={efiEspVolume.Root}");
-            invoker.Invoke($@"/set {{{BcdGuids.Woa}}} testsigning on");
-            invoker.Invoke($@"/set {{{BcdGuids.Woa}}} nointegritychecks on");
+            await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} path \EFI\boot\BootShim.efi");
+            await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} device partition={efiEspVolume.Root}");
+            await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} testsigning on");
+            await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} nointegritychecks on");
         }
         
         private void SetupBootMgr()
@@ -56,9 +57,9 @@ namespace Deployer.Lumia
             invoker.Invoke($@"/deletevalue {{bootmgr}} processcustomactionsfirst");
         }
         
-        private void EnsureBootShim()
+        private async Task EnsureBootShim()
         {
-            invoker.SafeCreate(BcdGuids.Woa, $@"/d ""Windows 10"" /application BOOTAPP");                       
+            await invoker.SafeCreate(BcdGuids.Woa, $@"/d ""Windows 10"" /application BOOTAPP");                       
         }
     }
 }
