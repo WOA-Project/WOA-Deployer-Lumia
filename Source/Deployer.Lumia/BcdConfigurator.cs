@@ -19,23 +19,23 @@ namespace Deployer.Lumia
         public async Task SetupBcd()
         {
             await SetupBootShim();
-            SetupDummy();
-            SetupBootMgr();
-            SetDisplayOptions();
+            await SetupDummy();
+            await SetupBootMgr();
+            await SetDisplayOptions();
         }
 
-        private void SetupDummy()
+        private async Task SetupDummy()
         {
-            invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} path dummy");
-            invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Dummy, please ignore""");
+            await invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} path dummy");
+            await invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Dummy, please ignore""");
         }
 
-        private void SetDisplayOptions()
+        private async Task SetDisplayOptions()
         {
-            invoker.Invoke($@"/displayorder {{{BcdGuids.Woa}}}");
-            invoker.Invoke($@"/displayorder {{{BcdGuids.WinMobile}}} /addlast");
-            invoker.Invoke($@"/default {{{BcdGuids.Woa}}}");
-            invoker.Invoke($@"/timeout 30");
+            await invoker.Invoke($@"/displayorder {{{BcdGuids.Woa}}}");
+            await invoker.Invoke($@"/displayorder {{{BcdGuids.WinMobile}}} /addlast");
+            await invoker.Invoke($@"/default {{{BcdGuids.Woa}}}");
+            await invoker.Invoke($@"/timeout 30");
         }
 
         private async Task SetupBootShim()
@@ -48,13 +48,13 @@ namespace Deployer.Lumia
             await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} nointegritychecks on");
         }
         
-        private void SetupBootMgr()
+        private async Task SetupBootMgr()
         {
-            invoker.Invoke($@"/set {{bootmgr}} displaybootmenu on");
-            invoker.Invoke($@"/deletevalue {{bootmgr}} customactions");
-            invoker.Invoke($@"/deletevalue {{bootmgr}} custom:54000001");
-            invoker.Invoke($@"/deletevalue {{bootmgr}} custom:54000002");
-            invoker.Invoke($@"/deletevalue {{bootmgr}} processcustomactionsfirst");
+            await invoker.Invoke($@"/set {{bootmgr}} displaybootmenu on");
+            await invoker.Invoke($@"/deletevalue {{bootmgr}} customactions");
+            await invoker.Invoke($@"/deletevalue {{bootmgr}} custom:54000001");
+            await invoker.Invoke($@"/deletevalue {{bootmgr}} custom:54000002");
+            await invoker.Invoke($@"/deletevalue {{bootmgr}} processcustomactionsfirst");
         }
         
         private async Task EnsureBootShim()
