@@ -28,7 +28,7 @@ namespace Deployer.Lumia
             this.fileSystemOperations = fileSystemOperations;
         }
 
-        public IPhone Phone => (IPhone)context.Device;
+        private IPhone Phone => (IPhone)context.Device;
 
         public async Task Deploy()
         {
@@ -48,7 +48,7 @@ namespace Deployer.Lumia
 
             await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));
             await PatchBootManagerIfNeeded();
-            await SaveMetadata();
+            await MoveMetadataToPhone();
             await PreparePhoneDiskForSafeRemoval();
         }
 
@@ -61,28 +61,13 @@ namespace Deployer.Lumia
             }
         }
 
-        private async Task SaveMetadata()
+        private async Task MoveMetadataToPhone()
         {
             try
             {
-                var dirInfo = new DirectoryInfo("Downloaded");
-                var metadatas = dirInfo.GetFiles("Info.json", SearchOption.AllDirectories);
                 var windowsVolume = await context.Device.GetWindowsVolume();
-
-                foreach (var metadata in metadatas)
-                {
-                    try
-                    {
-                        var name = metadata.Directory.Name;
-                        var destination = Path.Combine(windowsVolume.Root, "Windows", "Logs", "WOA-Deployer", $"{name}.json");
-                        await fileSystemOperations.Copy(metadata.FullName, destination);
-                        await fileSystemOperations.DeleteFile(metadata.FullName);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e, "Cannot write metadata for {Metadata}", metadata.FullName);
-                    }
-                }
+                var destination = Path.Combine(windowsVolume.Root, "Windows", "Logs", "WOA-Deployer");
+                await fileSystemOperations.CopyDirectory(AppPaths.Metadata, destination);
             }
             catch (Exception e)
             {
