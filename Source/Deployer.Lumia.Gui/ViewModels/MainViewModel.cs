@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,9 +18,14 @@ namespace Deployer.Lumia.Gui.ViewModels
         private const string DonationLink = "https://github.com/WoA-project/WOA-Deployer/blob/master/Docs/Donations.md";
         private const string HelpLink = "https://github.com/WOA-Project/WOA-Deployer-Lumia#need-help";
 
-        public MainViewModel(IList<Meta<ISection>> sections)
+        public MainViewModel(IList<Meta<ISection>> sections, IList<IBusy> busies)
         {
-            var isBusyObs = sections.Select(x => x.Value.IsBusyObservable).Merge();
+            if (!busies.Any())
+            {
+                throw new ArgumentException("We should get at least one Busy item!");
+            }
+
+            var isBusyObs = busies.Select(x => x.IsBusyObservable).Merge();
 
             DonateCommand = ReactiveCommand.Create(() => { Process.Start(DonationLink); });
             HelpCommand = ReactiveCommand.Create(() => { Process.Start(HelpLink); });

@@ -45,6 +45,7 @@ namespace Deployer.Lumia.Gui
                 x.ExportAssemblies(Assemblies.AppDomainAssemblies)
                     .Where(y => typeof(ISection).IsAssignableFrom(y))
                     .ByInterface<ISection>()
+                    .ByInterface<IBusy>()
                     .ByType()
                     .ExportAttributedTypes()
                     .Lifestyle.Singleton();

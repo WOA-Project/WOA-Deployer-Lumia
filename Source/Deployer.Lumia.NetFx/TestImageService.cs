@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Deployer.FileSystem;
 using Deployer.Services;
@@ -13,9 +14,10 @@ namespace Deployer.Lumia.NetFx
             return Task.Delay(5000);
         }
 
-        public Task InjectDrivers(string path, Volume windowsPartition)
+        public async Task<IList<string>> InjectDrivers(string path, Volume windowsPartition)
         {
-            return Task.Delay(5000);
+            await Task.Delay(5000);
+            return new List<string>();
         }
 
         public Task RemoveDriver(string path, Volume volume)

@@ -28,7 +28,7 @@ namespace Deployer.Lumia
             this.fileSystemOperations = fileSystemOperations;
         }
 
-        public IPhone Phone => (IPhone) context.Device;
+        public IPhone Phone => (IPhone)context.Device;
 
         public async Task Deploy()
         {
@@ -63,21 +63,30 @@ namespace Deployer.Lumia
 
         private async Task SaveMetadata()
         {
-            var dirInfo = new DirectoryInfo("Downloaded");
-            var metadatas = dirInfo.GetFiles("Info.json", SearchOption.AllDirectories);
-            foreach (var metadata in metadatas)
+            try
             {
+                var dirInfo = new DirectoryInfo("Downloaded");
+                var metadatas = dirInfo.GetFiles("Info.json", SearchOption.AllDirectories);
                 var windowsVolume = await context.Device.GetWindowsVolume();
-                if (metadata.Directory != null)
+
+                foreach (var metadata in metadatas)
                 {
-                    var name = metadata.Directory.Name;
-                    var destination = Path.Combine(windowsVolume.Root, "Windows", "Logs", "WOA-Deployer", $"{name}.json");
-                    await fileSystemOperations.Copy(metadata.FullName, destination);
+                    try
+                    {
+                        var name = metadata.Directory.Name;
+                        var destination = Path.Combine(windowsVolume.Root, "Windows", "Logs", "WOA-Deployer", $"{name}.json");
+                        await fileSystemOperations.Copy(metadata.FullName, destination);
+                        await fileSystemOperations.DeleteFile(metadata.FullName);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e, "Cannot write metadata for {Metadata}", metadata.FullName);
+                    }
                 }
-                else
-                {
-                    Log.Debug("Cannot write metadata on the phone");
-                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e,"Cannot write metadata");
             }
         }
 
