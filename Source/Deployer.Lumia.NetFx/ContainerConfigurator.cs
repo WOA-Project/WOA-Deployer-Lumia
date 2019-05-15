@@ -20,11 +20,6 @@ namespace Deployer.Lumia.NetFx
     {
         public static IExportRegistrationBlock Configure(this IExportRegistrationBlock block)
         {
-            return WithCommon(block).WithRealPhone();
-        }
-
-        public static IExportRegistrationBlock WithCommon(this IExportRegistrationBlock block)
-        {
             var taskTypes = from a in Assemblies.AppDomainAssemblies
                             from type in a.ExportedTypes
                             where type.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IDeploymentTask))
@@ -46,29 +41,16 @@ namespace Deployer.Lumia.NetFx
             block.Export<FileSystemOperations>().As<IFileSystemOperations>().Lifestyle.Singleton();
             block.Export<BcdInvokerFactory>().As<IBcdInvokerFactory>().Lifestyle.Singleton();
             block.Export<WindowsDeployer>().As<IWindowsDeployer>().Lifestyle.Singleton();
-            block.ExportFactory(() => new HttpClient {Timeout = TimeSpan.FromMinutes(30)}).Lifestyle.Singleton();
+            block.ExportFactory(() => new HttpClient { Timeout = TimeSpan.FromMinutes(30) }).Lifestyle.Singleton();
             block.ExportFactory(() => new GitHubClient(new ProductHeaderValue("WOADeployer"))).As<IGitHubClient>().Lifestyle.Singleton();
             block.Export<Downloader>().As<IDownloader>().Lifestyle.Singleton();
             block.Export<ExistingDeploymentCleaner>().As<IExistingDeploymentCleaner>().Lifestyle.Singleton();
-            block.ExportFactory((IPhone phone) => new DeploymentContext { Device = phone } ).As<IDeploymentContext>().Lifestyle.Singleton();
+            block.ExportFactory((IPhone phone) => new DeploymentContext { Device = phone }).As<IDeploymentContext>().Lifestyle.Singleton();
+            block.Export<OperationContext>().As<IOperationContext>().Lifestyle.Singleton();
             block.ExportFactory(() => AzureDevOpsBuildClient.Create(new Uri("https://dev.azure.com"))).As<IAzureDevOpsBuildClient>().Lifestyle.Singleton();
-
-            return block;
-        }
-
-        private static IExportRegistrationBlock WithRealPhone(this IExportRegistrationBlock block)
-        {
             block.Export<PhoneModelInfoInfoReader>().As<IPhoneModelInfoReader>().Lifestyle.Singleton();
             block.Export<Phone>().As<IPhone>().Lifestyle.Singleton();
             block.Export<DismImageService>().As<IWindowsImageService>().Lifestyle.Singleton();
-            return block;
-        }
-
-        private static IExportRegistrationBlock WithTestingPhone(this IExportRegistrationBlock block)
-        {
-            block.Export<TestPhoneModelInfoReader>().As<IPhoneModelInfoReader>().Lifestyle.Singleton();
-            block.Export<TestPhone>().As<IPhone>().Lifestyle.Singleton();
-            block.Export<TestImageService>().As<IWindowsImageService>().Lifestyle.Singleton();
 
             return block;
         }

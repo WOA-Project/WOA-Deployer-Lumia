@@ -28,6 +28,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         public DeploymentViewModel(
             IDeploymentContext context,
+            IOperationContext operationContext,
             IWoaDeployer deployer, UIServices uiServices, AdvancedViewModel advancedViewModel,
             WimPickViewModel wimPickViewModel, IFileSystemOperations fileSystemOperations, ILumiaSettingsService lumiaSettingsService)
         {
@@ -43,7 +44,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 .Select(metadata => metadata != null);
 
             FullInstallWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.ContextDialog, context);
+                ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.ContextDialog, operationContext);
             IsBusyObservable = FullInstallWrapper.Command.IsExecuting;
             isBusyHelper = IsBusyObservable.ToProperty(this, model => model.IsBusy);
         }

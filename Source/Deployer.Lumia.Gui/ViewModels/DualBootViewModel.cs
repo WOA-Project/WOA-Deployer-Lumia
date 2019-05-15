@@ -21,7 +21,7 @@ namespace Deployer.Lumia.Gui.ViewModels
         private bool isEnabled;
         private bool isUpdated;
 
-        public DualBootViewModel(IDeploymentContext context, IContextDialog dialogService)
+        public DualBootViewModel(IDeploymentContext context, IContextDialog dialogService, IOperationContext operationContext)
         {
             this.context = context;
             var isChangingDualBoot = new Subject<bool>();
@@ -29,7 +29,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             UpdateStatusWrapper =
                 new CommandWrapper<Unit, DualBootStatus>(this,
                     ReactiveCommand.CreateFromTask(GetStatus, isChangingDualBoot),
-                    dialogService, context);
+                    dialogService, operationContext);
 
             UpdateStatusWrapper.Command.Subscribe(x =>
             {
@@ -44,7 +44,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 ReactiveCommand.CreateFromTask(EnableDualBoot,
                     this.WhenAnyValue(x => x.IsCapable, x => x.IsEnabled,
                             (isCapable, isEnabled) => isCapable && !isEnabled)
-                        .Merge(canChangeDualBoot)), dialogService, context);
+                        .Merge(canChangeDualBoot)), dialogService, operationContext);
             EnableDualBootWrapper.Command.Subscribe(async _ =>
             {
                 await dialogService.ShowAlert(this, Resources.Done, Resources.DualBootEnabled);
@@ -55,7 +55,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 ReactiveCommand.CreateFromTask(DisableDualBoot,
                     this.WhenAnyValue(x => x.IsCapable, x => x.IsEnabled,
                             (isCapable, isEnabled) => isCapable && isEnabled)
-                        .Merge(canChangeDualBoot)), dialogService, context);
+                        .Merge(canChangeDualBoot)), dialogService, operationContext);
 
             DisableDualBootWrapper.Command.Subscribe(async _ =>
             {

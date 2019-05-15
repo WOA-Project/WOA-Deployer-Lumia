@@ -27,7 +27,7 @@ namespace Deployer.Lumia.Gui.ViewModels
         private Meta<IDiskLayoutPreparer> selectedPreparer;
 
         public AdvancedViewModel(ILumiaSettingsService lumiaSettingsService, IFileSystemOperations fileSystemOperations,
-            UIServices uiServices, IDeploymentContext context,
+            UIServices uiServices, IDeploymentContext context, IOperationContext operationContext,
             IList<Meta<IDiskLayoutPreparer>> diskPreparers,
             IWindowsDeployer deployer,
             IOperationProgress progress)
@@ -41,16 +41,16 @@ namespace Deployer.Lumia.Gui.ViewModels
             DiskPreparers = diskPreparers;
 
             DeleteDownloadedWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), uiServices.ContextDialog, context);
+                ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), uiServices.ContextDialog, operationContext);
             ForceDualBootWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(ForceDualBoot),
-                uiServices.ContextDialog, context);
+                uiServices.ContextDialog, operationContext);
             ForceSingleBootWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(ForceDisableDualBoot), uiServices.ContextDialog, context);
+                ReactiveCommand.CreateFromTask(ForceDisableDualBoot), uiServices.ContextDialog, operationContext);
 
             BackupCommandWrapper =
-                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Backup), uiServices.ContextDialog, context);
+                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Backup), uiServices.ContextDialog, operationContext);
             RestoreCommandWrapper =
-                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Restore), uiServices.ContextDialog, context);
+                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Restore), uiServices.ContextDialog, operationContext);
 
             IsBusyObservable = Observable.Merge(DeleteDownloadedWrapper.Command.IsExecuting,
                 BackupCommandWrapper.Command.IsExecuting, RestoreCommandWrapper.Command.IsExecuting,
