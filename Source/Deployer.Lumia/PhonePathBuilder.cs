@@ -8,9 +8,9 @@ namespace Deployer.Lumia
 {
     public class PhonePathBuilder : IPathBuilder
     {
-        private readonly IPhone phone;
+        private readonly IDevice phone;
 
-        public PhonePathBuilder(IPhone phone)
+        public PhonePathBuilder(IDevice phone)
         {
             this.phone = phone;
         }

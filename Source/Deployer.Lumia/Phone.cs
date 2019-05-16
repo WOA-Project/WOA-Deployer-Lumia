@@ -166,7 +166,7 @@ namespace Deployer.Lumia
             var disk = await GetDeviceDisk();
             using (var context = await GptContextFactory.Create(disk.Number, FileAccess.Read))
             {
-                return context.Get(PartitionName.Data) != null && context.Get(PartitionName.System) != null;
+                return context.Get(PartitionName.Windows) != null && context.Get(PartitionName.System) != null;
             }
         }
 
