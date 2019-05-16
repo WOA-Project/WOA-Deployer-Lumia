@@ -3,16 +3,16 @@ FetchAzureDevOpsArtifact "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
 FetchGitHubLatestReleaseAsset "https://github.com/WOA-Project/Lumia950XLPkg" "MSM8992.UEFI.Lumia.950.zip"
 FetchGitHubBranch "https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers" "1905"
 # Configuring device
-Copy "Deployment\MSM8992.UEFI.Lumia.950\ELF\UEFI.elf" "[EFIESP]\"
-Copy "Deployment\UEFI Loader for 8992 and 8994\ARM\Debug\BootShim.efi" "[EFIESP]\EFI\boot\"
+Copy "Downloaded\MSM8992.UEFI.Lumia.950\ELF\UEFI.elf" "[EFIESP]\"
+Copy "Downloaded\UEFI Loader for 8992 and 8994\ARM\Debug\BootShim.efi" "[EFIESP]\EFI\boot\"
 ConfigureBCD
 InstallDevMenu "Core\Developer Menu\"
 # Deploying Windows
 DeployWindows
 CopyDirectory "[DPP]" "[Windows]\DPP"
 # Injecting Drivers
-InjectDrivers "Deployment\MSM8994-8992-NT-ARM64-Drivers\msm8992"
-InjectDrivers "Deployment\MSM8994-8992-NT-ARM64-Drivers\Device Specifics\MMO"
-InjectDrivers "Deployment\MSM8994-8992-NT-ARM64-Drivers\Device Specifics\Talkman\Common"
-InjectDrivers "Deployment\MSM8994-8992-NT-ARM64-Drivers\Device Specifics\Talkman\DualSIM"
-DisplayMarkdown "Deployment\MSM8994-8992-NT-ARM64-Drivers\README.md"
+InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\msm8992"
+InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\Device Specifics\MMO"
+InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\Device Specifics\Talkman\Common"
+InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\Device Specifics\Talkman\DualSIM"
+DisplayMarkdown "Downloaded\MSM8994-8992-NT-ARM64-Drivers\README.md"
