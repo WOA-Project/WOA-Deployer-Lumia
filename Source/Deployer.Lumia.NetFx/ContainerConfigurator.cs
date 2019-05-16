@@ -51,6 +51,7 @@ namespace Deployer.Lumia.NetFx
             block.Export<PhoneModelInfoInfoReader>().As<IPhoneModelInfoReader>().Lifestyle.Singleton();
             block.Export<Phone>().As<IPhone>().Lifestyle.Singleton();
             block.Export<DismImageService>().As<IWindowsImageService>().Lifestyle.Singleton();
+            block.Export<LogCollector>().As<ILogCollector>().Lifestyle.Singleton();
 
             return block;
         }

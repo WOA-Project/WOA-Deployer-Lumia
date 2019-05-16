@@ -70,44 +70,48 @@
             </mah:MetroProgressBar>
         </Grid>
         <GroupBox Header="Misc" Padding="10" Margin="0 20 0 0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="5*" />
-                </Grid.ColumnDefinitions>
-                <ui:IconButton HorizontalAlignment="Center" Height="50"
-                                Command="{Binding DeleteDownloadedWrapper.Command}"
-                                Content="Delete 'Downloaded' folder" 
-                                IsBusy="{Binding DeleteDownloadedWrapper.IsExecuting}">
+            <UniformGrid>
+                <UniformGrid.Resources>
+                    <Style TargetType="ui:IconButton">
+                        <Setter Property="Height" Value="50" />
+                        <Setter Property="Margin" Value="3"></Setter>
+                    </Style>
+                </UniformGrid.Resources>
+                <ui:IconButton Command="{Binding DeleteDownloadedWrapper.Command}"
+                               Content="Delete 'Downloaded' folder"
+                               IsBusy="{Binding DeleteDownloadedWrapper.IsExecuting}">
                     <ui:IconButton.Icon>
                         <iconPacks:MaterialLight Kind="Delete" Height="30" />
                     </ui:IconButton.Icon>
                 </ui:IconButton>
-                <WrapPanel Grid.Column="1" HorizontalAlignment="Center"  Margin="15 0 0 0">
-                    <ui:IconButton Height="50"
-                                    Margin="4,0"
-                                    Command="{Binding ForceDualBootWrapper.Command}"
-                                    IsBusy="{Binding ForceDualBootWrapper.IsExecuting}">
-                        <ui:IconButton.Content>
-                            <TextBlock>Force Dual Boot</TextBlock>
-                        </ui:IconButton.Content>
-                        <ui:IconButton.Icon>
-                            <iconPacks:PackIconMaterial Kind="Cogs" Height="30" />
-                        </ui:IconButton.Icon>
-                    </ui:IconButton>
-                    <ui:IconButton HorizontalAlignment="Center" Height="50"
-                                    Margin="4,0"
-                                    Command="{Binding ForceSingleBootWrapper.Command}"
-                                    IsBusy="{Binding ForceSingleBootWrapper.IsExecuting}">
-                        <ui:IconButton.Content>
-                            <TextBlock TextWrapping="Wrap">Force Single Boot</TextBlock>
-                        </ui:IconButton.Content>
-                        <ui:IconButton.Icon>
-                            <iconPacks:PackIconFontAwesome Kind="CogSolid" Height="30" />
-                        </ui:IconButton.Icon>
-                    </ui:IconButton>
-                </WrapPanel>
-            </Grid>
+                <ui:IconButton Command="{Binding ForceDualBootWrapper.Command}"
+                               IsBusy="{Binding ForceDualBootWrapper.IsExecuting}">
+                    <ui:IconButton.Content>
+                        <TextBlock>Force Dual Boot</TextBlock>
+                    </ui:IconButton.Content>
+                    <ui:IconButton.Icon>
+                        <iconPacks:PackIconMaterial Kind="Cogs" Height="30" />
+                    </ui:IconButton.Icon>
+                </ui:IconButton>
+                <ui:IconButton Command="{Binding CollectLogsCommmandWrapper.Command}"
+                               IsBusy="{Binding CollectLogsCommmandWrapper.IsExecuting}">
+                    <ui:IconButton.Content>
+                        <TextBlock TextWrapping="Wrap">Collect phone logs</TextBlock>
+                    </ui:IconButton.Content>
+                    <ui:IconButton.Icon>
+                        <iconPacks:PackIconOcticons Kind="Package" Height="30" />
+                    </ui:IconButton.Icon>
+                </ui:IconButton>
+                <ui:IconButton Command="{Binding ForceSingleBootWrapper.Command}"
+                               IsBusy="{Binding ForceSingleBootWrapper.IsExecuting}">
+                    <ui:IconButton.Content>
+                        <TextBlock>Force Single Boot</TextBlock>
+                    </ui:IconButton.Content>
+                    <ui:IconButton.Icon>
+                        <iconPacks:PackIconFontAwesome Kind="CogSolid" Height="30" />
+                    </ui:IconButton.Icon>
+                </ui:IconButton>
+            </UniformGrid>
         </GroupBox>
     </StackPanel>
 </UserControl>

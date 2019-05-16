@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -17,8 +19,10 @@ namespace Deployer.Lumia.Gui.ViewModels
     [Metadata("Order", 2)]
     public class AdvancedViewModel : ReactiveObject, ISection, IDisposable
     {
+        private const string LogsZipName = "PhoneLogs.zip";
         private readonly IDeploymentContext context;
         private readonly IWindowsDeployer deployer;
+        private readonly ILogCollector logCollector;
         private readonly IDisposable preparerUpdater;
         private readonly IOperationProgress progress;
         private readonly ILumiaSettingsService lumiaSettingsService;
@@ -30,12 +34,14 @@ namespace Deployer.Lumia.Gui.ViewModels
             UIServices uiServices, IDeploymentContext context, IOperationContext operationContext,
             IList<Meta<IDiskLayoutPreparer>> diskPreparers,
             IWindowsDeployer deployer,
+            ILogCollector logCollector,
             IOperationProgress progress)
         {
             this.lumiaSettingsService = lumiaSettingsService;
             this.uiServices = uiServices;
             this.context = context;
             this.deployer = deployer;
+            this.logCollector = logCollector;
             this.progress = progress;
 
             DiskPreparers = diskPreparers;
@@ -52,9 +58,12 @@ namespace Deployer.Lumia.Gui.ViewModels
             RestoreCommandWrapper =
                 new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Restore), uiServices.ContextDialog, operationContext);
 
+            CollectLogsCommmandWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(CollectLogs), uiServices.ContextDialog, operationContext);
+
             IsBusyObservable = Observable.Merge(DeleteDownloadedWrapper.Command.IsExecuting,
                 BackupCommandWrapper.Command.IsExecuting, RestoreCommandWrapper.Command.IsExecuting,
-                ForceDualBootWrapper.Command.IsExecuting, ForceSingleBootWrapper.Command.IsExecuting);
+                ForceDualBootWrapper.Command.IsExecuting, ForceSingleBootWrapper.Command.IsExecuting,
+                CollectLogsCommmandWrapper.Command.IsExecuting);
 
             preparerUpdater = this.WhenAnyValue(x => x.SelectedPreparer)
                 .Where(x => x != null)
@@ -65,6 +74,23 @@ namespace Deployer.Lumia.Gui.ViewModels
                 });
 
             SelectedPreparer = GetInitialDiskPreparer();
+        }
+
+        private async Task CollectLogs()
+        {
+            await logCollector.Collect(context.Device, LogsZipName);
+            var fileInfo = new FileInfo(LogsZipName);
+            ExploreFile(fileInfo.FullName);
+        }
+
+        private void ExploreFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+            //Clean up file path so it can be navigated OK
+            Process.Start("explorer.exe", $"/select,\"{filePath}\"");
         }
 
         private Meta<IDiskLayoutPreparer> GetInitialDiskPreparer()
@@ -114,6 +140,8 @@ namespace Deployer.Lumia.Gui.ViewModels
                 this.RaisePropertyChanged(nameof(CleanDownloadedBeforeDeployment));
             }
         }
+
+        public CommandWrapper<Unit, Unit> CollectLogsCommmandWrapper { get; }
 
         public CommandWrapper<Unit, Unit> ForceDualBootWrapper { get; }
 
