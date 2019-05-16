@@ -66,6 +66,10 @@
       <Project>{FBEDAF0E-E2ED-4005-8D83-F980FA67FEB2}</Project>
       <Name>Deployer.NetFx</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DeployerPlatform\Deployer.UI\Deployer.UI.csproj">
+      <Project>{FD4462AC-5EB1-4923-A5D6-83DE6C102817}</Project>
+      <Name>Deployer.UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DeployerPlatform\Deployer\Deployer.csproj">
       <Project>{20d40dc1-0237-47a0-b169-b420159e341c}</Project>
       <Name>Deployer</Name>

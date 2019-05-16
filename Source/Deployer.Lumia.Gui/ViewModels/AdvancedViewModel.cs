@@ -237,12 +237,12 @@ namespace Deployer.Lumia.Gui.ViewModels
             if (fileSystemOperations.DirectoryExists(AppPaths.ArtifactDownload))
             {
                 await fileSystemOperations.DeleteDirectory(AppPaths.ArtifactDownload);
-                await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.DownloadedFolderDeleted);
+                await uiServices.ContextDialog.ShowAlert(this, Resources.Done, UI.Properties.Resources.DownloadedFolderDeleted);
             }
             else
             {
-                await uiServices.ContextDialog.ShowAlert(this, Resources.DownloadedFolderNotFoundTitle,
-                    Resources.DownloadedFolderNotFound);
+                await uiServices.ContextDialog.ShowAlert(this, UI.Properties.Resources.DownloadedFolderNotFoundTitle,
+                    UI.Properties.Resources.DownloadedFolderNotFound);
             }
         }
     }

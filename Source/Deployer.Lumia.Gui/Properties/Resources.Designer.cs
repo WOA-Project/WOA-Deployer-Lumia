@@ -97,33 +97,6 @@ namespace Deployer.Lumia.Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The downloaded files have been deleted successfully.
-        /// </summary>
-        public static string DownloadedFolderDeleted {
-            get {
-                return ResourceManager.GetString("DownloadedFolderDeleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The &apos;Downloaded&apos; folder hasn&apos;t been found..
-        /// </summary>
-        public static string DownloadedFolderNotFound {
-            get {
-                return ResourceManager.GetString("DownloadedFolderNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Nothing to delete.
-        /// </summary>
-        public static string DownloadedFolderNotFoundTitle {
-            get {
-                return ResourceManager.GetString("DownloadedFolderNotFoundTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Dual Boot Disabled!.
         /// </summary>
         public static string DualBootDisabled {
@@ -194,15 +167,6 @@ namespace Deployer.Lumia.Gui.Properties {
         public static string WindowsDeployedSuccessfully {
             get {
                 return ResourceManager.GetString("WindowsDeployedSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deployment successful.
-        /// </summary>
-        public static string WindowsDeployedSuccessfullyTitle {
-            get {
-                return ResourceManager.GetString("WindowsDeployedSuccessfullyTitle", resourceCulture);
             }
         }
     }

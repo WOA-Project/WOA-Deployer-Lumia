@@ -10,7 +10,7 @@
                  xmlns:dualBoot="clr-namespace:Deployer.Lumia.Gui.Views.Parts.DualBoot"
                  xmlns:advanced="clr-namespace:Deployer.Lumia.Gui.Views.Parts.Advanced"
                  mc:Ignorable="d"
-                 DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
+                 DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModelBase}"
                  mah:DialogParticipation.Register="{Binding}"
                  Title="{Binding Title}" 
                  Icon="/Assets/appicon.png"

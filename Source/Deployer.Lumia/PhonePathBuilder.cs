@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Deployer.Tasks;
 
 namespace Deployer.Lumia
 {
     public class PhonePathBuilder : IPathBuilder
     {
-        private readonly IDevice phone;
+        private readonly IDeploymentContext deploymentContext;
 
-        public PhonePathBuilder(IDevice phone)
+        public PhonePathBuilder(IDeploymentContext deploymentContext)
         {
-            this.phone = phone;
+            this.deploymentContext = deploymentContext;
         }
 
         public async Task<string> Replace(string str)
         {
             IDictionary<string, Func<Task<string>>> mappings = new Dictionary<string, Func<Task<string>>>()
             {
-                { @"\[EFIESP\]", async () => (await phone.GetVolumeByPartitionName(PartitionName.EfiEsp)).Root},
-                { @"\[DPP\]", async () => (await phone.GetVolumeByPartitionName(PartitionName.Dpp)).Root },                
-                { @"\[Windows\]", async () => (await phone.GetWindowsVolume()).Root },                
-                { @"\[System\]", async () => (await phone.GetSystemVolume()).Root },
+                { @"\[EFIESP\]", async () => (await Device.GetVolumeByPartitionName(PartitionName.EfiEsp)).Root},
+                { @"\[DPP\]", async () => (await Device.GetVolumeByPartitionName(PartitionName.Dpp)).Root },                
+                { @"\[Windows\]", async () => (await Device.GetWindowsVolume()).Root },                
+                { @"\[System\]", async () => (await Device.GetSystemVolume()).Root },
             };
 
             foreach (var mapping in mappings)
@@ -37,5 +38,7 @@ namespace Deployer.Lumia
             
             return str;
         }
+
+        private IDevice Device => deploymentContext.Device;
     }
 }

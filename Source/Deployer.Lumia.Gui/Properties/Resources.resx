@@ -162,18 +162,6 @@ By clicking "OK" you accept the aforementioned risks.</value>
   <data name="AppTitle" xml:space="preserve">
     <value>WOA Deployer for Lumia v{0}</value>
   </data>
-  <data name="WindowsDeployedSuccessfullyTitle" xml:space="preserve">
-    <value>Deployment successful</value>
-  </data>
-  <data name="DownloadedFolderDeleted" xml:space="preserve">
-    <value>The downloaded files have been deleted successfully</value>
-  </data>
-  <data name="DownloadedFolderNotFound" xml:space="preserve">
-    <value>The 'Downloaded' folder hasn't been found.</value>
-  </data>
-  <data name="DownloadedFolderNotFoundTitle" xml:space="preserve">
-    <value>Nothing to delete</value>
-  </data>
   <data name="ImageCaptured" xml:space="preserve">
     <value>Image captured</value>
   </data>

@@ -12,7 +12,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             container = CompositionRoot.CreateContainer();
         }
 
-        public MainViewModel MainViewModel => container.Locate<MainViewModel>();
+        public MainViewModel MainViewModelBase => container.Locate<MainViewModel>();
 
         public WimPickViewModel WimPickViewModel => container.Locate<WimPickViewModel>();
 
