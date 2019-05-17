@@ -11,7 +11,7 @@
 1. Your browser will download a .zip file. Save it or open it directly.
 1. Extract the .zip file to a new empty folder, preferably one that doesn't contain spaces in the path, like "c:\temp\W10IsoScripts"
 1. Execute the script **aria2_download_windows.cmd** and wait for it to complete.
-1. When the script has finished, you will find a **.iso ** inside, as a result of the process.
+1. When the script has finished, you will find a **.iso** inside, as a result of the process.
 1. Mount the .iso file with Windows Explorer by double clicking it.
 1. Navigate to the folder x:\sources, where **x:** is the drive letter of the mounted .iso file.
 1. Inside this "sources" folder you will find the **install.wim** that WoA Installer needs to deploy Windows
