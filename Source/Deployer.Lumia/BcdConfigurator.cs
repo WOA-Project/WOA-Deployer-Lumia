@@ -26,8 +26,7 @@ namespace Deployer.Lumia
 
         private async Task SetupDummy()
         {
-            await invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} path dummy");
-            await invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Dummy, please ignore""");
+            await invoker.Invoke($@"/set {{{BcdGuids.WinMobile}}} description ""Lumia MainOS""");
         }
 
         private async Task SetDisplayOptions()
