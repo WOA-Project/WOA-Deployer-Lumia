@@ -1,7 +1,7 @@
 # WOA Deployer for Lumia
 The application to install Full Windows 10 into your Lumia 950s!
 
-![image](Docs/Screenshot.png)
+![Screenshot](Docs/Screenshot.png)
  
 Lumia 950 and 950 XL are very special phones. They have **the superpower to run Windows 10 ARM64**. Using this tool you will be able to give them new life. Because there's life after Windows Mobile 😉
 
