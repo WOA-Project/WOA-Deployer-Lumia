@@ -13,7 +13,7 @@ namespace Deployer.Lumia
     {
         private readonly IDeploymentContext context;
         private readonly IExistingDeploymentCleaner cleaner;
-        private Disk disk;
+        private IDisk disk;
 
         private readonly ByteSize reservedSize = ByteSize.FromMegaBytes(16);
         private readonly ByteSize systemSize = ByteSize.FromMegaBytes(100);
@@ -24,7 +24,7 @@ namespace Deployer.Lumia
             this.cleaner = cleaner;
         }
 
-        public async Task Prepare(Disk diskToPrepare)
+        public async Task Prepare(IDisk diskToPrepare)
         {
             disk = diskToPrepare;
 
@@ -55,13 +55,16 @@ namespace Deployer.Lumia
         {
             Log.Information("Formatting partitions");
 
-            using (var transaction = await GptContextFactory.Create(disk.Number, FileAccess.Read))
-            {
-                await transaction.Get(PartitionName.System).AsCommon(disk).Format(FileSystemFormat.Fat32, PartitionName.System);
-                await transaction.Get(PartitionName.Windows).AsCommon(disk).Format(FileSystemFormat.Ntfs, PartitionName.Windows);
-            }
+            await Format(PartitionName.System, FileSystemFormat.Fat32, PartitionName.System);
+            await Format(PartitionName.Windows, FileSystemFormat.Ntfs, PartitionName.Windows);
+        }
 
-            await disk.Refresh();
+        private async Task Format(string partitionName, FileSystemFormat fileSystemFormat, string label)
+        {
+            var part = await disk.GetPartitionByName(partitionName);
+            await part.EnsureWritable();
+            var vol = await part.GetVolume();
+            await vol.Format(fileSystemFormat, label);
         }
 
         private async Task CreatePartitions()

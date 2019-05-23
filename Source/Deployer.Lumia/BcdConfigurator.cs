@@ -7,13 +7,13 @@ namespace Deployer.Lumia
     public class BcdConfigurator
     {
         private readonly IBcdInvoker invoker;
-        private readonly Volume efiEspVolume;
+        private readonly IPartition efiEsp;
 
 
-        public BcdConfigurator(IBcdInvoker invoker, Volume efiEspVolume)
+        public BcdConfigurator(IBcdInvoker invoker, IPartition efiEsp)
         {
             this.invoker = invoker;
-            this.efiEspVolume = efiEspVolume;
+            this.efiEsp = efiEsp;
         }
 
         public async Task SetupBcd()
@@ -43,7 +43,7 @@ namespace Deployer.Lumia
             await EnsureBootShim();
 
             await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} path \EFI\boot\BootShim.efi");
-            await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} device partition={efiEspVolume.Root}");
+            await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} device partition={efiEsp.Root}");
             await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} testsigning on");
             await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} nointegritychecks on");
         }

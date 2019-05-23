@@ -35,7 +35,7 @@ namespace Deployer.Lumia.Tasks
 
         public async Task Execute()
         {
-            var efiEspVolume = await phone.GetVolumeByPartitionName(PartitionName.EfiEsp);
+            var efiEspVolume = await phone.GetPartitionByName(PartitionName.EfiEsp);
             efiEspPath = efiEspVolume.Root;
             destinationFolder = Path.Combine(efiEspVolume.Root, "Windows", "System32", "BOOT");
             bcdPath = efiEspVolume.Root.CombineRelativeBcdPath();

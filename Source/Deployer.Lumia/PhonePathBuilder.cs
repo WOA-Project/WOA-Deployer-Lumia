@@ -20,10 +20,10 @@ namespace Deployer.Lumia
         {
             IDictionary<string, Func<Task<string>>> mappings = new Dictionary<string, Func<Task<string>>>()
             {
-                { @"\[EFIESP\]", async () => (await Device.GetVolumeByPartitionName(PartitionName.EfiEsp)).Root},
-                { @"\[DPP\]", async () => (await Device.GetVolumeByPartitionName(PartitionName.Dpp)).Root },                
-                { @"\[Windows\]", async () => (await Device.GetWindowsVolume()).Root },                
-                { @"\[System\]", async () => (await Device.GetSystemVolume()).Root },
+                { @"\[EFIESP\]", async () => (await Device.GetPartitionByName(PartitionName.EfiEsp)).Root},
+                { @"\[DPP\]", async () => (await Device.GetPartitionByName(PartitionName.Dpp)).Root },                
+                { @"\[Windows\]", async () => (await Device.GetWindowsPartition()).Root },                
+                { @"\[System\]", async () => (await Device.GetSystemPartition()).Root },
             };
 
             foreach (var mapping in mappings)

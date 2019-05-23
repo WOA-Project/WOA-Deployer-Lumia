@@ -10,37 +10,36 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource Locator}, Path=DeploymentViewModel}" mah:DialogParticipation.Register="{Binding}">
-    <Grid>
-        <Grid Visibility="{Binding FullInstallWrapper.IsExecuting, Converter={StaticResource CollapseOnTrue}}">
+    <Grid Visibility="{Binding FullInstallWrapper.IsExecuting, Converter={StaticResource CollapseOnTrue}}">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <StackPanel>
-                <TextBlock Margin="12,6,12,18" FontSize="16" TextWrapping="Wrap">
-                    Use this section to deploy or redeploy
-                    <Bold>Windows 10 ARM64</Bold> into your Phone.
-                </TextBlock>
-            </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Margin="12,6,12,18" FontSize="16" TextWrapping="Wrap">
+                Use this section to deploy or redeploy
+                <Bold>Windows 10 ARM64</Bold> into your Phone.
+            </TextBlock>
+        </StackPanel>
 
-            <UniformGrid Grid.Row="1" Columns="1">
+        <UniformGrid Grid.Row="1" Columns="1">
 
-                <parts:WimOptionsPart Margin="10,0" />
+            <parts:WimOptionsPart Margin="10,0" />
 
-                <ui:IconButton Grid.Row="1" VerticalAlignment="Center" Command="{Binding FullInstallWrapper.Command}"
-                                IsBusy="{Binding FullInstallWrapper.IsExecuting}" Content="Deploy"
-                                Height="50"
-                                HorizontalAlignment="Center"
-                                ToolTip="Use this option to install Windows into a Phone that has just been unlocked.">
-                    <ui:IconButton.Icon>
-                        <iconPacks:PackIconFontAwesome
-                            Kind="RocketSolid" Style="{StaticResource ButtonIconStyle}" />
-                    </ui:IconButton.Icon>
-                </ui:IconButton>
+            <ui:IconButton Grid.Row="1" VerticalAlignment="Center" Command="{Binding FullInstallWrapper.Command}"
+                           IsBusy="{Binding FullInstallWrapper.IsExecuting}" Content="Deploy"
+                           Height="50"
+                           HorizontalAlignment="Center"
+                           ToolTip="Use this option to install Windows into a Phone that has just been unlocked.">
+                <ui:IconButton.Icon>
+                    <iconPacks:PackIconFontAwesome
+                        Kind="RocketSolid" Style="{StaticResource ButtonIconStyle}" />
+                </ui:IconButton.Icon>
+            </ui:IconButton>
 
-            </UniformGrid>
-        </Grid>
-       
+        </UniformGrid>
     </Grid>
+
+
 </UserControl>

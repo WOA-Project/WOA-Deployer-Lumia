@@ -10,7 +10,6 @@ using Deployer.FileSystem.Gpt;
 using Deployer.Services;
 using Serilog;
 using Zafiro.Core;
-using Partition = Deployer.FileSystem.Partition;
 
 namespace Deployer.Lumia
 {
@@ -22,11 +21,13 @@ namespace Deployer.Lumia
         private static readonly ByteSize MaximumPhoneDiskSize = ByteSize.FromGigaBytes(34);
 
         private readonly BcdInvokerFactory bcdInvokerFactory;
+        private readonly IDiskRoot diskRoot;
         private readonly IPhoneModelInfoReader phoneModelInfoReader;
 
-        public Phone(IDiskApi diskApi, IPhoneModelInfoReader phoneModelInfoReader,
-            BcdInvokerFactory bcdInvokerFactory) : base(diskApi)
+        public Phone(IDiskRoot diskRoot, IPhoneModelInfoReader phoneModelInfoReader,
+            BcdInvokerFactory bcdInvokerFactory)
         {
+            this.diskRoot = diskRoot;
             this.phoneModelInfoReader = phoneModelInfoReader;
             this.bcdInvokerFactory = bcdInvokerFactory;
         }
@@ -89,7 +90,7 @@ namespace Deployer.Lumia
             }
         }
 
-        public override async Task<Disk> GetDeviceDisk()
+        public override async Task<IDisk> GetDeviceDisk()
         {
             var disk = await GetDeviceDiskCore();
             if (disk.IsOffline)
@@ -101,25 +102,19 @@ namespace Deployer.Lumia
             return disk;
         }
 
-        public override Task<Volume> GetWindowsVolume()
+        public override async Task<IPartition> GetWindowsPartition()
         {
-            return this.GetOptionalVolumeByPartitionName(PartitionName.Windows);
+            return await this.GetPartitionByName(PartitionName.Windows);
         }
 
-        public override async Task<Volume> GetSystemVolume()
+        public override async Task<IPartition> GetSystemPartition()
         {
-            return await (await GetDeviceDisk()).GetVolumeByPartitionName(PartitionName.System);
+            return await this.GetPartitionByName(PartitionName.System);
         }
 
-        public override async Task<Partition> GetSystemPartition()
+        private async Task<IDisk> GetDeviceDiskCore()
         {
-            var disk = await GetDeviceDisk();
-            return await disk.GetOptionalPartition(PartitionName.System);
-        }
-
-        private async Task<Disk> GetDeviceDiskCore()
-        {
-            var disks = await DiskApi.GetDisks();
+            var disks = await diskRoot.GetDisks();
 
             var disk = await disks
                 .ToObservable()
@@ -137,7 +132,7 @@ namespace Deployer.Lumia
                 "Cannot get the Phone Disk. Please, verify that the Phone is in Mass Storage Mode.");
         }
 
-        private static async Task<bool> IsDeviceDisk(Disk disk)
+        private static async Task<bool> IsDeviceDisk(IDisk disk)
         {
             var hasCorrectSize = HasCorrectSize(disk);
 
@@ -181,8 +176,9 @@ namespace Deployer.Lumia
 
         private async Task<IBcdInvoker> GetBcdInvoker()
         {
-            var volume = await this.GetVolumeByPartitionName(PartitionName.EfiEsp);
-            var bcdFullFilename = volume.Root.CombineRelativeBcdPath();
+            var disk = await GetDeviceDisk();
+            var efiEsp = await disk.GetPartitionByName(PartitionName.EfiEsp);
+            var bcdFullFilename = efiEsp.Root.CombineRelativeBcdPath();
             return bcdInvokerFactory.Create(bcdFullFilename);
         }
 
@@ -228,7 +224,7 @@ namespace Deployer.Lumia
             Log.Verbose("Dual Boot disabled");
         }
 
-        private static bool HasCorrectSize(Disk disk)
+        private static bool HasCorrectSize(IDisk disk)
         {
             var moreThanMinimum = disk.Size > MinimumPhoneDiskSize;
             var lessThanMaximum = disk.Size < MaximumPhoneDiskSize;

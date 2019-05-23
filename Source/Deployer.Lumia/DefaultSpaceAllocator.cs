@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ByteSizeLib;
+using Deployer.FileSystem;
 using Serilog;
 
 namespace Deployer.Lumia
@@ -11,13 +12,16 @@ namespace Deployer.Lumia
         {
             Log.Verbose("Trying to shrink Data partition...");
 
-            var dataVolume = await phone.GetVolumeByPartitionName(PartitionName.Data);
-
-            if (dataVolume == null)
+            var disk = await phone.GetDeviceDisk();
+            var dataPartition = await disk.GetPartitionByName(PartitionName.Data);
+            
+            if (dataPartition == null)
             {
                 Log.Verbose("Data partition doesn't exist. Skipping.");
                 return false;
             }
+
+            var dataVolume = await dataPartition.GetVolume();
 
             var phoneDisk = await phone.GetDeviceDisk();
             var data = dataVolume.Size;

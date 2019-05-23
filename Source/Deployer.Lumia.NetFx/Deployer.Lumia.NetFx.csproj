@@ -46,8 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\SharedAssemblyInfo.cs" />
-    <Compile Include="TestImageService.cs" />
-    <Compile Include="TestPhone.cs" />
     <Compile Include="TestPhoneModelInfoReader.cs" />
     <Compile Include="Tooling.cs" />
     <Compile Include="ContainerConfigurator.cs" />

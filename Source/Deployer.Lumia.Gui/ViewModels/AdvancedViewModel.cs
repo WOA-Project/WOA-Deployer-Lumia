@@ -187,7 +187,7 @@ namespace Deployer.Lumia.Gui.ViewModels
                 UseCompact = lumiaSettingsService.UseCompactDeployment
             };
 
-            await deployer.Backup(await context.Device.GetWindowsVolume(), imagePath, progress);
+            await deployer.Backup(await context.Device.GetWindowsPartition(), imagePath, progress);
 
             await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.ImageCaptured);
         }

@@ -54,7 +54,7 @@ namespace Deployer.Lumia
 
         private async Task EnsureFullyUnlocked()
         {
-            var backUpEfiEsp = await context.Device.GetOptionalPartition(PartitionName.BackupEfiesp);
+            var backUpEfiEsp = await context.Device.GetPartitionByName(PartitionName.BackupEfiesp);
             if (backUpEfiEsp != null)
             {
                 throw new InvalidOperationException("Your phone isn't fully unlocked! Please, return to WPInternals and complete the unlock process.");
@@ -65,7 +65,7 @@ namespace Deployer.Lumia
         {
             try
             {
-                var windowsVolume = await context.Device.GetWindowsVolume();
+                var windowsVolume = await context.Device.GetWindowsPartition();
                 var destination = Path.Combine(windowsVolume.Root, "Windows", "Logs", "WOA-Deployer");
                 await fileSystemOperations.CopyDirectory(AppPaths.Metadata, destination);
             }
@@ -90,7 +90,7 @@ namespace Deployer.Lumia
                     if (buildNumber == 17763)
                     {
                         Log.Verbose("Build 17763 detected. Patching Boot Manager.");
-                        var dest = Path.Combine((await Phone.GetSystemVolume()).Root, "EFI", "Boot") + Path.DirectorySeparatorChar;
+                        var dest = Path.Combine((await Phone.GetSystemPartition()).Root, "EFI", "Boot") + Path.DirectorySeparatorChar;
                         await fileSystemOperations.Copy(@"Core\Boot\bootaa64.efi", dest);
                         Log.Verbose("Boot Manager Patched.");
                     }

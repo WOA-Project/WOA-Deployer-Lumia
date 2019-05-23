@@ -33,7 +33,6 @@ namespace Deployer.Lumia.NetFx
             block.Export<WoaDeployer>().As<IWoaDeployer>().Lifestyle.Singleton();
             block.Export<Tooling>().As<ITooling>().Lifestyle.Singleton();
             block.Export<BootCreator>().As<IBootCreator>().Lifestyle.Singleton();
-            block.Export<DiskApi>().As<IDiskApi>().Lifestyle.Singleton();
             block.Export<PhonePathBuilder>().As<IPathBuilder>().Lifestyle.Singleton();
             block.ExportInstance(taskTypes).As<IEnumerable<Type>>();
             block.Export<ScriptRunner>().As<IScriptRunner>().Lifestyle.Singleton();
@@ -52,6 +51,7 @@ namespace Deployer.Lumia.NetFx
             block.Export<Phone>().As<IPhone>().Lifestyle.Singleton();
             block.Export<DismImageService>().As<IWindowsImageService>().Lifestyle.Singleton();
             block.Export<LogCollector>().As<ILogCollector>().Lifestyle.Singleton();
+            block.Export<DiskRoot>().As<IDiskRoot>().Lifestyle.Singleton();
 
             return block;
         }
