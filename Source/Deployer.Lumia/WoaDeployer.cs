@@ -33,7 +33,7 @@ namespace Deployer.Lumia
         public async Task Deploy()
         {
             await EnsureFullyUnlocked();
-
+            
             var dict = new Dictionary<(PhoneModel, Variant), string>
             {
                 {(PhoneModel.Talkman, Variant.SingleSim), Path.Combine("Scripts", "Talkman", "SingleSim.txt")},
@@ -68,6 +68,7 @@ namespace Deployer.Lumia
                 var windowsVolume = await context.Device.GetWindowsPartition();
                 var destination = Path.Combine(windowsVolume.Root, "Windows", "Logs", "WOA-Deployer");
                 await fileSystemOperations.CopyDirectory(AppPaths.Metadata, destination);
+                await fileSystemOperations.DeleteDirectory(Path.Combine(AppPaths.Metadata, "Injected Drivers"));
             }
             catch (Exception e)
             {

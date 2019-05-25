@@ -78,8 +78,9 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private async Task CollectLogs()
         {
-            await logCollector.Collect(context.Device, LogsZipName);
-            var fileInfo = new FileInfo(LogsZipName);
+            var path = Path.Combine(Path.GetTempPath(), LogsZipName);
+            await logCollector.Collect(context.Device, path);
+            var fileInfo = new FileInfo(path);
             ExploreFile(fileInfo.FullName);
         }
 
