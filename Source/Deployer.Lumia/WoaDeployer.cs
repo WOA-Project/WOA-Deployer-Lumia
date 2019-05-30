@@ -104,7 +104,7 @@ namespace Deployer.Lumia
             Log.Information("# Preparing phone for safe removal");
             Log.Information("Please wait...");
             var disk = await Phone.GetDeviceDisk();
-            await disk.Refresh();
+            await disk.PrepareForRemoval();
         }
 
         public Task ToggleDualBoot(bool isEnabled)
