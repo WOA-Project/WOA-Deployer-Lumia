@@ -78,19 +78,26 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private async Task CollectLogs()
         {
-            var path = Path.Combine(Path.GetTempPath(), LogsZipName);
-            await logCollector.Collect(context.Device, path);
-            var fileInfo = new FileInfo(path);
-            ExploreFile(fileInfo.FullName);
+            try
+            {
+                var path = Path.Combine(Path.GetTempPath(), LogsZipName);
+                await logCollector.Collect(context.Device, path);
+                var fileInfo = new FileInfo(path);
+                ExploreFile(fileInfo.FullName);
+            }
+            catch (NothingToSaveException)
+            {
+                await uiServices.ContextDialog.ShowAlert(this, "Nothing to collect", "Sorry, no logs have been found in your phone");
+            }
         }
 
-        private void ExploreFile(string filePath)
+        private static void ExploreFile(string filePath)
         {
             if (!File.Exists(filePath))
             {
                 return;
             }
-            //Clean up file path so it can be navigated OK
+
             Process.Start("explorer.exe", $"/select,\"{filePath}\"");
         }
 
