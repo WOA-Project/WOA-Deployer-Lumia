@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Deployer.FileSystem;
@@ -22,15 +21,9 @@ namespace Deployer.Lumia
             IDictionary<string, Func<Task<string>>> mappings = new Dictionary<string, Func<Task<string>>>()
             {
                 { @"\[EFIESP\]", async () => (await Device.GetPartitionByName(PartitionName.EfiEsp)).Root},
-                { @"\[DPP\]", async () =>
-                    {
-                        var partitionByName = await Device.GetPartitionByName(PartitionName.Dpp);
-                        await partitionByName.EnsureWritable();
-                        return partitionByName.Root;
-                    }
-                },                
-                { @"\[Windows\]", async () => (await Device.GetWindowsPartition()).Root },                
-                { @"\[System\]", async () => (await Device.GetSystemPartition()).Root },
+                { @"\[DPP\]", async () => (await (await Device.GetPartitionByName(PartitionName.Dpp)).EnsureWritable()).Root},                
+                { @"\[Windows\]", async () => (await (await Device.GetWindowsPartition()).EnsureWritable()).Root },                
+                { @"\[System\]", async () => (await (await Device.GetSystemPartition()).EnsureWritable()).Root },
             };
 
             foreach (var mapping in mappings)
