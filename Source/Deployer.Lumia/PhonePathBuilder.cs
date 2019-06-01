@@ -18,24 +18,32 @@ namespace Deployer.Lumia
 
         public async Task<string> Replace(string str)
         {
-            IDictionary<string, Func<Task<string>>> mappings = new Dictionary<string, Func<Task<string>>>()
+            IDictionary<string, Func<Task<IPartition>>> mappings = new Dictionary<string, Func<Task<IPartition>>>
             {
-                { @"\[EFIESP\]", async () => (await Device.GetPartitionByName(PartitionName.EfiEsp)).Root},
-                { @"\[DPP\]", async () => (await (await Device.GetPartitionByName(PartitionName.Dpp)).EnsureWritable()).Root},                
-                { @"\[Windows\]", async () => (await (await Device.GetWindowsPartition()).EnsureWritable()).Root },                
-                { @"\[System\]", async () => (await (await Device.GetSystemPartition()).EnsureWritable()).Root },
+                { @"\[EFIESP\]", async () => await Device.GetPartitionByName(PartitionName.EfiEsp)},
+                { @"\[DPP\]",async () => await Device.GetPartitionByName(PartitionName.Dpp) },
+                { @"\[Windows\]", async () => await Device.GetWindowsPartition()},
+                { @"\[System\]", async () => await Device.GetSystemPartition()}
             };
 
             foreach (var mapping in mappings)
             {
                 if (Regex.IsMatch(str, mapping.Key))
                 {
-                    var mappingValue = await mapping.Value();
-                    str = Regex.Replace(str, $"^{mapping.Key}", mappingValue, RegexOptions.IgnoreCase);
+                    var partition = await mapping.Value();
+                    if (partition == null)
+                    {
+                        throw new InvalidOperationException($"The path token '{str}' didn't return a partition");
+                    }
+
+                    await partition.EnsureWritable();
+                    var root = partition.Root;
+                    
+                    str = Regex.Replace(str, $"^{mapping.Key}", root, RegexOptions.IgnoreCase);
                     str = Regex.Replace(str, $@"\\+", @"\", RegexOptions.IgnoreCase);
                 }
             }
-            
+
             return str;
         }
 
