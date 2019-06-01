@@ -145,8 +145,11 @@ namespace Deployer.Lumia.Gui.Properties {
         ///   Looks up a localized string similar to - This tool comes with no warranty. 
         ///- The authors can&apos;t be hold responsible for any damage it may cause to your device.    
         ///- This tool intended for usage with Lumia 950 and 950 XL **ONLY**.
+        ///
+        ///## WARNING
+        ///Please, before using this tool, **create a full backup of your phone**. You can do it with applications like [Win32DiskImager](https://sourceforge.net/projects/win32diskimager/). Some partitions, like **DPP** are unique to your phone and are unrecoverable in case of failure. 
         ///    
-        ///By clicking &quot;OK&quot; you accept the aforementioned risks..
+        ///By clicking &quot;OK&quot; yo [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WarningNotice {
             get {

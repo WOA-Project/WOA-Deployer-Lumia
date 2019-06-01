@@ -52,7 +52,7 @@ namespace Deployer.Lumia.Tasks
 
             if (shouldInstall)
             {
-                await dialog.PickOptions(Resources.DeveloperMenuInstalled, new List<Option>()
+                await dialog.Pick(Resources.DeveloperMenuInstalled, new List<Option>()
                 {
                     new Option("Continue", OptionValue.OK),
                 });

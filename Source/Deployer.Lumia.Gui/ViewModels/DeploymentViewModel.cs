@@ -69,7 +69,7 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             Log.Information("Deployment successful");
 
-            await uiServices.Dialog.PickOptions(Resources.WindowsDeployedSuccessfully, new List<Option>()
+            await uiServices.Dialog.Pick(Resources.WindowsDeployedSuccessfully, new List<Option>()
             {
                 new Option("Close")
             });
