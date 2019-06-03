@@ -39,7 +39,7 @@ namespace Deployer.Lumia
                     await partition.EnsureWritable();
                     var root = partition.Root;
                     
-                    str = Regex.Replace(str, $"^{mapping.Key}", root, RegexOptions.IgnoreCase);
+                    str = Regex.Replace(str, $"{mapping.Key}", root, RegexOptions.IgnoreCase);
                     str = Regex.Replace(str, $@"\\+", @"\", RegexOptions.IgnoreCase);
                 }
             }

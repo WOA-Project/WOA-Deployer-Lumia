@@ -81,7 +81,6 @@ namespace Deployer.Lumia.Tasks
             await bcdInvoker.SafeCreate(BcdGuids.DevMenu,@"/d ""Developer Menu"" /application BOOTAPP");
             await bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} path \Windows\System32\BOOT\developermenu.efi");
             await bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} device partition={efiEspPath}");
-            await bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} testsigning on");
             await bcdInvoker.Invoke($@"/set {{{BcdGuids.DevMenu}}} nointegritychecks on");
             await bcdInvoker.Invoke($@"/displayorder {{{BcdGuids.DevMenu}}} /addlast");
         }

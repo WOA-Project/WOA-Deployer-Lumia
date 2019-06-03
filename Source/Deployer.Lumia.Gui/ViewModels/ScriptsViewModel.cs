@@ -39,7 +39,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             var canRun = this.WhenAnyValue(x => x.SelectedScript).Select(s => s != null);
             var runCommand = ReactiveCommand.CreateFromTask(Run, canRun);
             RunCommand = new ProgressViewModel(runCommand, progress);
-
+            
             IsBusyObservable = Observable.Merge(RunCommand.Command.IsExecuting);
 
             Tree = GetTree(new DirectoryInfo(extraScriptsPath)).Children.ToList();

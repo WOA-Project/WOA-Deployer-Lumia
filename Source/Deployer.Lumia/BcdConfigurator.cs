@@ -44,7 +44,6 @@ namespace Deployer.Lumia
 
             await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} path \EFI\boot\BootShim.efi");
             await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} device partition={efiEsp.Root}");
-            await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} testsigning on");
             await invoker.Invoke($@"/set {{{BcdGuids.Woa}}} nointegritychecks on");
         }
         
@@ -52,8 +51,6 @@ namespace Deployer.Lumia
         {
             await invoker.Invoke($@"/set {{bootmgr}} displaybootmenu on");
             await invoker.Invoke($@"/deletevalue {{bootmgr}} customactions");
-            await invoker.Invoke($@"/deletevalue {{bootmgr}} custom:54000001");
-            await invoker.Invoke($@"/deletevalue {{bootmgr}} custom:54000002");
             await invoker.Invoke($@"/deletevalue {{bootmgr}} processcustomactionsfirst");
         }
         
