@@ -21,5 +21,5 @@ InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\soc-final
 InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\oeminfo-talkmands"
 InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\display-oled"
 InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\graphics-talkman"
-InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\specifics-talkman" 
+InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\specifics-talkman"
 DisplayMarkdown "Downloaded\MSM8994-8992-NT-ARM64-Drivers\README.md"
