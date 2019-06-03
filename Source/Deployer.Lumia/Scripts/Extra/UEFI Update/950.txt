@@ -1,0 +1,6 @@
+﻿# Downloading resources
+FetchAzureDevOpsArtifact "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
+FetchGitHubLatestReleaseAsset "https://github.com/WOA-Project/Lumia950XLPkg" "MSM8992.UEFI.Lumia.950.zip"
+# Configuring device
+Copy "Downloaded\MSM8992.UEFI.Lumia.950\ELF\UEFI.elf" "[EFIESP]\"
+Copy "Downloaded\UEFI Loader for 8992 and 8994\ARM\Debug\BootShim.efi" "[EFIESP]\EFI\boot\"

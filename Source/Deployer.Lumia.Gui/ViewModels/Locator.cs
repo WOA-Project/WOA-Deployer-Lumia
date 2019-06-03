@@ -24,6 +24,10 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         public LogViewModel LogViewModel => container.Locate<LogViewModel>();
 
+        public ScriptsViewModel ScriptsViewModel => container.Locate<ScriptsViewModel>();
+
         public OngoingOperationViewModel OngoingOperationViewModel => container.Locate<OngoingOperationViewModel>();
+
+        public WoaMaintenanceViewModel WoaMaintenanceViewModel => container.Locate<WoaMaintenanceViewModel>();
     }
 }

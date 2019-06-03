@@ -18,7 +18,7 @@ namespace Deployer.Lumia.NetFx
 {
     public static class ContainerConfigurator
     {
-        public static IExportRegistrationBlock Configure(this IExportRegistrationBlock block)
+        public static IExportRegistrationBlock ExportCommon(this IExportRegistrationBlock block)
         {
             var taskTypes = from a in Assemblies.AppDomainAssemblies
                             from type in a.ExportedTypes
@@ -54,6 +54,7 @@ namespace Deployer.Lumia.NetFx
             block.Export<DiskRoot>().As<IDiskRoot>().Lifestyle.Singleton();
 
             return block;
+
         }
-    }    
+    }
 }

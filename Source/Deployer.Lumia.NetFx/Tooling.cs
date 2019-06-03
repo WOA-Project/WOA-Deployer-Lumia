@@ -1,19 +1,16 @@
 ﻿using System.Threading.Tasks;
-using Deployer.Execution;
+using Deployer.Tasks;
 using Serilog;
 
 namespace Deployer.Lumia.NetFx
 {
-    // ReSharper disable once ClassNeverInstantiated.Local
     public class Tooling : ITooling
     {
         private readonly IPhone phone;
-        private readonly IScriptRunner scriptRunner;
 
-        public Tooling(IPhone phone, IScriptRunner scriptRunner)
+        public Tooling(IDeploymentContext context)
         {
-            this.phone = phone;
-            this.scriptRunner = scriptRunner;
+            phone = (IPhone) context.Device;
         }
 
         public async Task ToogleDualBoot(bool isEnabled)

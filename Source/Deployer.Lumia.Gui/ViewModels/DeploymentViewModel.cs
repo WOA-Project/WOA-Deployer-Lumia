@@ -18,7 +18,7 @@ namespace Deployer.Lumia.Gui.ViewModels
     public class DeploymentViewModel : ReactiveObject, ISection
     {
         private readonly IDeploymentContext context;
-        private readonly IWoaDeployer deployer;
+        private readonly IWoaDeployer woaDeployer;
         private readonly UIServices uiServices;
         private readonly AdvancedViewModel advancedViewModel;
         private readonly WimPickViewModel wimPickViewModel;
@@ -28,12 +28,12 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         public DeploymentViewModel(
             IDeploymentContext context,
-            IOperationContext operationContext,
-            IWoaDeployer deployer, UIServices uiServices, AdvancedViewModel advancedViewModel,
+            IWoaDeployer woaDeployer,
+            IOperationContext operationContext, UIServices uiServices, AdvancedViewModel advancedViewModel,
             WimPickViewModel wimPickViewModel, IFileSystemOperations fileSystemOperations, ILumiaSettingsService lumiaSettingsService)
         {
             this.context = context;
-            this.deployer = deployer;
+            this.woaDeployer = woaDeployer;
             this.uiServices = uiServices;
             this.advancedViewModel = advancedViewModel;
             this.wimPickViewModel = wimPickViewModel;
@@ -65,7 +65,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             context.DeploymentOptions = windowsDeploymentOptions;
             
             await CleanDownloadedIfNeeded();
-            await deployer.Deploy();
+            await woaDeployer.Deploy(context);
 
             Log.Information("Deployment successful");
 

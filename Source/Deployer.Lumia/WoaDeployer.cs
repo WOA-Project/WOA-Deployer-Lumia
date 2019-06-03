@@ -11,27 +11,27 @@ namespace Deployer.Lumia
 {
     public class WoaDeployer : IWoaDeployer
     {
-        private readonly ITooling tooling;
-        private readonly IDeploymentContext context;
-        private readonly IFileSystemOperations fileSystemOperations;
         private readonly IScriptRunner scriptRunner;
         private readonly IScriptParser parser;
+        private readonly ITooling tooling;
+        private IDeploymentContext context;
+        private readonly IFileSystemOperations fileSystemOperations;
 
         public WoaDeployer(IScriptRunner scriptRunner, IScriptParser parser, ITooling tooling,
-            IDeploymentContext context,
             IFileSystemOperations fileSystemOperations)
         {
             this.scriptRunner = scriptRunner;
             this.parser = parser;
             this.tooling = tooling;
-            this.context = context;
             this.fileSystemOperations = fileSystemOperations;
         }
 
         private IPhone Phone => (IPhone)context.Device;
 
-        public async Task Deploy()
+        public async Task Deploy(IDeploymentContext deploymentContext)
         {
+            this.context = deploymentContext;
+
             await EnsureFullyUnlocked();
             
             var dict = new Dictionary<(PhoneModel, Variant), string>

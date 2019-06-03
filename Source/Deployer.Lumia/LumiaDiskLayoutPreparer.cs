@@ -26,7 +26,14 @@ namespace Deployer.Lumia
 
         public async Task Prepare(IDisk diskToPrepare)
         {
-            disk = diskToPrepare;
+            disk = diskToPrepare ?? throw new ArgumentNullException(nameof(diskToPrepare));
+
+            var options = context.DeploymentOptions;
+
+            if (options == null)
+            {
+                throw new ApplicationException("No deployment options can be found. Cannot prepare the disk layout.");
+            }
 
             try
             {

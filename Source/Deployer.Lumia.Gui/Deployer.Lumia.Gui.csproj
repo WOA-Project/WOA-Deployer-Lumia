@@ -68,7 +68,10 @@
     </Compile>
     <Compile Include="AppProperties.cs" />
     <Compile Include="CompositionRoot.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="TreeSelector.cs" />
+    <Compile Include="ViewModels\FolderNode.cs" />
+    <Compile Include="ViewModels\IScriptDependencyResolver.cs" />
+    <Compile Include="ViewModels\ScriptDependencyResolver.cs" />
     <Compile Include="Views\Transformation\DiskPreparerSelector.cs" />
     <Compile Include="Views\Transformation\GbsToByteSizeConverter.cs" />
     <Compile Include="Views\Transformation\MetadataConverter.cs" />
@@ -95,6 +98,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\Locator.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ScriptItemViewModel.cs" />
+    <Compile Include="ViewModels\ScriptsViewModel.cs" />
+    <Compile Include="ViewModels\WoaMaintenanceViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -131,6 +138,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Parts\ScriptsPart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Parts\WimOptionsPart.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -160,6 +171,9 @@
     </Compile>
     <Compile Include="Views\Parts\ProgressPart.xaml.cs">
       <DependentUpon>ProgressPart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Parts\ScriptsPart.xaml.cs">
+      <DependentUpon>ScriptsPart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Parts\WimOptionsPart.xaml.cs">
       <DependentUpon>WimOptionsPart.xaml</DependentUpon>

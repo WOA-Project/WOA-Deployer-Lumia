@@ -16,7 +16,7 @@ using ReactiveUI;
 namespace Deployer.Lumia.Gui.ViewModels
 {
     [Metadata("Name", "Advanced")]
-    [Metadata("Order", 2)]
+    [Metadata("Order", 3)]
     public class AdvancedViewModel : ReactiveObject, ISection, IDisposable
     {
         private const string LogsZipName = "PhoneLogs.zip";
@@ -24,7 +24,6 @@ namespace Deployer.Lumia.Gui.ViewModels
         private readonly IWindowsDeployer deployer;
         private readonly ILogCollector logCollector;
         private readonly IDisposable preparerUpdater;
-        private readonly IOperationProgress progress;
         private readonly ILumiaSettingsService lumiaSettingsService;
         private readonly UIServices uiServices;
 
@@ -34,15 +33,13 @@ namespace Deployer.Lumia.Gui.ViewModels
             UIServices uiServices, IDeploymentContext context, IOperationContext operationContext,
             IList<Meta<IDiskLayoutPreparer>> diskPreparers,
             IWindowsDeployer deployer,
-            ILogCollector logCollector,
-            IOperationProgress progress)
+            ILogCollector logCollector)
         {
             this.lumiaSettingsService = lumiaSettingsService;
             this.uiServices = uiServices;
             this.context = context;
             this.deployer = deployer;
             this.logCollector = logCollector;
-            this.progress = progress;
 
             DiskPreparers = diskPreparers;
 
@@ -53,15 +50,9 @@ namespace Deployer.Lumia.Gui.ViewModels
             ForceSingleBootWrapper = new CommandWrapper<Unit, Unit>(this,
                 ReactiveCommand.CreateFromTask(ForceDisableDualBoot), uiServices.ContextDialog, operationContext);
 
-            BackupCommandWrapper =
-                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Backup), uiServices.ContextDialog, operationContext);
-            RestoreCommandWrapper =
-                new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(Restore), uiServices.ContextDialog, operationContext);
-
             CollectLogsCommmandWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(CollectLogs), uiServices.ContextDialog, operationContext);
 
             IsBusyObservable = Observable.Merge(DeleteDownloadedWrapper.Command.IsExecuting,
-                BackupCommandWrapper.Command.IsExecuting, RestoreCommandWrapper.Command.IsExecuting,
                 ForceDualBootWrapper.Command.IsExecuting, ForceSingleBootWrapper.Command.IsExecuting,
                 CollectLogsCommmandWrapper.Command.IsExecuting);
 
@@ -112,7 +103,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             get
             {
                 return DiskPreparers
-                    .OrderBy(x => (int) x.Metadata["Order"])
+                    .OrderBy(x => (int)x.Metadata["Order"])
                     .First();
             }
         }
@@ -122,10 +113,6 @@ namespace Deployer.Lumia.Gui.ViewModels
             get => selectedPreparer;
             set => this.RaiseAndSetIfChanged(ref selectedPreparer, value);
         }
-
-        public CommandWrapper<Unit, Unit> RestoreCommandWrapper { get; set; }
-
-        public CommandWrapper<Unit, Unit> BackupCommandWrapper { get; set; }
 
         public CommandWrapper<Unit, Unit> DeleteDownloadedWrapper { get; }
 
@@ -166,78 +153,16 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private async Task ForceDualBoot()
         {
-            await ((IPhone) context.Device).ToogleDualBoot(true, true);
+            await ((IPhone)context.Device).ToogleDualBoot(true, true);
 
             await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.DualBootEnabled);
         }
 
         private async Task ForceDisableDualBoot()
         {
-            await ((IPhone) context.Device).ToogleDualBoot(false, true);
+            await ((IPhone)context.Device).ToogleDualBoot(false, true);
 
             await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.DualBootDisabled);
-        }
-
-        private async Task Backup()
-        {
-            uiServices.SaveFilePicker.DefaultExt = "*.wim";
-            uiServices.SaveFilePicker.Filter = "Windows Images (.wim)|*.wim";
-            var imagePath = uiServices.SaveFilePicker.PickFile();
-            if (imagePath == null)
-            {
-                return;
-            }
-
-            context.DeploymentOptions = new WindowsDeploymentOptions
-            {
-                ImageIndex = 1,
-                ImagePath = imagePath,
-                UseCompact = lumiaSettingsService.UseCompactDeployment
-            };
-
-            await deployer.Backup(await context.Device.GetWindowsPartition(), imagePath, progress);
-
-            await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.ImageCaptured);
-        }
-
-        private async Task Restore()
-        {
-            var filters = new List<(string, IEnumerable<string>)>
-            {
-                ("install.wim", new[]
-                {
-                    "install.wim"
-                }),
-                ("Windows Images", new[]
-                {
-                    "*.wim",
-                    "*.esd"
-                }),
-                ("All files", new[]
-                {
-                    "*.*"
-                })
-            };
-
-            var fileName = uiServices.OpenFilePicker.Pick(filters, () => lumiaSettingsService.WimFolder,
-                x => { lumiaSettingsService.WimFolder = x; });
-
-            if (fileName == null)
-            {
-                return;
-            }
-
-            context.DeploymentOptions = new WindowsDeploymentOptions
-            {
-                ImageIndex = 1,
-                ImagePath = fileName,
-                UseCompact = lumiaSettingsService.UseCompactDeployment
-            };
-
-            await context.DiskLayoutPreparer.Prepare(await context.Device.GetDeviceDisk());
-            await deployer.Deploy(context.DeploymentOptions, context.Device, progress);
-
-            await uiServices.ContextDialog.ShowAlert(this, Resources.Done, Resources.ImageRestored);
         }
 
         private async Task DeleteDownloaded(IFileSystemOperations fileSystemOperations)

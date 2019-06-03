@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Deployer.Lumia.Gui;
-using Deployer.Lumia.Gui.ViewModels;
 using Deployer.UI.ViewModels;
 using FluentAssertions;
 using ReactiveUI;

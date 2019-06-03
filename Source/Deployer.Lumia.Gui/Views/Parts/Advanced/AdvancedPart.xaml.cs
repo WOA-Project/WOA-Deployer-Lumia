@@ -1,11 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace Deployer.Lumia.Gui.Views.Parts.Advanced
+﻿namespace Deployer.Lumia.Gui.Views.Parts.Advanced
 {
-    /// <summary>
-    /// Interaction logic for AdvancedPart.xaml
-    /// </summary>
-    public partial class AdvancedPart : UserControl
+    public partial class AdvancedPart
     {
         public AdvancedPart()
         {

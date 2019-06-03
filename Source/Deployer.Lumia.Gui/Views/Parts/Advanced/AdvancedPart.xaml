@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:advanced="clr-namespace:Deployer.Lumia.Gui.Views.Parts.Advanced"
              xmlns:ui="clr-namespace:Deployer.UI;assembly=Deployer.UI"
+             xmlns:advanced="clr-namespace:Deployer.Lumia.Gui.Views.Parts.Advanced"
              mc:Ignorable="d"
              d:DesignHeight="546" d:DesignWidth="781" Padding="8"
              DataContext="{Binding Source={StaticResource Locator}, Path=AdvancedViewModel}" mah:DialogParticipation.Register="{Binding}">
@@ -46,28 +46,21 @@
             </DockPanel>
         </GroupBox>
 
-        <Grid>
-            <GroupBox Header="WOA Partition Maintenance" Padding="20" Margin="0,20,0,0">
+        <Grid DataContext="{Binding Source={StaticResource Locator}, Path=WoaMaintenanceViewModel}">
+            <GroupBox Header="WOA Partition Maintenance" Padding="20" Margin="0,20,0,0" >
                 <UniformGrid Rows="1">
-                    <ui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding BackupCommandWrapper.Command}" Content="Backup" IsBusy="{Binding BackupCommandWrapper.IsExecuting}">
-                        <ui:IconButton.Icon>
+                    <ui:ProgressButton HorizontalAlignment="Center" Height="50" Progress="{Binding BackupProgressViewModel}" Content="Backup">
+                        <ui:ProgressButton.Icon>
                             <iconPacks:PackIconModern Kind="Download" Height="30" />
-                        </ui:IconButton.Icon>
-                    </ui:IconButton>
-                    <ui:IconButton HorizontalAlignment="Center" Height="50" Command="{Binding RestoreCommandWrapper.Command}" Content="Restore" IsBusy="{Binding RestoreCommandWrapper.IsExecuting}">
-                        <ui:IconButton.Icon>
+                        </ui:ProgressButton.Icon>
+                    </ui:ProgressButton>
+                    <ui:ProgressButton HorizontalAlignment="Center" Height="50" Progress="{Binding RestoreProgressViewModel}" Content="Restore">
+                        <ui:ProgressButton.Icon>
                             <iconPacks:PackIconModern Kind="Upload" Height="30" />
-                        </ui:IconButton.Icon>
-                    </ui:IconButton>
+                        </ui:ProgressButton.Icon>
+                    </ui:ProgressButton>
                 </UniformGrid>
             </GroupBox>
-            <mah:MetroProgressBar DataContext="{Binding Source={StaticResource Locator}, Path=OngoingOperationViewModel}" VerticalAlignment="Bottom"
-                                  Maximum="1"
-                                  Value="{Binding Progress, Mode=OneWay}"
-                                  Visibility="{Binding IsProgressVisible, Converter={StaticResource CollapseOnFalse}}"
-                                  Grid.Column="0"
-                                  IsIndeterminate="{Binding IsProgressIndeterminate}">
-            </mah:MetroProgressBar>
         </Grid>
         <GroupBox Header="Misc" Padding="10" Margin="0 20 0 0">
             <UniformGrid>

@@ -1,8 +1,7 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Deployer.Execution;
 using Deployer.FileSystem;
-using Deployer.Services;
+using Deployer.Tasks;
 
 namespace Deployer.Lumia.Tasks
 {
@@ -12,9 +11,9 @@ namespace Deployer.Lumia.Tasks
         private readonly IPhone phone;
         private readonly IBcdInvokerFactory bcdInvokerFactory;
 
-        public ConfigureBCD(IPhone phone, IBcdInvokerFactory bcdInvokerFactory)
+        public ConfigureBCD(IDeploymentContext context, IBcdInvokerFactory bcdInvokerFactory)
         {
-            this.phone = phone;
+            this.phone = (IPhone) context.Device;
             this.bcdInvokerFactory = bcdInvokerFactory;
         }
 

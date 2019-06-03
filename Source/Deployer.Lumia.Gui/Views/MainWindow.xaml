@@ -33,6 +33,9 @@
         <DataTemplate DataType="{x:Type viewModels:AdvancedViewModel}">
             <advanced:AdvancedPart />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:ScriptsViewModel}">
+            <parts:ScriptsPart />
+        </DataTemplate>
     </Window.Resources>    
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>

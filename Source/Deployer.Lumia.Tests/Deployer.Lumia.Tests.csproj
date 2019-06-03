@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deployer.Lumia.Gui\Deployer.Lumia.Gui.csproj">
-      <Project>{76DCD56D-98E7-4EA1-B04B-FA063B953FD7}</Project>
+      <Project>{76dcd56d-98e7-4ea1-b04b-fa063b953fd7}</Project>
       <Name>Deployer.Lumia.Gui</Name>
     </ProjectReference>
     <ProjectReference Include="..\Deployer.Lumia.NetFx\Deployer.Lumia.NetFx.csproj">
