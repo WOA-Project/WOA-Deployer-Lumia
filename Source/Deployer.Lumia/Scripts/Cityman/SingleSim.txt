@@ -22,5 +22,5 @@ InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\oeminfo-c
 InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\display-oled"
 InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\graphics-cityman"
 InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\specifics-cityman"
-InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\mmo-nfc"
+InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\configurations\nfc-mmo"
 DisplayMarkdown "Downloaded\MSM8994-8992-NT-ARM64-Drivers\README.md"
