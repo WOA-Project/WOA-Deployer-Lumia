@@ -8,6 +8,7 @@ ConfigureBCD
 InstallDevMenu "Core\Developer Menu\"
 # Deploying Windows
 DeployWindows
+MakeWindowsBootable
 CopyDirectory "[DPP]" "[Windows]\DPP"
 # Injecting Drivers
 InjectDrivers "Downloaded\MSM8994-8992-NT-ARM64-Drivers\msm8992"
