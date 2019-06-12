@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
 using Deployer.Lumia.Gui.Views;
+using Deployer.NetFx;
 using Deployer.UI;
 
 namespace Deployer.Lumia.Gui
@@ -14,6 +15,13 @@ namespace Deployer.Lumia.Gui
             MahApps.Metro.ThemeManager.IsAutomaticWindowsAppModeSettingSyncEnabled = true;
             MahApps.Metro.ThemeManager.SyncThemeWithWindowsAppModeSetting();
 
+            if (!OS.IsCompatibleWindowsBuild)
+            {
+                MessageBox.Show(UI.Properties.Resources.IncompatibleWindows10Build, UI.Properties.Resources.IncompatibleWindows10BuildTitle);
+                Current.Shutdown();
+                return;
+            }
+
             UpdateChecker.CheckForUpdates(AppProperties.GitHubBaseUrl);
             Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
 
@@ -26,7 +34,7 @@ namespace Deployer.Lumia.Gui
                 LaunchGui();
             }
         }
-
+        
         private void LaunchGui()
         {
             var window = new MainWindow();
@@ -36,8 +44,8 @@ namespace Deployer.Lumia.Gui
 
         private void LaunchConsole(string[] args)
         {
-            //ConsoleEmbedder.ExecuteInsideConsole(() => Task.Run(() => Program.Main(args)).Wait());
-            //Shutdown();
+            // Console is disable for now
+            Shutdown();
         }
     }
 }
