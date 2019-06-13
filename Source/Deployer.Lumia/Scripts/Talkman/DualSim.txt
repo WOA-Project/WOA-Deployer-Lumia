@@ -1,6 +1,6 @@
 ﻿# Downloading resources
 FetchAzureDevOpsArtifact "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
-FetchGitHubBranch "https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers" "1906-baseline"
+FetchGitHubBranch "https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers" "1906"
 # Configuring device
 Copy "Core\Patches\Talkman\UEFI.elf" "[EFIESP]\"
 Copy "Downloaded\UEFI Loader for 8992 and 8994\ARM\Debug\BootShim.efi" "[EFIESP]\EFI\boot\"

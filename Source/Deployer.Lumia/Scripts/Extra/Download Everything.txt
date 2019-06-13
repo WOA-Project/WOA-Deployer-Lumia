@@ -1,4 +1,4 @@
 ﻿FetchAzureDevOpsArtifact "LumiaWOA;Boot Shim;3;UEFI Loader for 8992 and 8994"
 FetchGitHubLatestReleaseAsset "https://github.com/WOA-Project/Lumia950XLPkg" "MSM8992.UEFI.Lumia.950.zip"
 FetchGitHubLatestReleaseAsset "https://github.com/WOA-Project/Lumia950XLPkg" "MSM8994.UEFI.Lumia.950.XL.zip"
-FetchGitHubBranch "https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers" "1906-baseline"
+FetchGitHubBranch "https://github.com/gus33000/MSM8994-8992-NT-ARM64-Drivers" "1906"
