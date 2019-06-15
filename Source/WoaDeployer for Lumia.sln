@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29006.145
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deployer.Lumia", "Deployer.Lumia\Deployer.Lumia.csproj", "{20501832-13F5-4673-9D86-9E7E0C562027}"
 EndProject
@@ -30,6 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown.Xaml", "DeployerPlatform\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj", "{34186C3B-C308-4CAE-B462-DB7B5F5E378C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "DeployerPlatform\Tester\Tester.csproj", "{1ABD25AC-52BD-4023-81EA-8D7D20701730}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deployer.NetFx.Tests", "DeployerPlatform\Deployer.NetFx.Tests\Deployer.NetFx.Tests.csproj", "{172F8752-7DBC-4B81-8B1F-0CE4AC63F8D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,6 +118,12 @@ Global
 		{1ABD25AC-52BD-4023-81EA-8D7D20701730}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1ABD25AC-52BD-4023-81EA-8D7D20701730}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1ABD25AC-52BD-4023-81EA-8D7D20701730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{172F8752-7DBC-4B81-8B1F-0CE4AC63F8D2}.Analysis|Any CPU.ActiveCfg = Release|Any CPU
+		{172F8752-7DBC-4B81-8B1F-0CE4AC63F8D2}.Analysis|Any CPU.Build.0 = Release|Any CPU
+		{172F8752-7DBC-4B81-8B1F-0CE4AC63F8D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{172F8752-7DBC-4B81-8B1F-0CE4AC63F8D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{172F8752-7DBC-4B81-8B1F-0CE4AC63F8D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{172F8752-7DBC-4B81-8B1F-0CE4AC63F8D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +138,7 @@ Global
 		{C74864BF-9912-43BA-8A2F-2C5D48629D18} = {37EB1151-97FC-4910-BA90-DB0AA05EA107}
 		{34186C3B-C308-4CAE-B462-DB7B5F5E378C} = {37EB1151-97FC-4910-BA90-DB0AA05EA107}
 		{1ABD25AC-52BD-4023-81EA-8D7D20701730} = {37EB1151-97FC-4910-BA90-DB0AA05EA107}
+		{172F8752-7DBC-4B81-8B1F-0CE4AC63F8D2} = {37EB1151-97FC-4910-BA90-DB0AA05EA107}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {17415657-E67C-4901-A9DD-6372AF9CC25E}
