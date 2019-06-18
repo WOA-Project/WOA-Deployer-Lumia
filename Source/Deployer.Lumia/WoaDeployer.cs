@@ -16,6 +16,10 @@ namespace Deployer.Lumia
         private readonly ITooling tooling;
         private IDeploymentContext context;
         private readonly IFileSystemOperations fileSystemOperations;
+        private static readonly string BootstrapPath = Path.Combine("Core", "Bootstrap.txt");
+
+        private static readonly string ScriptsDownloadPath = Path.Combine(AppPaths.ArtifactDownload, "Deployment-Scripts");
+        private static readonly string ScriptsBasePath = Path.Combine(ScriptsDownloadPath, "Lumia");
 
         public WoaDeployer(IScriptRunner scriptRunner, IScriptParser parser, ITooling tooling,
             IFileSystemOperations fileSystemOperations)
@@ -30,26 +34,46 @@ namespace Deployer.Lumia
 
         public async Task Deploy(IDeploymentContext deploymentContext)
         {
-            this.context = deploymentContext;
-
+            context = deploymentContext;
             await EnsureFullyUnlocked();
-            
+
+            await DownloadDeploymentScripts();
+            await RunDeploymentScript();
+            await PatchBootManagerIfNeeded();
+            await MoveMetadataToPhone();
+            await PreparePhoneDiskForSafeRemoval();
+        }
+
+        private async Task DownloadDeploymentScripts()
+        {
+            if (fileSystemOperations.DirectoryExists(ScriptsDownloadPath))
+            {
+                await fileSystemOperations.DeleteDirectory(ScriptsDownloadPath);
+            }
+
+            await RunScript(BootstrapPath);
+        }
+
+        private async Task RunDeploymentScript()
+        {
             var dict = new Dictionary<(PhoneModel, Variant), string>
             {
-                {(PhoneModel.Talkman, Variant.SingleSim), Path.Combine("Scripts", "Talkman", "SingleSim.txt")},
-                {(PhoneModel.Cityman, Variant.SingleSim), Path.Combine("Scripts", "Cityman", "SingleSim.txt")},
-                {(PhoneModel.Talkman, Variant.DualSim), Path.Combine("Scripts", "Talkman", "DualSim.txt")},
-                {(PhoneModel.Cityman, Variant.DualSim), Path.Combine("Scripts", "Cityman", "DualSim.txt")},
+                {(PhoneModel.Talkman, Variant.SingleSim), Path.Combine(ScriptsBasePath, "Talkman", "SingleSim.txt")},
+                {(PhoneModel.Cityman, Variant.SingleSim), Path.Combine(ScriptsBasePath, "Cityman", "SingleSim.txt")},
+                {(PhoneModel.Talkman, Variant.DualSim), Path.Combine(ScriptsBasePath, "Talkman", "DualSim.txt")},
+                {(PhoneModel.Cityman, Variant.DualSim), Path.Combine(ScriptsBasePath, "Cityman", "DualSim.txt")},
             };
 
             var phoneModel = await Phone.GetModel();
             Log.Verbose("{Model} detected", phoneModel);
             var path = dict[(phoneModel.Model, phoneModel.Variant)];
 
+            await RunScript(path);
+        }
+
+        private async Task RunScript(string path)
+        {
             await scriptRunner.Run(parser.Parse(File.ReadAllText(path)));
-            await PatchBootManagerIfNeeded();
-            await MoveMetadataToPhone();
-            await PreparePhoneDiskForSafeRemoval();
         }
 
         private async Task EnsureFullyUnlocked()

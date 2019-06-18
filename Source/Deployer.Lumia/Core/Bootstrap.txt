@@ -1,0 +1,2 @@
+﻿# Fetching Deployment Scripts
+FetchGitHub "https://github.com/WOA-Project/Deployment-Scripts"

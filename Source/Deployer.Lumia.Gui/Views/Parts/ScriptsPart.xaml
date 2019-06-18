@@ -39,20 +39,6 @@
             <ColumnDefinition MinWidth="100" Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid>
-            <ListView FontSize="20" Margin="8" ItemsSource="{Binding Scripts}" SelectedItem="{Binding SelectedScript, Mode=TwoWay}" Visibility="{Binding RunCommand.IsExecuting, Converter={StaticResource CollapseOnTrue}}">
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="viewModels:ScriptItemViewModel">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Name}" />
-                            <Button Grid.Column="1" Command="{Binding OpenCommand}" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Path=IsSelected, Converter={StaticResource HideOnFalse}}" Content="Open" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
             <parts:ProgressPart VerticalAlignment="Center" Visibility="{Binding RunCommand.IsExecuting, Converter={StaticResource CollapseOnFalse}}" />
             <TreeView ItemsSource="{Binding Tree}" ItemTemplateSelector="{StaticResource TreeSelector}">
                 <TreeView.ItemContainerStyle>

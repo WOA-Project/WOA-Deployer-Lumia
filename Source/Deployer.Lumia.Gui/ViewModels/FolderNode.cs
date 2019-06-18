@@ -16,7 +16,7 @@ namespace Deployer.Lumia.Gui.ViewModels
         }
 
         public string Name { get; set; }
-        public IEnumerable<FolderNode> Children { get; set; }
+        public IEnumerable<FolderNode> Children { get; set; } = new List<FolderNode>();
         public string Path { get; set; }
 
         public ReactiveCommand<Unit, Process> OpenCommand { get; }

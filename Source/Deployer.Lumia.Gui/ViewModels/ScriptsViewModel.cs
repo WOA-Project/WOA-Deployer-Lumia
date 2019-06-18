@@ -14,8 +14,8 @@ using ReactiveUI;
 
 namespace Deployer.Lumia.Gui.ViewModels
 {
-    [Metadata("Name", "Scripts")]
-    [Metadata("Order", 2)]
+    //[Metadata("Name", "Scripts")]
+    //[Metadata("Order", 2)]
     public class ScriptsViewModel : ReactiveObject, ISection
     {
         private const string Root = "Scripts\\Extra";
@@ -44,12 +44,6 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             Tree = GetTree(new DirectoryInfo(extraScriptsPath)).Children.ToList();
 
-            Scripts = Directory.EnumerateFiles(Root).Select(x =>
-            {
-                var name = Path.GetFileNameWithoutExtension(x);
-                return new ScriptItemViewModel(name, x);
-            }).ToList();
-
             OpenCommand = ReactiveCommand.Create(() => Process.Start(SelectedScript.Path));
             MessageBus.Current.Listen<FolderNode>().Subscribe(x => SelectedScript = x);
         }
@@ -57,8 +51,6 @@ namespace Deployer.Lumia.Gui.ViewModels
         public List<FolderNode> Tree { get; }
 
         public ProgressViewModel RunCommand { get; set; }
-
-        public IEnumerable<ScriptItemViewModel> Scripts { get; set; }
 
         public FolderNode SelectedScript
         {
@@ -72,6 +64,11 @@ namespace Deployer.Lumia.Gui.ViewModels
 
         private static FolderNode GetTree(DirectoryInfo root)
         {
+            if (!root.Exists)
+            {
+                return new FolderNode();
+            }
+
             var subFolders = root.GetDirectories().Where(info => info.GetFiles().Any()).Select(GetTree);
             var subFiles = root.GetFiles().Select(x => new FolderNode
             {
