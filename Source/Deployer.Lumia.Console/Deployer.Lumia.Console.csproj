@@ -35,7 +35,9 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
-  <PropertyGroup />
+  <PropertyGroup>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
+  </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
