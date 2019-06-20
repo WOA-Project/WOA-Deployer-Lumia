@@ -21,7 +21,6 @@ namespace Deployer.Lumia.Gui.ViewModels
     {
         private const string LogsZipName = "PhoneLogs.zip";
         private readonly IDeploymentContext context;
-        private readonly IWindowsDeployer deployer;
         private readonly ILogCollector logCollector;
         private readonly IDisposable preparerUpdater;
         private readonly ILumiaSettingsService lumiaSettingsService;
@@ -30,27 +29,24 @@ namespace Deployer.Lumia.Gui.ViewModels
         private Meta<IDiskLayoutPreparer> selectedPreparer;
 
         public AdvancedViewModel(ILumiaSettingsService lumiaSettingsService, IFileSystemOperations fileSystemOperations,
-            UIServices uiServices, IDeploymentContext context, IOperationContext operationContext,
+            UIServices uiServices, IDeploymentContext context, IOperationContext operationContext, IOperationProgress progress,
             IList<Meta<IDiskLayoutPreparer>> diskPreparers,
-            IWindowsDeployer deployer,
             ILogCollector logCollector)
         {
             this.lumiaSettingsService = lumiaSettingsService;
             this.uiServices = uiServices;
             this.context = context;
-            this.deployer = deployer;
             this.logCollector = logCollector;
 
             DiskPreparers = diskPreparers;
 
-            DeleteDownloadedWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), uiServices.ContextDialog, operationContext);
-            ForceDualBootWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(ForceDualBoot),
-                uiServices.ContextDialog, operationContext);
-            ForceSingleBootWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(ForceDisableDualBoot), uiServices.ContextDialog, operationContext);
+            DeleteDownloadedWrapper = new ProgressViewModel(ReactiveCommand.CreateFromTask(() => DeleteDownloaded(fileSystemOperations)), progress, this, uiServices.ContextDialog, operationContext);
 
-            CollectLogsCommmandWrapper = new CommandWrapper<Unit, Unit>(this, ReactiveCommand.CreateFromTask(CollectLogs), uiServices.ContextDialog, operationContext);
+            ForceDualBootWrapper = new ProgressViewModel(ReactiveCommand.CreateFromTask(ForceDualBoot), progress, this, uiServices.ContextDialog, operationContext);
+
+            ForceSingleBootWrapper = new ProgressViewModel(ReactiveCommand.CreateFromTask(ForceDisableDualBoot), progress, this, uiServices.ContextDialog, operationContext);
+
+            CollectLogsCommmandWrapper = new ProgressViewModel(ReactiveCommand.CreateFromTask(CollectLogs), progress, this, uiServices.ContextDialog, operationContext);
 
             IsBusyObservable = Observable.Merge(DeleteDownloadedWrapper.Command.IsExecuting,
                 ForceDualBootWrapper.Command.IsExecuting, ForceSingleBootWrapper.Command.IsExecuting,
@@ -114,7 +110,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             set => this.RaiseAndSetIfChanged(ref selectedPreparer, value);
         }
 
-        public CommandWrapper<Unit, Unit> DeleteDownloadedWrapper { get; }
+        public ProgressViewModel DeleteDownloadedWrapper { get; }
 
         public bool UseCompactDeployment
         {
@@ -136,11 +132,11 @@ namespace Deployer.Lumia.Gui.ViewModels
             }
         }
 
-        public CommandWrapper<Unit, Unit> CollectLogsCommmandWrapper { get; }
+        public ProgressViewModel CollectLogsCommmandWrapper { get; }
 
-        public CommandWrapper<Unit, Unit> ForceDualBootWrapper { get; }
+        public ProgressViewModel ForceDualBootWrapper { get; }
 
-        public CommandWrapper<Unit, Unit> ForceSingleBootWrapper { get; }
+        public ProgressViewModel ForceSingleBootWrapper { get; }
 
         public IEnumerable<Meta<IDiskLayoutPreparer>> DiskPreparers { get; set; }
 

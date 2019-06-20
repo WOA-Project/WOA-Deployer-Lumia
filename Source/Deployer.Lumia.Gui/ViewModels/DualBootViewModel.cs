@@ -21,17 +21,15 @@ namespace Deployer.Lumia.Gui.ViewModels
         private bool isEnabled;
         private bool isUpdated;
 
-        public DualBootViewModel(IDeploymentContext context, IContextDialog dialogService, IOperationContext operationContext)
+        public DualBootViewModel(IDeploymentContext context, IContextDialog dialogService, IOperationContext operationContext, IOperationProgress progress)
         {
             this.context = context;
             var isChangingDualBoot = new Subject<bool>();
 
-            UpdateStatusWrapper =
-                new CommandWrapper<Unit, DualBootStatus>(this,
-                    ReactiveCommand.CreateFromTask(GetStatus, isChangingDualBoot),
-                    dialogService, operationContext);
+            var getStatusCommand = ReactiveCommand.CreateFromTask(GetStatus, isChangingDualBoot);
+            UpdateStatusWrapper = new ProgressViewModel(getStatusCommand, progress, this, dialogService, operationContext);
 
-            UpdateStatusWrapper.Command.Subscribe(x =>
+            getStatusCommand.Subscribe(x =>
             {
                 IsCapable = x.CanDualBoot;
                 IsEnabled = x.IsEnabled;
@@ -39,25 +37,25 @@ namespace Deployer.Lumia.Gui.ViewModels
             });
 
             var canChangeDualBoot = UpdateStatusWrapper.Command.IsExecuting.Select(isExecuting => !isExecuting);
+            var enableDualBootCommand = ReactiveCommand.CreateFromTask(EnableDualBoot, this.WhenAnyValue(x => x.IsCapable, x => x.IsEnabled,
+                        (isCapable, isEnabled) => isCapable && !isEnabled)
+                    .Merge(canChangeDualBoot));
 
-            EnableDualBootWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(EnableDualBoot,
-                    this.WhenAnyValue(x => x.IsCapable, x => x.IsEnabled,
-                            (isCapable, isEnabled) => isCapable && !isEnabled)
-                        .Merge(canChangeDualBoot)), dialogService, operationContext);
-            EnableDualBootWrapper.Command.Subscribe(async _ =>
+            EnableDualBootWrapper = new ProgressViewModel(enableDualBootCommand, progress, this, dialogService, operationContext);
+
+            enableDualBootCommand.Subscribe(async _ =>
             {
                 await dialogService.ShowAlert(this, Resources.Done, Resources.DualBootEnabled);
                 IsEnabled = !IsEnabled;
             });
 
-            DisableDualBootWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(DisableDualBoot,
-                    this.WhenAnyValue(x => x.IsCapable, x => x.IsEnabled,
-                            (isCapable, isEnabled) => isCapable && isEnabled)
-                        .Merge(canChangeDualBoot)), dialogService, operationContext);
+            var diableDualBootCommand = ReactiveCommand.CreateFromTask(DisableDualBoot,
+                this.WhenAnyValue(x => x.IsCapable, x => x.IsEnabled, (isCapable, isEnabled) => isCapable && isEnabled)
+                    .Merge(canChangeDualBoot));
 
-            DisableDualBootWrapper.Command.Subscribe(async _ =>
+            DisableDualBootWrapper = new ProgressViewModel(diableDualBootCommand, progress, this, dialogService, operationContext);
+
+            diableDualBootCommand.Subscribe(async _ =>
             {
                 await dialogService.ShowAlert(this, Resources.Done, Resources.DualBootDisabled);
                 IsEnabled = !IsEnabled;
@@ -71,11 +69,11 @@ namespace Deployer.Lumia.Gui.ViewModels
                 EnableDualBootWrapper.Command.IsExecuting, UpdateStatusWrapper.Command.IsExecuting);
         }
 
-        public CommandWrapper<Unit, Unit> DisableDualBootWrapper { get; set; }
+        public ProgressViewModel DisableDualBootWrapper { get; set; }
 
-        public CommandWrapper<Unit, Unit> EnableDualBootWrapper { get; set; }
+        public ProgressViewModel EnableDualBootWrapper { get; set; }
 
-        public CommandWrapper<Unit, DualBootStatus> UpdateStatusWrapper { get; }
+        public ProgressViewModel UpdateStatusWrapper { get; }
 
         public bool IsCapable
         {

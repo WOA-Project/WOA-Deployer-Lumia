@@ -29,7 +29,7 @@ namespace Deployer.Lumia.Gui.ViewModels
         public DeploymentViewModel(
             IDeploymentContext context,
             IWoaDeployer woaDeployer,
-            IOperationContext operationContext, UIServices uiServices, AdvancedViewModel advancedViewModel,
+            IOperationContext operationContext, UIServices uiServices, AdvancedViewModel advancedViewModel, IOperationProgress progress,
             WimPickViewModel wimPickViewModel, IFileSystemOperations fileSystemOperations, ILumiaSettingsService lumiaSettingsService)
         {
             this.context = context;
@@ -43,8 +43,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             var isSelectedWim = wimPickViewModel.WhenAnyObservable(x => x.WimMetadata.SelectedImageObs)
                 .Select(metadata => metadata != null);
 
-            FullInstallWrapper = new CommandWrapper<Unit, Unit>(this,
-                ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), uiServices.ContextDialog, operationContext);
+            FullInstallWrapper = new ProgressViewModel(ReactiveCommand.CreateFromTask(Deploy, isSelectedWim), progress, this, uiServices.ContextDialog, operationContext);
             IsBusyObservable = FullInstallWrapper.Command.IsExecuting;
             isBusyHelper = IsBusyObservable.ToProperty(this, model => model.IsBusy);
         }
@@ -89,7 +88,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             }
         }
 
-        public CommandWrapper<Unit, Unit> FullInstallWrapper { get; set; }
+        public ProgressViewModel FullInstallWrapper { get; set; }
         public IObservable<bool> IsBusyObservable { get; }
     }
 }

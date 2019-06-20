@@ -21,6 +21,7 @@ namespace Deployer.Lumia.Gui.ViewModels
             UIServices uiServices,
             IDeploymentContext context, 
             IOperationProgress progress,
+            IOperationContext operationContext,
             ILumiaSettingsService lumiaSettingsService)
         {
             this.deployer = deployer;
@@ -29,8 +30,8 @@ namespace Deployer.Lumia.Gui.ViewModels
             this.progress = progress;
             this.lumiaSettingsService = lumiaSettingsService;
 
-            BackupProgressViewModel = new ProgressViewModel(ReactiveCommand.CreateFromTask(Backup), progress);
-            RestoreProgressViewModel = new ProgressViewModel(ReactiveCommand.CreateFromTask(Restore), progress);
+            BackupProgressViewModel = new ProgressViewModel(ReactiveCommand.CreateFromTask(Backup), progress, this, uiServices.ContextDialog, operationContext);
+            RestoreProgressViewModel = new ProgressViewModel(ReactiveCommand.CreateFromTask(Restore), progress, this, uiServices.ContextDialog, operationContext);
 
             IsBusyObservable = Observable.Merge(new[]
             {

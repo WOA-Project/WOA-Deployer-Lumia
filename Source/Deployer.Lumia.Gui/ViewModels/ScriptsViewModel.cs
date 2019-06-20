@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Deployer.Execution;
@@ -16,19 +14,18 @@ namespace Deployer.Lumia.Gui.ViewModels
 {
     //[Metadata("Name", "Scripts")]
     //[Metadata("Order", 2)]
-    public class ScriptsViewModel : ReactiveObject, ISection
+    public class ScriptsViewModel : ReactiveObject, ISection, IDisposable
     {
-        private const string Root = "Scripts\\Extra";
         private readonly IScriptDependencyResolver scriptDependencyResolver;
         private readonly IScriptParser parser;
         private readonly IDeploymentContext deploymentContext;
         private readonly UIServices uiServices;
         private readonly IScriptRunner scriptRunner;
         private FolderNode selectedScript;
-        private readonly string extraScriptsPath = Path.Combine("Scripts", "Extra");
+        private readonly string extraScriptsPath = Path.Combine("Downloaded", "Deployment-Scripts", "Lumia", "Extra");
 
         public ScriptsViewModel(UIServices uiServices, IScriptRunner scriptRunner,
-            IOperationProgress progress, IScriptDependencyResolver scriptDependencyResolver, IScriptParser parser, IDeploymentContext deploymentContext)
+            IOperationProgress progress, IScriptDependencyResolver scriptDependencyResolver, IScriptParser parser, IDeploymentContext deploymentContext, IOperationContext operationContext)
         {
             this.uiServices = uiServices;
             this.scriptRunner = scriptRunner;
@@ -38,13 +35,12 @@ namespace Deployer.Lumia.Gui.ViewModels
 
             var canRun = this.WhenAnyValue(x => x.SelectedScript).Select(s => s != null);
             var runCommand = ReactiveCommand.CreateFromTask(Run, canRun);
-            RunCommand = new ProgressViewModel(runCommand, progress);
+            RunCommand = new ProgressViewModel(runCommand, progress, this, this.uiServices.ContextDialog, operationContext);
             
             IsBusyObservable = Observable.Merge(RunCommand.Command.IsExecuting);
 
             Tree = GetTree(new DirectoryInfo(extraScriptsPath)).Children.ToList();
 
-            OpenCommand = ReactiveCommand.Create(() => Process.Start(SelectedScript.Path));
             MessageBus.Current.Listen<FolderNode>().Subscribe(x => SelectedScript = x);
         }
 
@@ -58,25 +54,26 @@ namespace Deployer.Lumia.Gui.ViewModels
             set => this.RaiseAndSetIfChanged(ref selectedScript, value);
         }
 
-        public ReactiveCommand<Unit, Process> OpenCommand { get; }
-
         public IObservable<bool> IsBusyObservable { get; }
 
-        private static FolderNode GetTree(DirectoryInfo root)
+        private FolderNode GetTree(DirectoryInfo root)
         {
             if (!root.Exists)
             {
-                return new FolderNode();
+                return new FolderNode(uiServices.ContextDialog)
+                {
+                    Children = new List<FolderNode>()
+                };
             }
 
             var subFolders = root.GetDirectories().Where(info => info.GetFiles().Any()).Select(GetTree);
-            var subFiles = root.GetFiles().Select(x => new FolderNode
+            var subFiles = root.GetFiles().Select(x => new FolderNode(uiServices.ContextDialog)
             {
                 Name = Path.GetFileNameWithoutExtension(x.Name),
                 Path = x.FullName
             });
 
-            return new FolderNode
+            return new FolderNode(uiServices.ContextDialog)
             {
                 Name = root.Name,
                 Path = root.FullName,
@@ -100,6 +97,16 @@ namespace Deployer.Lumia.Gui.ViewModels
             else
             {
                 await uiServices.ContextDialog.ShowAlert(this, "Cancelled","Script cancelled");
+            }
+        }
+
+        public void Dispose()
+        {
+            selectedScript?.Dispose();
+            RunCommand?.Dispose();
+            foreach (var folderNode in Tree)
+            {
+                folderNode.Dispose();
             }
         }
     }
