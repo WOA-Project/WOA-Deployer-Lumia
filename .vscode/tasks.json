@@ -1,0 +1,47 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Cleanup",
+            "command": "Get-ChildItem -Path '${workspaceFolder}/Source/*' -Include bin, obj -Recurse | Remove-Item -Force -Recurse -Verbose; dotnet nuget locals -c all;",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build WoaDeployer for lumia",
+            "command": "msb16 '/t:clean;restore;build' '${workspaceFolder}/Source/WoaDeployer for Lumia.sln'",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Build Woa DeployerPlatform",
+            "command": "msb16 '/t:clean;restore;build' '${workspaceFolder}/Source/DeployerPlatform/Deployer Platform.sln'",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Test WoaDeployer for lumia",
+            "command": "vst16 '${workspaceFolder}/Source/Deployer.Lumia.Tests/bin/debug/Deployer.Lumia.Tests.dll'",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Test Woa DeployerPlatform Deployer",
+            "command": "vst16 '${workspaceFolder}/Source/DeployerPlatform/Deployer.Tests/bin/debug/netcoreapp2.1/Deployer.Tests.dll'",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Test Woa DeployerPlatform NetFx",
+            "command": "vst16 '${workspaceFolder}/Source/DeployerPlatform/Deployer.NetFx.Tests/bin/debug/net472/Deployer.NetFx.Tests.dll'",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}

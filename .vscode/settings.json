@@ -1,0 +1,8 @@
+{
+    "dotnet-test-explorer.testProjectPath": "**/*.Tests.csproj",
+    "vssolution.altSolutionFolders": [
+        "Source",
+        "Source/DeployerPlatform",
+        "Source/DeployerPlatform/Registry"
+    ]
+}
