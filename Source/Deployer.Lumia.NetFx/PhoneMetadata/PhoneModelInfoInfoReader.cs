@@ -26,6 +26,7 @@ namespace Deployer.Lumia.NetFx.PhoneMetadata
                 {"RM-1085", Variant.SingleSim },
                 {"RM-1104", Variant.SingleSim },
                 {"RM-1105", Variant.SingleSim },
+                {"RM-1106", Variant.SingleSim },
                 {"RM-1116", Variant.DualSim },
                 {"RM-1118", Variant.DualSim },
             };
