@@ -7,17 +7,22 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="161" d:DesignWidth="202" DataContext="{Binding Source={StaticResource Locator}, Path=OngoingOperationViewModel}">
-    <UserControl.Resources>
-
-    </UserControl.Resources>
-    <StackPanel>
-        <mah:ProgressRing IsLarge="True" Margin="0 0 0 30" Height="80" Width="80" />
-        <TextBlock Text="{Binding CurrentActionTitle}" TextAlignment="Center" FontWeight="Bold" FontSize="26" VerticalAlignment="Bottom" TextWrapping="Wrap"/>
-        <StackPanel Margin="14">
-            <TextBlock  Text="{Binding CurrentActionDetail}" TextAlignment="Center" Margin="0 12 0 0" FontSize="18"
-                        FontWeight="Light" VerticalAlignment="Center" TextWrapping="Wrap"  />
-            <local:ProgressControl Margin="8" HorizontalAlignment="Center"
-                                   Visibility="{Binding IsProgressVisible, Converter={StaticResource HideOnFalse}}" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <StackPanel VerticalAlignment="Center" Height="275" Margin="0,-93,0,-21" Grid.RowSpan="2">
+            <mah:ProgressRing IsLarge="True" Margin="0 0 0 30" Height="80" Width="80" />
+            <TextBlock Text="{Binding CurrentActionTitle}" TextAlignment="Center" FontWeight="Bold" FontSize="26"
+                       VerticalAlignment="Bottom" TextWrapping="Wrap" />
+            <StackPanel Margin="14">
+                <TextBlock Text="{Binding CurrentActionDetail}" TextAlignment="Center" Margin="0 12 0 0" FontSize="18"
+                           FontWeight="Light" VerticalAlignment="Center" TextWrapping="Wrap" />
+                <local:ProgressControl Margin="8" HorizontalAlignment="Center"
+                                       Visibility="{Binding IsProgressVisible, Converter={StaticResource HideOnFalse}}" />
+            </StackPanel>
         </StackPanel>
-    </StackPanel>
+        <Button Grid.Row="1" VerticalAlignment="Top" Content="{Binding CancelButtonText}" Margin="8" HorizontalAlignment="Center" Command="{Binding CancelCommand}" />
+    </Grid>
 </UserControl>

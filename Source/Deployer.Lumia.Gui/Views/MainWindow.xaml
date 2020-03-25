@@ -9,20 +9,20 @@
                  xmlns:viewModels="clr-namespace:Deployer.Lumia.Gui.ViewModels"
                  xmlns:dualBoot="clr-namespace:Deployer.Lumia.Gui.Views.Parts.DualBoot"
                  xmlns:advanced="clr-namespace:Deployer.Lumia.Gui.Views.Parts.Advanced"
-                 xmlns:Interactions="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
                  mc:Ignorable="d"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModelBase}"
                  mah:DialogParticipation.Register="{Binding}"
                  Title="{Binding Title}" 
                  Icon="/Assets/appicon.png"
                  WindowStartupLocation="CenterScreen" Closing="MainWindow_OnClosing">
-    <Interactions:Interaction.Triggers>
-        <Interactions:EventTrigger EventName="Loaded">
-            <Interactions:EventTrigger.Actions>
-                <Interactions:InvokeCommandAction Command="{Binding ShowWarningCommand}" />
-            </Interactions:EventTrigger.Actions>
-        </Interactions:EventTrigger>
-    </Interactions:Interaction.Triggers>
+    <interactions:Interaction.Triggers>
+        <interactions:EventTrigger EventName="Loaded">
+            <interactions:EventTrigger.Actions>
+                <interactions:InvokeCommandAction Command="{Binding ShowWarningCommand}" />
+            </interactions:EventTrigger.Actions>
+        </interactions:EventTrigger>
+    </interactions:Interaction.Triggers>
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModels:DeploymentViewModel}">
             <parts:DeploymentPart />
@@ -80,7 +80,7 @@
         </TabControl>
 
         <Grid Grid.Row="1" Visibility="{Binding IsBigProgressVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <parts:ProgressPart VerticalAlignment="Center" Margin="0 80 0 0" />
+            <parts:ProgressPart Margin="0 80 0 0" />
         </Grid>
         
         <Expander Grid.Row="2" Header="Log" IsExpanded="False" MaxHeight="400">

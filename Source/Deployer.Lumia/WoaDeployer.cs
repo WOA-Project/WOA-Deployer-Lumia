@@ -16,18 +16,20 @@ namespace Deployer.Lumia
         private readonly ITooling tooling;
         private IDeploymentContext context;
         private readonly IFileSystemOperations fileSystemOperations;
+        private readonly IOperationContext operationContext;
         private static readonly string BootstrapPath = Path.Combine("Core", "Bootstrap.txt");
 
         private static readonly string ScriptsDownloadPath = Path.Combine(AppPaths.ArtifactDownload, "Deployment-Scripts");
         private static readonly string ScriptsBasePath = Path.Combine(ScriptsDownloadPath, "Lumia");
 
         public WoaDeployer(IScriptRunner scriptRunner, IScriptParser parser, ITooling tooling,
-            IFileSystemOperations fileSystemOperations)
+            IFileSystemOperations fileSystemOperations, IOperationContext operationContext)
         {
             this.scriptRunner = scriptRunner;
             this.parser = parser;
             this.tooling = tooling;
             this.fileSystemOperations = fileSystemOperations;
+            this.operationContext = operationContext;
         }
 
         private IPhone Phone => (IPhone)context.Device;
@@ -35,6 +37,7 @@ namespace Deployer.Lumia
         public async Task Deploy(IDeploymentContext deploymentContext)
         {
             context = deploymentContext;
+            operationContext.Start();
             await EnsureFullyUnlocked();
 
             await DownloadDeploymentScripts();
