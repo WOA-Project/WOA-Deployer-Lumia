@@ -1,5 +1,5 @@
 ﻿# Getting Windows 10 ARM
-1. Go to this site: https://uupdump.ml/
+1. Go to this site: https://uupdump.net/
 
  ![Site](GetWoa-Site.png)
 
