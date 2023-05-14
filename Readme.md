@@ -44,10 +44,7 @@ Do you like my tool? Has it been useful for you?
 Then, I hope you [👉 support my work](Docs/Donations.md)
 
 # Need help?
-Then visit our projects website at https://www.woaproject.net/, the one-stop solution for all your questions 😊
-
-It's also recommended that you read the [FAQ 📘](https://www.woaproject.net/viewtopic.php?f=16&t=6)
-And, of course, don't hesitate to join our great [Telegram group 📱](https://t.me/joinchat/Ey6mehEPg0Fe4utQNZ9yjA)
+Don't hesitate to join our great [Telegram group 📱](https://t.me/joinchat/Ey6mehEPg0Fe4utQNZ9yjA)
 
 # Credits and Acknowledgements
 - [Ben Imbushuo](https://github.com/imbushuo) for his awesome work with UEFI and misc. stuff.
